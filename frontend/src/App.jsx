@@ -17,7 +17,7 @@ export default function App() {
 
   // Backend status and data
   const [isBackendOffline, setIsBackendOffline] = useState(false);
-  const [tracksCount, setTracksCount] = useState(10);
+  const [tracksCount, setTracksCount] = useState(52);
   const [isWaking, setIsWaking] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
