@@ -1,8 +1,10 @@
 import React from 'react';
 import LanguageCard from './LanguageCard';
 import EraCard from './EraCard';
+import ModeCard from './ModeCard';
 import DifficultyPill from './DifficultyPill';
-import { ERAS } from '../constants/eras';
+import { ERAS } from '../constants/eras.js';
+import { GAME_MODES } from '../constants/modes.js';
 import { Calendar, AlertTriangle, RefreshCw } from 'lucide-react';
 
 const LANGUAGES = [
@@ -46,6 +48,8 @@ export default function GameSetupCard({
   selectedEra = 'all',
   onSelectEra,
   eraStats = [],
+  selectedMode = 'normal',
+  onSelectMode,
   selectedDifficulty,
   onSelectDifficulty,
   startFromHook,
@@ -147,10 +151,56 @@ export default function GameSetupCard({
         </div>
       )}
 
-      {/* STEP 3: SET THE VIBE (DIFFICULTY & HOOK) */}
+      {/* STEP 3: CHOOSE PLAY MODE (NORMAL VS REVERSE) */}
+      <div className="mb-8 pt-6 border-t border-white/5">
+        <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+          <span>03 / CHOOSE PLAY MODE</span>
+          <span
+            className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+              selectedMode === 'reverse'
+                ? 'text-purple-300 bg-purple-500/15 border border-purple-500/30'
+                : 'text-[#22E06B] bg-[#22E06B]/10 border border-[#22E06B]/20'
+            }`}
+          >
+            {selectedMode === 'reverse' ? 'REVERSED MODE 🔄' : 'NORMAL MODE ▶'}
+          </span>
+        </div>
+
+        {/* 2 Game Mode Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {GAME_MODES.map((mode) => (
+            <ModeCard
+              key={mode.id}
+              id={mode.id}
+              label={mode.label}
+              shortLabel={mode.shortLabel}
+              tagline={mode.tagline}
+              badge={mode.badge}
+              copy={mode.copy}
+              isSelected={selectedMode === mode.id}
+              onSelect={onSelectMode}
+            />
+          ))}
+        </div>
+
+        {/* Reverse Mode Callout Banner when selected */}
+        {selectedMode === 'reverse' && (
+          <div className="mt-3.5 p-3.5 rounded-xl border border-purple-500/30 bg-purple-950/20 text-purple-200 text-xs flex items-start gap-2.5 animate-in fade-in duration-200">
+            <span className="text-base leading-none mt-0.5">🔄</span>
+            <div>
+              <span className="font-bold text-purple-300">Reverse Mode Active: </span>
+              <span>
+                Audio is played completely backwards! Test your ear on reversed melodies, backwards beats, and inverted vocals.
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* STEP 4: SET THE VIBE (DIFFICULTY & HOOK) */}
       <div className="mb-8 pt-6 border-t border-white/5">
         <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4">
-          03 / SET THE VIBE
+          04 / SET THE VIBE
         </div>
 
         {/* Difficulty Pills */}
@@ -214,9 +264,13 @@ export default function GameSetupCard({
         <button
           type="button"
           onClick={onStartRound}
-          className="bg-[#22E06B] hover:bg-[#2ECC71] text-[#0A0A0B] font-extrabold px-7 py-3.5 rounded-full transition-all duration-200 shadow-[0_0_20px_rgba(34,224,107,0.35)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
+          className={`${
+            selectedMode === 'reverse'
+              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(168,85,247,0.4)]'
+              : 'bg-[#22E06B] hover:bg-[#2ECC71] text-[#0A0A0B] shadow-[0_0_20px_rgba(34,224,107,0.35)]'
+          } font-extrabold px-7 py-3.5 rounded-full transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-95 group`}
         >
-          <span>Start a round</span>
+          <span>{selectedMode === 'reverse' ? 'Start Reverse Round 🔄' : 'Start a round'}</span>
           <span className="font-mono text-base font-bold transition-transform group-hover:translate-x-0.5">
             &gt;
           </span>

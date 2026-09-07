@@ -8,7 +8,7 @@ import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks } from './data/tracks';
-import { ERAS, getEraFromYear, getEraMeta } from './constants/eras';
+import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
 
 export default function App() {
   // State for selections with localStorage persistence
@@ -17,6 +17,9 @@ export default function App() {
   });
   const [selectedEra, setSelectedEra] = useState(() => {
     return localStorage.getItem('surftest_era') || 'all'; // 'all' | 'old-is-gold' | '2000s' | '2010s' | 'new'
+  });
+  const [selectedMode, setSelectedMode] = useState(() => {
+    return localStorage.getItem('surftest_mode') || 'normal'; // 'normal' | 'reverse'
   });
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy'); // 'easy' | 'medium' | 'hard' | 'expert' | 'impossible'
   const [startFromHook, setStartFromHook] = useState(false);
@@ -34,7 +37,9 @@ export default function App() {
     wins: 0,
     winRate: 0,
     streak: 0,
-    bestStreak: 0
+    bestStreak: 0,
+    normal: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
+    reverse: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 }
   });
 
   // Modal states
@@ -42,7 +47,7 @@ export default function App() {
   const [isGameModalOpen, setIsGameModalOpen] = useState(false);
   const [activeRoundData, setActiveRoundData] = useState(null);
 
-  // Save language & era preferences
+  // Save language, era & mode preferences
   const handleSelectLanguage = (lang) => {
     setSelectedLanguage(lang);
     localStorage.setItem('surftest_lang', lang);
@@ -51,6 +56,11 @@ export default function App() {
   const handleSelectEra = (era) => {
     setSelectedEra(era);
     localStorage.setItem('surftest_era', era);
+  };
+
+  const handleSelectMode = (mode) => {
+    setSelectedMode(mode);
+    localStorage.setItem('surftest_mode', mode);
   };
 
   // Check backend health & sync stats
@@ -172,11 +182,11 @@ export default function App() {
 
   // Start a game round
   const handleStartRound = async (isDaily = false) => {
-    const dailyLabel = `DAILY · ${selectedLanguage === 'all' ? 'MIXED' : selectedLanguage.toUpperCase()} · ${selectedEra === 'all' ? 'ALL ERAS' : selectedEra.toUpperCase()}`;
+    const dailyLabel = `DAILY · ${selectedLanguage === 'all' ? 'MIXED' : selectedLanguage.toUpperCase()} · ${selectedEra === 'all' ? 'ALL ERAS' : selectedEra.toUpperCase()}${selectedMode === 'reverse' ? ' · REVERSED 🔄' : ''}`;
 
     try {
       const res = await fetch(
-        `/api/round?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}&hook=${startFromHook}`
+        `/api/round?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}&hook=${startFromHook}&mode=${selectedMode}`
       );
       if (res.ok) {
         const data = await res.json();
@@ -195,9 +205,15 @@ export default function App() {
   };
 
   const launchLocalRound = (isDaily, dailyLabel) => {
-    const localData = generateRoundData(selectedLanguage, selectedEra, selectedDifficulty, startFromHook);
+    const localData = generateRoundData(
+      selectedLanguage,
+      selectedEra,
+      selectedDifficulty,
+      startFromHook,
+      selectedMode
+    );
     if (isDaily) {
-      localData.roundId = dailyLabel || `DAILY · ${selectedLanguage.toUpperCase()} · ${selectedEra.toUpperCase()}`;
+      localData.roundId = dailyLabel || `DAILY · ${selectedLanguage.toUpperCase()} · ${selectedEra.toUpperCase()}${selectedMode === 'reverse' ? ' · REVERSED 🔄' : ''}`;
     }
     setActiveRoundData(localData);
     setIsGameModalOpen(true);
@@ -209,7 +225,7 @@ export default function App() {
       const res = await fetch('/api/stats/record', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ won, stage })
+        body: JSON.stringify({ won, stage, mode: selectedMode })
       });
       if (res.ok) {
         const updated = await res.json();
@@ -226,7 +242,29 @@ export default function App() {
       const streak = won ? prev.streak + 1 : 0;
       const bestStreak = Math.max(prev.bestStreak, streak);
       const winRate = Math.round((wins / played) * 100);
-      return { played, wins, winRate, streak, bestStreak };
+
+      const modeStats = prev[selectedMode] || { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 };
+      const mPlayed = modeStats.played + 1;
+      const mWins = won ? modeStats.wins + 1 : modeStats.wins;
+      const mStreak = won ? modeStats.streak + 1 : 0;
+      const mBestStreak = Math.max(modeStats.bestStreak, mStreak);
+      const mWinRate = Math.round((mWins / mPlayed) * 100);
+
+      return {
+        ...prev,
+        played,
+        wins,
+        winRate,
+        streak,
+        bestStreak,
+        [selectedMode]: {
+          played: mPlayed,
+          wins: mWins,
+          winRate: mWinRate,
+          streak: mStreak,
+          bestStreak: mBestStreak
+        }
+      };
     });
   };
 
@@ -252,13 +290,15 @@ export default function App() {
             {/* Hero Section */}
             <Hero />
 
-            {/* Game Setup Card with Language & Era Selection */}
+            {/* Game Setup Card with Language, Era, and Mode Selection */}
             <GameSetupCard
               selectedLanguage={selectedLanguage}
               onSelectLanguage={handleSelectLanguage}
               selectedEra={selectedEra}
               onSelectEra={handleSelectEra}
               eraStats={eraStats}
+              selectedMode={selectedMode}
+              onSelectMode={handleSelectMode}
               selectedDifficulty={selectedDifficulty}
               onSelectDifficulty={setSelectedDifficulty}
               startFromHook={startFromHook}
@@ -273,6 +313,8 @@ export default function App() {
           <div className="lg:col-span-5 xl:col-span-4">
             <SidebarPanel
               stats={stats}
+              selectedMode={selectedMode}
+              onSelectMode={handleSelectMode}
               onOpenSettings={() => setIsHelpOpen(true)}
             />
           </div>
