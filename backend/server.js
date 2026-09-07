@@ -410,7 +410,7 @@ let playerStats = {
 };
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({
     status: 'ok',
     service: 'SurTest Catalog API',
@@ -420,7 +420,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Wakeup endpoint (for the global toast button)
-app.post('/api/wake', (req, res) => {
+app.post(['/api/wake', '/wake'], (req, res) => {
   res.json({
     status: 'awake',
     message: 'Catalog server is awake and ready.',
@@ -429,7 +429,7 @@ app.post('/api/wake', (req, res) => {
 });
 
 // Get tracks filtered by language and optional difficulty
-app.get('/api/tracks', (req, res) => {
+app.get(['/api/tracks', '/tracks'], (req, res) => {
   const { language, difficulty } = req.query;
   let filtered = [...trackCatalog];
 
@@ -454,7 +454,7 @@ app.get('/api/tracks', (req, res) => {
 });
 
 // Get single random track for game round
-app.get('/api/round', (req, res) => {
+app.get(['/api/round', '/round'], (req, res) => {
   const { language, difficulty, hook } = req.query;
   let pool = [...trackCatalog];
 
@@ -497,11 +497,11 @@ app.get('/api/round', (req, res) => {
 });
 
 // Get and update stats
-app.get('/api/stats', (req, res) => {
+app.get(['/api/stats', '/stats'], (req, res) => {
   res.json(playerStats);
 });
 
-app.post('/api/stats/record', (req, res) => {
+app.post(['/api/stats/record', '/stats/record'], (req, res) => {
   const { won, stage } = req.body;
   playerStats.played += 1;
   if (won) {
