@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #22E06B;
+  --color-brand-secondary: #2ECC71;
+  --color-base-darkest: #0A0A0B;
+  --color-base-surface: #101111;
+  --color-base-card: #121314;
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: #8B8F8C;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --letter-spacing-widest-plus: 0.22em;
+}
+
+:root {
+  --bg-base: #0A0A0B;
+  --bg-surface: #101111;
+  --bg-card: #121314;
+  --bg-hover: #17181A;
+  
+  --accent-primary: #22E06B;
+  --accent-secondary: #2ECC71;
+
+  --text-primary: #F5F5F5;
+  --text-secondary: #8B8F8C;
+  --text-muted: #9CA3AF;
+
+  --border-hairline: rgba(255, 255, 255, 0.08);
+  --border-accent: #22E06B;
+
+  --stage-glow: radial-gradient(ellipse 65% 55% at 10% 15%, rgba(120, 40, 30, 0.28) 0%, rgba(70, 20, 15, 0.14) 45%, transparent 72%);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+.hero-stage-glow {
+  background-image: var(--stage-glow);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

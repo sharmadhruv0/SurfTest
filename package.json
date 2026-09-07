@@ -1,0 +1,18 @@
+{
+  "name": "surtest-root",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm --prefix frontend run build",
+    "postinstall": "npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev": "node start-all.js",
+    "tunnel": ".\\cloudflared.exe tunnel --url http://localhost:5173"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
