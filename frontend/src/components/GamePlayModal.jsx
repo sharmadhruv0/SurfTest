@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, FastForward, Check, X, Volume2, RotateCcw, Award } from 'lucide-react';
+import { getEraMeta, getEraFromYear } from '../constants/eras';
 
 const STAGE_DURATIONS = [1, 2, 4, 7, 11, 16]; // seconds unlocked at each stage
 const TOTAL_DURATION = 16; // 16s total
@@ -157,6 +158,11 @@ export default function GamePlayModal({
     opt.toLowerCase().includes(guessInput.toLowerCase())
   );
 
+  const trackEra = track.era || getEraFromYear(track.year);
+  const trackEraMeta = getEraMeta(trackEra);
+  const activeEraId = roundData.activeFilters?.era || trackEra;
+  const activeEraMeta = getEraMeta(activeEraId);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-[#101111] border border-white/10 rounded-2xl max-w-2xl w-full p-5 sm:p-7 shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative flex flex-col max-h-[92vh] overflow-y-auto">
@@ -171,13 +177,26 @@ export default function GamePlayModal({
           }}
         />
 
-        {/* Modal Top Bar */}
+        {/* Modal Top Bar with Active Era & Language Badges */}
         <div className="flex items-center justify-between pb-4 border-b border-white/8 mb-6">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="w-2.5 h-2.5 rounded-full bg-[#22E06B] shadow-[0_0_8px_#22E06B]" />
             <span className="text-xs font-mono font-bold text-[#8B8F8C] uppercase tracking-widest">
-              {roundData.roundId || 'ROUND ACTIVE'} · {track.language.toUpperCase()}
+              {roundData.roundId || 'ROUND ACTIVE'}
             </span>
+
+            {/* Active Era / Language badge */}
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold">
+              <span className="bg-white/10 text-[#F5F5F5] px-2 py-0.5 rounded border border-white/10 uppercase">
+                {roundData.activeFilters?.language && roundData.activeFilters.language !== 'all'
+                  ? roundData.activeFilters.language.toUpperCase()
+                  : track.language?.toUpperCase() || 'MIXED'}
+              </span>
+              <span className="text-[#8B8F8C] font-normal">·</span>
+              <span className={`px-2 py-0.5 rounded border ${activeEraMeta.theme.badge} uppercase`}>
+                {activeEraMeta.label}
+              </span>
+            </div>
           </div>
           <button
             type="button"
@@ -330,8 +349,14 @@ export default function GamePlayModal({
             <div className="text-xl sm:text-2xl font-black text-white mt-1">
               {track.title}
             </div>
-            <div className="text-sm text-[#8B8F8C] mt-0.5">
-              {track.artist} · {track.album} ({track.year})
+            <div className="text-sm text-[#8B8F8C] mt-1 flex items-center justify-center gap-2 flex-wrap">
+              <span>{track.artist} · {track.album}</span>
+              <span className="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-white/10 text-white">
+                {track.year}
+              </span>
+              <span className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border ${trackEraMeta.theme.badge}`}>
+                {trackEraMeta.label}
+              </span>
             </div>
 
             <div className="mt-4 flex justify-center gap-3">

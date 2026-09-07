@@ -8,16 +8,23 @@ import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks } from './data/tracks';
+import { ERAS, getEraFromYear, getEraMeta } from './constants/eras';
 
 export default function App() {
-  // State for selections
-  const [selectedLanguage, setSelectedLanguage] = useState('hindi'); // 'hindi' | 'punjabi' | 'haryanvi'
+  // State for selections with localStorage persistence
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    return localStorage.getItem('surftest_lang') || 'hindi'; // 'all' | 'hindi' | 'punjabi' | 'haryanvi'
+  });
+  const [selectedEra, setSelectedEra] = useState(() => {
+    return localStorage.getItem('surftest_era') || 'all'; // 'all' | 'old-is-gold' | '2000s' | '2010s' | 'new'
+  });
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy'); // 'easy' | 'medium' | 'hard' | 'expert' | 'impossible'
   const [startFromHook, setStartFromHook] = useState(false);
 
-  // Backend status and data
+  // Backend status, era statistics and track pool
   const [isBackendOffline, setIsBackendOffline] = useState(false);
   const [tracksCount, setTracksCount] = useState(52);
+  const [eraStats, setEraStats] = useState([]);
   const [isWaking, setIsWaking] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
@@ -35,6 +42,17 @@ export default function App() {
   const [isGameModalOpen, setIsGameModalOpen] = useState(false);
   const [activeRoundData, setActiveRoundData] = useState(null);
 
+  // Save language & era preferences
+  const handleSelectLanguage = (lang) => {
+    setSelectedLanguage(lang);
+    localStorage.setItem('surftest_lang', lang);
+  };
+
+  const handleSelectEra = (era) => {
+    setSelectedEra(era);
+    localStorage.setItem('surftest_era', era);
+  };
+
   // Check backend health & sync stats
   const checkHealth = useCallback(async () => {
     try {
@@ -44,16 +62,53 @@ export default function App() {
         setShowToast(false);
       }
     } catch {
-      // Backend unavailable; client catalog remains fully active
+      // Backend unavailable; client catalog remains active
     }
   }, []);
 
-  // Fetch track count for selected filters
+  // Fetch era breakdown for the current language
+  const fetchEraStats = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/eras?language=${selectedLanguage}`);
+      if (res.ok) {
+        const data = await res.json();
+        setEraStats(data.eras || []);
+        return;
+      }
+    } catch {
+      // Compute fallback era stats locally from TRACK_CATALOG
+    }
+
+    const localEras = ERAS.map((era) => {
+      let count = 0;
+      for (const t of TRACK_CATALOG) {
+        const tEra = t.era || getEraFromYear(t.year);
+        const isEraMatch = era.id === 'all' || tEra === era.id;
+        const isLangMatch = selectedLanguage === 'all' || t.language.toLowerCase() === selectedLanguage.toLowerCase();
+        if (isEraMatch && isLangMatch) {
+          count++;
+        }
+      }
+      return {
+        id: era.id,
+        label: era.label,
+        shortLabel: era.shortLabel,
+        range: era.range,
+        period: era.period,
+        tagline: era.tagline,
+        total: count,
+        theme: era.theme
+      };
+    });
+    setEraStats(localEras);
+  }, [selectedLanguage]);
+
+  // Fetch track count for selected language + era + difficulty
   const fetchTrackCount = useCallback(async () => {
-    const localTracks = getFilteredTracks(selectedLanguage, selectedDifficulty);
+    const localTracks = getFilteredTracks(selectedLanguage, selectedEra, selectedDifficulty);
     try {
       const res = await fetch(
-        `/api/tracks?language=${selectedLanguage}&difficulty=${selectedDifficulty}`
+        `/api/tracks?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}`
       );
       if (res.ok) {
         const data = await res.json();
@@ -65,7 +120,7 @@ export default function App() {
       // Use local catalog count
     }
     setTracksCount(localTracks.length);
-  }, [selectedLanguage, selectedDifficulty]);
+  }, [selectedLanguage, selectedEra, selectedDifficulty]);
 
   // Fetch listening log stats
   const fetchStats = useCallback(async () => {
@@ -80,12 +135,16 @@ export default function App() {
     }
   }, []);
 
-  // Initial load
+  // Sync on mount and filter changes
   useEffect(() => {
     checkHealth();
-    fetchTrackCount();
     fetchStats();
-  }, [checkHealth, fetchTrackCount, fetchStats]);
+  }, [checkHealth, fetchStats]);
+
+  useEffect(() => {
+    fetchEraStats();
+    fetchTrackCount();
+  }, [fetchEraStats, fetchTrackCount]);
 
   // Wake up servers button action
   const handleWakeServers = async () => {
@@ -95,13 +154,13 @@ export default function App() {
       if (res.ok) {
         setIsBackendOffline(false);
         setShowToast(false);
+        fetchEraStats();
         fetchTrackCount();
         fetchStats();
       } else {
         throw new Error('Server wake failed');
       }
     } catch {
-      // If server could not be awakened directly, recheck after brief delay
       setTimeout(() => {
         checkHealth();
         setIsWaking(false);
@@ -113,14 +172,16 @@ export default function App() {
 
   // Start a game round
   const handleStartRound = async (isDaily = false) => {
+    const dailyLabel = `DAILY · ${selectedLanguage === 'all' ? 'MIXED' : selectedLanguage.toUpperCase()} · ${selectedEra === 'all' ? 'ALL ERAS' : selectedEra.toUpperCase()}`;
+
     try {
       const res = await fetch(
-        `/api/round?language=${selectedLanguage}&difficulty=${selectedDifficulty}&hook=${startFromHook}`
+        `/api/round?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}&hook=${startFromHook}`
       );
       if (res.ok) {
         const data = await res.json();
         if (isDaily) {
-          data.roundId = 'DAILY · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+          data.roundId = dailyLabel;
         }
         setActiveRoundData(data);
         setIsGameModalOpen(true);
@@ -130,13 +191,13 @@ export default function App() {
       // Backend request failed or timed out; fall through to instant local generator
     }
 
-    launchLocalMockRound(isDaily);
+    launchLocalRound(isDaily, dailyLabel);
   };
 
-  const launchLocalMockRound = (isDaily) => {
-    const localData = generateRoundData(selectedLanguage, selectedDifficulty, startFromHook);
+  const launchLocalRound = (isDaily, dailyLabel) => {
+    const localData = generateRoundData(selectedLanguage, selectedEra, selectedDifficulty, startFromHook);
     if (isDaily) {
-      localData.roundId = 'DAILY · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+      localData.roundId = dailyLabel || `DAILY · ${selectedLanguage.toUpperCase()} · ${selectedEra.toUpperCase()}`;
     }
     setActiveRoundData(localData);
     setIsGameModalOpen(true);
@@ -159,7 +220,6 @@ export default function App() {
       // Fallback local state update
     }
 
-    // Local state fallback
     setStats((prev) => {
       const played = prev.played + 1;
       const wins = won ? prev.wins + 1 : prev.wins;
@@ -172,7 +232,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-[#F5F5F5] relative selection:bg-[#22E06B] selection:text-[#0A0A0B] overflow-x-hidden">
-      {/* Subtle warm maroon/rust-brown stage glow behind top-left hero */}
+      {/* Subtle warm stage glow behind top-left hero */}
       <div
         className="pointer-events-none fixed inset-0 z-0 opacity-100"
         style={{
@@ -185,29 +245,31 @@ export default function App() {
       <TopBar streak={stats.streak} onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main Two-Column Layout */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 py-8 sm:py-12">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column (~60-65% width: 7/12 or 8/12 on large screens) */}
+          {/* Left Column (~60-65% width) */}
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col">
             {/* Hero Section */}
             <Hero />
 
-            {/* Game Setup Card */}
+            {/* Game Setup Card with Language & Era Selection */}
             <GameSetupCard
               selectedLanguage={selectedLanguage}
-              onSelectLanguage={setSelectedLanguage}
+              onSelectLanguage={handleSelectLanguage}
+              selectedEra={selectedEra}
+              onSelectEra={handleSelectEra}
+              eraStats={eraStats}
               selectedDifficulty={selectedDifficulty}
               onSelectDifficulty={setSelectedDifficulty}
               startFromHook={startFromHook}
               onToggleHook={() => setStartFromHook((prev) => !prev)}
               tracksCount={tracksCount}
-              isBackendOffline={isBackendOffline}
               onStartRound={() => handleStartRound(false)}
               onStartDaily={() => handleStartRound(true)}
             />
           </div>
 
-          {/* Right Column (~35-40% width: 5/12 or 4/12 on large screens) */}
+          {/* Right Column (~35-40% width) */}
           <div className="lg:col-span-5 xl:col-span-4">
             <SidebarPanel
               stats={stats}
@@ -220,7 +282,7 @@ export default function App() {
       {/* Full-width Footer */}
       <Footer />
 
-      {/* Global Toast / Banner fixed to bottom */}
+      {/* Reusable Toast */}
       <Toast
         visible={showToast}
         isWaking={isWaking}
@@ -228,10 +290,9 @@ export default function App() {
         onDismiss={() => setShowToast(false)}
       />
 
-      {/* Help / Rules Modal */}
+      {/* Modals */}
       <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
 
-      {/* Heardle Interactive Gameplay Modal */}
       <GamePlayModal
         isOpen={isGameModalOpen}
         onClose={() => setIsGameModalOpen(false)}

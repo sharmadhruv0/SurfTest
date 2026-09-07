@@ -1,3 +1,4 @@
+import { ERAS, VALID_ERA_IDS, getEraFromYear } from '../shared/eras.js';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -36,7 +37,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hi_02",
@@ -59,7 +61,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "old-is-gold"
   },
   {
     "id": "hi_03",
@@ -82,7 +85,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hi_04",
@@ -105,7 +109,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2000s"
   },
   {
     "id": "hi_05",
@@ -128,7 +133,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hi_06",
@@ -151,7 +157,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hi_07",
@@ -174,7 +181,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hi_08",
@@ -197,7 +205,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hi_09",
@@ -220,7 +229,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hi_10",
@@ -243,7 +253,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2000s"
   },
   {
     "id": "hi_11",
@@ -266,7 +277,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh & Antara Mitra",
       "Featured in \"Bollywood New Love Hits\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_12",
@@ -289,7 +301,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Anirudh Ravichander, Arijit Singh, Shilpa Rao & Kumaar",
       "Featured in \"Chaleya\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_13",
@@ -312,7 +325,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Arijit Singh",
       "Featured in \"Kabir Singh\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_14",
@@ -335,7 +349,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Javed Mohsin, Arijit Singh & Shreya Ghoshal",
       "Featured in \"Pal\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_15",
@@ -358,7 +373,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Alka Yagnik & Arijit Singh",
       "Featured in \"Tamasha\" (2015)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_16",
@@ -381,7 +397,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Ed Sheeran",
       "Featured in \"Sapphire\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_17",
@@ -404,7 +421,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Mithoon & Arijit Singh",
       "Featured in \"Saiyaara\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_18",
@@ -427,7 +445,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by A.R. Rahman & Arijit Singh",
       "Featured in \"OK Jaanu\" (2016)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_19",
@@ -450,7 +469,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam & Arijit Singh",
       "Featured in \"Ae Dil Hai Mushkil\" (2016)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_20",
@@ -473,7 +493,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Vishal & Shekhar, Arijit Singh & Caralisa Monteiro",
       "Featured in \"Befikre\" (2016)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_21",
@@ -496,7 +517,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh, Nikhita Gandhi & Amitabh Bhattacharya",
       "Featured in \"Aavan Jaavan\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_22",
@@ -519,7 +541,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Vishal & Shekhar, Arijit Singh, Sukriti Kakar, Vishal Dadlani & Shekhar Ravjiani",
       "Featured in \"Pathaan\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_23",
@@ -542,7 +565,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam & Arijit Singh",
       "Featured in \"Kalank\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_24",
@@ -565,7 +589,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam & Arijit Singh",
       "Featured in \"Jab Harry Met Sejal\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_25",
@@ -588,7 +613,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh & Sunidhi Chauhan",
       "Featured in \"Yeh Jawaani Hai Deewani\" (2013)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_26",
@@ -611,7 +637,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh & Nikhita Gandhi",
       "Featured in \"Raabta\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_27",
@@ -634,7 +661,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Jawad Ahmed, Sharib Toshi, Arijit Singh & Shreya Ghoshal",
       "Featured in \"Humpty Sharma Ki Dulhania\" (2014)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_28",
@@ -657,7 +685,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Amaal Mallik, Arijit Singh & Tulsi Kumar",
       "Featured in \"Airlift\" (2015)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_29",
@@ -680,7 +709,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh, Badshah, Jonita Gandhi & Nakash Aziz",
       "Featured in \"Ae Dil Hai Mushkil\" (2016)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_30",
@@ -703,7 +733,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam & Arijit Singh",
       "Featured in \"Ae Dil Hai Mushkil\" (2016)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_31",
@@ -726,7 +757,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Arijit Singh",
       "Featured in \"Sonu Ke Titu Ki Sweety\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_32",
@@ -749,14 +781,15 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Arijit Singh & Harshdeep Kaur",
       "Featured in \"Raees\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_33",
     "title": "Jeene Laga Hoon",
     "artist": "Sachin-Jigar, Atif Aslam & Shreya Ghoshal",
     "album": "Best of Romance",
-    "year": 2026,
+    "year": 2013,
     "language": "hindi",
     "difficulty": "easy",
     "hookStartSeconds": 0,
@@ -772,7 +805,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sachin-Jigar, Atif Aslam & Shreya Ghoshal",
       "Featured in \"Best of Romance\" (2026)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_34",
@@ -795,14 +829,15 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sachin-Jigar, Atif Aslam & Shreya Ghoshal",
       "Featured in \"Best of Romance\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_35",
     "title": "Tere Liye",
     "artist": "Atif Aslam, Shreya Ghoshal, Sachin Gupta & Sameer Anjaan",
     "album": "Best of Romance",
-    "year": 2026,
+    "year": 2004,
     "language": "hindi",
     "difficulty": "easy",
     "hookStartSeconds": 0,
@@ -818,7 +853,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Atif Aslam, Shreya Ghoshal, Sachin Gupta & Sameer Anjaan",
       "Featured in \"Best of Romance\" (2026)"
-    ]
+    ],
+    "era": "2000s"
   },
   {
     "id": "hi_36",
@@ -841,7 +877,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sachin-Jigar, Atif Aslam & Shreya Ghoshal",
       "Featured in \"Best of Romance\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_37",
@@ -864,7 +901,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sachin-Jigar, Shreya Ghoshal, Varun Jain & Amitabh Bhattacharya",
       "Featured in \"Bollywood New Love Hits\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_38",
@@ -887,7 +925,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Tanishk Bagchi, Faheem Abdullah, Arslan Nizami, Shreya Ghoshal & Irshad Kamil",
       "Featured in \"Saiyaara\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_39",
@@ -910,7 +949,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by AP Dhillon & Shreya Ghoshal",
       "Featured in \"Thodi Si Daaru\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_40",
@@ -933,14 +973,15 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Rahat Fateh Ali Khan & Shreya Ghoshal",
       "Featured in \"Bodyguard\" (2011)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_41",
     "title": "Teri Ore",
     "artist": "Rahat Fateh Ali Khan, Shreya Ghoshal & Pritam",
     "album": "Singh Is Kinng",
-    "year": 2001,
+    "year": 2008,
     "language": "hindi",
     "difficulty": "easy",
     "hookStartSeconds": 0,
@@ -956,7 +997,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Rahat Fateh Ali Khan, Shreya Ghoshal & Pritam",
       "Featured in \"Singh Is Kinng\" (2001)"
-    ]
+    ],
+    "era": "2000s"
   },
   {
     "id": "hi_42",
@@ -979,7 +1021,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sanjay Leela Bhansali, Shreya Ghoshal, Osman Mir & Siddharth-Garima",
       "Featured in \"Goliyon Ki Raasleela Ram\" (2013)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_43",
@@ -1002,7 +1045,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by A.R. Rahman & Shreya Ghoshal",
       "Featured in \"Mimi\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_44",
@@ -1025,7 +1069,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam & Shreya Ghoshal",
       "Featured in \"Kalank\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_45",
@@ -1048,7 +1093,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sanjay Leela Bhansali, Shreya Ghoshal, Ganesh Chandanshive, Mujtaba Aziz Naza, Shadab Faridi, Altamash Faridi, Farhan Sabri & Siddharth-Garima",
       "Featured in \"Bajirao Mastani\" (2015)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_46",
@@ -1071,7 +1117,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sonu Nigam, Shreya Ghoshal & Vishal & Shekhar",
       "Featured in \"Om Shanti Om\" (2007)"
-    ]
+    ],
+    "era": "2000s"
   },
   {
     "id": "hi_47",
@@ -1094,7 +1141,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Shreya Ghoshal, Swaroop Khan & A M Turaz",
       "Featured in \"Padmaavat\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_48",
@@ -1117,7 +1165,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Pritam, Arijit Singh, Shreya Ghoshal & Amitabh Bhattacharya",
       "Featured in \"Tum Kya Mile\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hi_49",
@@ -1140,7 +1189,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by A.R. Rahman, Shreya Ghoshal & Uday Majumdar",
       "Featured in \"Guru\" (2006)"
-    ]
+    ],
+    "era": "2000s"
   },
   {
     "id": "hi_50",
@@ -1163,7 +1213,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Shreya Ghoshal & Pritam",
       "Featured in \"Kalank\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_51",
@@ -1186,7 +1237,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Shreya Ghoshal & Ajay-Atul",
       "Featured in \"Agneepath\" (2011)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hi_52",
@@ -1209,7 +1261,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Shreya Ghoshal & Arijit Singh",
       "Featured in \"Happy New Year\" (2014)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_01",
@@ -1232,7 +1285,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "pb_02",
@@ -1255,7 +1309,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2000s"
   },
   {
     "id": "pb_03",
@@ -1278,7 +1333,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "pb_04",
@@ -1301,7 +1357,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "pb_05",
@@ -1324,7 +1381,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "pb_06",
@@ -1347,7 +1405,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "pb_07",
@@ -1370,7 +1429,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "pb_08",
@@ -1393,7 +1453,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "pb_09",
@@ -1416,7 +1477,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "pb_10",
@@ -1439,7 +1501,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "pb_11",
@@ -1462,7 +1525,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Chani Nattan & Tru-Skool",
       "Featured in \"The Call of Panjab\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_12",
@@ -1485,7 +1549,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by A.R. Rahman, Irshad Kamil & Deepali Sahay",
       "Featured in \"Bollywood New Love Hits\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_13",
@@ -1508,7 +1573,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by A.R. Rahman, Vedang Raina, Nilanjana Ghosh & Irshad Kamil",
       "Featured in \"Bollywood New Love Hits\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_14",
@@ -1531,7 +1597,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Badshah & Raj Ranjodh",
       "Featured in \"Bollywood New Love Hits\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_15",
@@ -1554,7 +1621,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & thiarajxtt",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_16",
@@ -1577,7 +1645,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & Intense",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_17",
@@ -1600,7 +1669,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & thiarajxtt",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_18",
@@ -1623,7 +1693,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, thiarajxtt & Simar",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_19",
@@ -1646,7 +1717,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & Intense",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_20",
@@ -1669,7 +1741,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & thiarajxtt",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_21",
@@ -1692,7 +1765,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"Dealer\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_22",
@@ -1715,7 +1789,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh & Intense",
       "Featured in \"Im an Artist Bro\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_23",
@@ -1738,7 +1813,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"G.O.A.T.\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_24",
@@ -1761,7 +1837,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Sia & Greg Kurstin",
       "Featured in \"Hass Hass\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_25",
@@ -1784,7 +1861,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"Ghost\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_26",
@@ -1807,7 +1885,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Sunny Malton, Offgrid & Ranbir Singh",
       "Featured in \"AURA\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_27",
@@ -1830,7 +1909,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"G.O.A.T.\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_28",
@@ -1853,7 +1933,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Avvy Sra & Raj Ranjodh",
       "Featured in \"AURA\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_29",
@@ -1876,7 +1957,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"MoonChild Era\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_30",
@@ -1899,7 +1981,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh, Mixsingh & Raj Ranjodh",
       "Featured in \"AURA\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_31",
@@ -1922,7 +2005,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"G.O.A.T.\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_32",
@@ -1945,7 +2029,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"Ghost\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_33",
@@ -1968,7 +2053,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"Con.Fi.Den.Tial\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_34",
@@ -1991,7 +2077,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Jasleen Royal",
       "Featured in \"Phillauri\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_35",
@@ -2014,7 +2101,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"MoonChild Era\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_36",
@@ -2037,7 +2125,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diljit Dosanjh",
       "Featured in \"Drive Thru\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_37",
@@ -2060,7 +2149,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"So High\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_38",
@@ -2083,7 +2173,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"No Name\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_39",
@@ -2106,7 +2197,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"The Last Ride\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_40",
@@ -2129,7 +2221,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & The Kidd",
       "Featured in \"Eyes on Me\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_41",
@@ -2152,7 +2245,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & The Kidd",
       "Featured in \"Barota\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_42",
@@ -2175,7 +2269,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"Mafia Style\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_43",
@@ -2198,7 +2293,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & Tion Wayne",
       "Featured in \"Moosetape\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_44",
@@ -2221,7 +2317,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Bohemia & Sidhu Moose Wala",
       "Featured in \"Same Beef\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_45",
@@ -2244,7 +2341,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & Gurlej Akhtar",
       "Featured in \"G Wagon\" (2017)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_46",
@@ -2267,7 +2365,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & The PropheC",
       "Featured in \"Sohne Lagde\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_47",
@@ -2290,7 +2389,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"Pbx 1\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_48",
@@ -2313,7 +2413,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"Pbx 1\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_49",
@@ -2336,7 +2437,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"Moosetape\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "pb_50",
@@ -2359,7 +2461,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala & Byg Byrd",
       "Featured in \"Tochan\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_51",
@@ -2382,7 +2485,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"East Side Flow\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "pb_52",
@@ -2405,7 +2509,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sidhu Moose Wala",
       "Featured in \"No Name\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_01",
@@ -2428,7 +2533,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hr_02",
@@ -2451,7 +2557,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hr_03",
@@ -2474,7 +2581,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hr_04",
@@ -2497,7 +2605,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hr_05",
@@ -2520,7 +2629,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hr_06",
@@ -2543,7 +2653,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hr_07",
@@ -2566,7 +2677,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hr_08",
@@ -2589,7 +2701,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "2010s"
   },
   {
     "id": "hr_09",
@@ -2612,7 +2725,8 @@ const trackCatalog = [
       11,
       16
     ],
-    "hookStartSeconds": 0
+    "hookStartSeconds": 0,
+    "era": "new"
   },
   {
     "id": "hr_10",
@@ -2635,7 +2749,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar & Surender Romio",
       "Featured in \"Kabootar\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_11",
@@ -2658,7 +2773,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Raj Meena & Renuka Panwar",
       "Featured in \"Child Of The\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_12",
@@ -2681,7 +2797,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Guru Randhawa",
       "Featured in \"KARIZMA\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_13",
@@ -2704,7 +2821,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar",
       "Featured in \"Laung Laachi\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_14",
@@ -2727,7 +2845,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Surender Romio & Renuka Panwar",
       "Featured in \"Lanka Lutegi\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_15",
@@ -2750,7 +2869,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Surender Romio & Renuka Panwar",
       "Featured in \"Patbijna\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_16",
@@ -2773,7 +2893,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Tarun Panchal & Renuka Panwar",
       "Featured in \"Sun Sonio\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_17",
@@ -2796,7 +2917,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar",
       "Featured in \"Bhaga Aala\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_18",
@@ -2819,7 +2941,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Elvish Yadav, Renuka Panwar & Muzik Amy",
       "Featured in \"Illegal Hathiyar\" (2024)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_19",
@@ -2842,7 +2965,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sukhwinder Singh & Renuka Panwar",
       "Featured in \"Baar Baar\" (2024)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_20",
@@ -2865,7 +2989,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar & Tanishk Bagchi",
       "Featured in \"Raataan Lambiyan\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_21",
@@ -2888,7 +3013,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Surender Romio & Renuka Panwar",
       "Featured in \"Jutti Tilledar\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_22",
@@ -2911,7 +3037,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Uchana Amit, NITC & Renuka Panwar",
       "Featured in \"Bairan Begani\" (2024)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_23",
@@ -2934,7 +3061,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Tarun Panchal & Renuka Panwar",
       "Featured in \"Khuda Ki Inayat\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_24",
@@ -2957,7 +3085,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sonu Thukral, Renuka Panwar & Jaani",
       "Featured in \"Saiyaan Ki Bandook\" (2024)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_25",
@@ -2980,7 +3109,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Masoom Sharma & Renuka Panwar",
       "Featured in \"Hooka\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_26",
@@ -3003,7 +3133,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar & ADITYA KALKAL",
       "Featured in \"Unchi Haveli\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_27",
@@ -3026,7 +3157,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar & Vikram Pannu",
       "Featured in \"Naina Ke Teer\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_28",
@@ -3049,7 +3181,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by CK Nara & Renuka Panwar",
       "Featured in \"Laad Ladaaye Jaa\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_29",
@@ -3072,7 +3205,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar",
       "Featured in \"Banno\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_30",
@@ -3095,7 +3229,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala, Sumit Goswami, Diler Kharkiya, Khasa Aala Chahar, Renuka Panwar & Masoom Sharma",
       "Featured in \"About We\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_31",
@@ -3118,7 +3253,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar & Raja",
       "Featured in \"Yanta\" (2024)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_32",
@@ -3141,7 +3277,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Renuka Panwar",
       "Featured in \"Chittiyan Kalaiyan\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_33",
@@ -3164,7 +3301,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sonu Nigam & Renuka Panwar",
       "Featured in \"Chunni\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_34",
@@ -3187,7 +3325,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Diler Kharkiya & Renuka Panwar",
       "Featured in \"Haryanvi Beat\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_35",
@@ -3210,7 +3349,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Kaka WRLD, Renuka Panwar & Jaani",
       "Featured in \"Been\" (2023)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_36",
@@ -3233,7 +3373,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Kasoote 2\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_37",
@@ -3256,7 +3397,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Faad Faad\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_38",
@@ -3279,7 +3421,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Mafia Love\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_39",
@@ -3302,7 +3445,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Godfather\" (2022)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_40",
@@ -3325,7 +3469,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Chidi Udd Kaa Udd\" (2018)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_41",
@@ -3348,7 +3493,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Yamraaj\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_42",
@@ -3371,7 +3517,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Shambhu Shambhu\" (2026)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_43",
@@ -3394,7 +3541,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Dada Ravan\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_44",
@@ -3417,7 +3565,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Kanya\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_45",
@@ -3440,7 +3589,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Thandi Thandi\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_46",
@@ -3463,7 +3613,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala, Inder Chahal, Maninder Buttar, Gagan Kokri, Barbie Maan & Tasrem Jassar",
       "Featured in \"Us\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_47",
@@ -3486,7 +3637,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala & Shine",
       "Featured in \"Raakshas\" (2025)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_48",
@@ -3509,7 +3661,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Pinch\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_49",
@@ -3532,7 +3685,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Chandrashekhar\" (2020)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_50",
@@ -3555,7 +3709,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Sumit Goswami, Gulzaar Chhaniwala & Diler Kharkiya",
       "Featured in \"Bang! Bang!\" (2019)"
-    ]
+    ],
+    "era": "2010s"
   },
   {
     "id": "hr_51",
@@ -3578,7 +3733,8 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Dhooma\" (2021)"
-    ]
+    ],
+    "era": "new"
   },
   {
     "id": "hr_52",
@@ -3601,7 +3757,392 @@ const trackCatalog = [
     "hints": [
       "Massive hit by Gulzaar Chhaniwala",
       "Featured in \"Randa Party\" (2019)"
-    ]
+    ],
+    "era": "2010s"
+  },
+  {
+    "id": "hi_old_01",
+    "title": "Kuch Kuch Hota Hai",
+    "artist": "Udit Narayan, Alka Yagnik",
+    "album": "Kuch Kuch Hota Hai",
+    "year": 1998,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4a/c5/ee/4ac5ee4d-2a1d-a3d5-e3ea-959c1c1f77d3/mzaf_6718012674332306283.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "SRK, Kajol & Rani Mukherjee iconic college love",
+      "Jatin-Lalit unforgettable title melody"
+    ],
+    "era": "old-is-gold"
+  },
+  {
+    "id": "hi_old_02",
+    "title": "Suraj Hua Maddham",
+    "artist": "Sonu Nigam, Alka Yagnik",
+    "album": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c3/38/54/c338541e-6447-3cf8-07ee-99e31d45c57b/mzaf_11306352011986420177.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Pyramids of Egypt romantic visual",
+      "Sandesh Shandilya eternal melody"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_03",
+    "title": "Bole Chudiyan",
+    "artist": "Amit Kumar, Sonu Nigam, Alka Yagnik, Udit Narayan, Kavita Krishnamurthy",
+    "album": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/24/bb/94/24bb94a2-ae31-3148-52ad-8ec7891bb26d/mzaf_1352494541300957583.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Karwa Chauth grand family dance",
+      "Hrithik, Kareena, SRK & Kajol"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_04",
+    "title": "Tere Naam",
+    "artist": "Udit Narayan, Alka Yagnik",
+    "album": "Tere Naam",
+    "year": 2003,
+    "language": "hindi",
+    "difficulty": "medium",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/33/c4/99/33c499f5-46ff-544d-578b-3bb4dca166e4/mzaf_14115165416390161408.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Radhe Mohan iconic middle-parting hairstyle",
+      "Himesh Reshammiya blockbuster album"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_05",
+    "title": "Tumse Milke Dil Ka",
+    "artist": "Sonu Nigam, Aftab Sabri, Hashim Sabri",
+    "album": "Main Hoon Na",
+    "year": 2004,
+    "language": "hindi",
+    "difficulty": "medium",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/e5/5d/47/e55d4750-61ca-77c8-47bc-e1daeaec14e5/mzaf_6422363063065406085.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Major Ram and Chemist teacher romance",
+      "Qawwali fused with western violin"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_06",
+    "title": "Mauja Hi Mauja",
+    "artist": "Mika Singh",
+    "album": "Jab We Met",
+    "year": 2007,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ce/eb/e6/ceebe6bb-e6ae-f190-38e9-ec3be8353a39/mzaf_14349377484197775586.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Kareena & Shahid Kapoor celebration end credits",
+      "Pritam high-voltage dance hit"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_07",
+    "title": "Tum Se Hi",
+    "artist": "Mohit Chauhan",
+    "album": "Jab We Met",
+    "year": 2007,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/03/f9/54/03f9547d-f495-ea57-fcb6-6d63bb182283/mzaf_17246419702672535071.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Rain sequence in Himachal & Mumbai",
+      "Pritam acoustic guitar classic"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hi_old_08",
+    "title": "Aankhon Mein Teri",
+    "artist": "KK",
+    "album": "Om Shanti Om",
+    "year": 2007,
+    "language": "hindi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/95/9b/ea/959bea01-8b3f-1d89-c454-e0b6df4b0f3e/mzaf_8422409756193755486.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Deepika Padukone red carpet entry",
+      "Vishal-Shekhar & unforgettable KK vocals"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "pb_old_01",
+    "title": "Bolo Ta Ra Ra",
+    "artist": "Daler Mehndi",
+    "album": "Bolo Ta Ra Ra",
+    "year": 1995,
+    "language": "punjabi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/71/34/4e/71344e2a-ce04-b9ba-6415-dc34d402371c/mzaf_17495521927702816301.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "The album that launched Indi-pop Bhangra fever",
+      "Daler Mehndi energetic signature hook"
+    ],
+    "era": "old-is-gold"
+  },
+  {
+    "id": "pb_old_02",
+    "title": "Tunak Tunak Tun",
+    "artist": "Daler Mehndi",
+    "album": "Tunak Tunak Tun",
+    "year": 1998,
+    "language": "punjabi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/cb/15/8e/cb158e24-ffba-ee13-057d-f42111cbbd25/mzaf_1350849405626577312.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "First Indian music video to use blue screen CGI",
+      "Global internet viral sensation"
+    ],
+    "era": "old-is-gold"
+  },
+  {
+    "id": "pb_old_03",
+    "title": "Challa",
+    "artist": "Gurdas Maan",
+    "album": "Long Da Lishkara",
+    "year": 1986,
+    "language": "punjabi",
+    "difficulty": "medium",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/7e/3d/8c/7e3d8ccf-2f7a-8d19-ee15-f12658a514d7/mzaf_8462002341235128031.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Gurdas Maan eternal folk ballad",
+      "Challa beriyan pattan te"
+    ],
+    "era": "old-is-gold"
+  },
+  {
+    "id": "pb_old_04",
+    "title": "Dil Luteya",
+    "artist": "Jazzy B, Apache Indian",
+    "album": "Romeo",
+    "year": 2004,
+    "language": "punjabi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e5/74/4a/e5744a56-4c4f-c020-f4ca-6e1d9d9eb2d7/mzaf_880798150493892705.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Crown Prince of Bhangra Jazzy B",
+      "Sukshinder Shinda powerhouse music"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "pb_old_05",
+    "title": "Sadi Gali",
+    "artist": "Lehmber Hussainpuri",
+    "album": "Chal Gandasiye",
+    "year": 2006,
+    "language": "punjabi",
+    "difficulty": "easy",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5c/d9/a2/5cd9a25b-06d2-a740-d63c-3dafa544ae5d/mzaf_10072049887713437256.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Tanu Weds Manu wedding anthem",
+      "Lehmber Hussainpuri iconic high notes"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "pb_old_06",
+    "title": "Bewafa",
+    "artist": "Imran Khan",
+    "album": "Unforgettable",
+    "year": 2009,
+    "language": "punjabi",
+    "difficulty": "medium",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ad/7e/03/ad7e0344-93ad-e24f-ef07-4228c2c1995f/mzaf_11322238473489816226.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Imran Khan Unforgettable album heartbreak anthem",
+      "Bewafa nikli hai tu"
+    ],
+    "era": "2000s"
+  },
+  {
+    "id": "hr_old_01",
+    "title": "Gagan Pe Ghata Chhai",
+    "artist": "Chandrawali Heritage",
+    "album": "Chandrawal",
+    "year": 1984,
+    "language": "haryanvi",
+    "difficulty": "hard",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/3c/6d/8e3c6d69-3610-84c4-7fae-f65561a35a64/mzaf_15729707921389814402.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Historic all-time highest grossing Haryanvi film",
+      "Usha Sharma & Jagat Singh classic"
+    ],
+    "era": "old-is-gold"
+  },
+  {
+    "id": "hr_old_02",
+    "title": "Dhakad Chhora",
+    "artist": "Uttar Kumar",
+    "album": "Dhakad Chhora",
+    "year": 2004,
+    "language": "haryanvi",
+    "difficulty": "medium",
+    "hookStartSeconds": 0,
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/bd/16/8d/bd168db6-e822-263a-bbff-d59648939c36/mzaf_17070104618228331908.plus.aac.p.m4a",
+    "stages": [
+      1,
+      2,
+      4,
+      7,
+      11,
+      16
+    ],
+    "hints": [
+      "Uttar Kumar cult film title anthem",
+      "West UP & Haryana cinema record breaker"
+    ],
+    "era": "2000s"
   }
 ];
 
@@ -3634,18 +4175,65 @@ app.post(['/api/wake', '/wake'], (req, res) => {
   });
 });
 
-// Get tracks filtered by language and optional difficulty
+// Get list of eras with track counts (overall and per-language)
+app.get(['/api/eras', '/eras'], (req, res) => {
+  const selectedLang = req.query.language;
+
+  const eraList = ERAS.map((era) => {
+    let count = 0;
+    const byLanguage = { hindi: 0, punjabi: 0, haryanvi: 0 };
+
+    for (const t of trackCatalog) {
+      const tEra = t.era || getEraFromYear(t.year);
+      const isEraMatch = era.id === 'all' || tEra === era.id;
+
+      if (isEraMatch) {
+        if (byLanguage[t.language] !== undefined) {
+          byLanguage[t.language]++;
+        }
+        if (!selectedLang || selectedLang === 'all' || t.language.toLowerCase() === selectedLang.toLowerCase()) {
+          count++;
+        }
+      }
+    }
+
+    return {
+      id: era.id,
+      label: era.label,
+      shortLabel: era.shortLabel,
+      range: era.range,
+      period: era.period,
+      tagline: era.tagline,
+      total: count,
+      byLanguage,
+      theme: era.theme
+    };
+  });
+
+  res.json({
+    total: trackCatalog.length,
+    eras: eraList
+  });
+});
+
+// Get tracks filtered by language, era, and optional difficulty
 app.get(['/api/tracks', '/tracks'], (req, res) => {
-  const { language, difficulty } = req.query;
+  const { language, era, difficulty } = req.query;
   let filtered = [...trackCatalog];
 
-  if (language) {
+  if (language && language !== 'all') {
     filtered = filtered.filter(
       (t) => t.language.toLowerCase() === language.toLowerCase()
     );
   }
 
-  if (difficulty) {
+  if (era && era !== 'all') {
+    filtered = filtered.filter(
+      (t) => (t.era || getEraFromYear(t.year)) === era.toLowerCase()
+    );
+  }
+
+  if (difficulty && difficulty !== 'all') {
     filtered = filtered.filter(
       (t) => t.difficulty.toLowerCase() === difficulty.toLowerCase()
     );
@@ -3654,21 +4242,29 @@ app.get(['/api/tracks', '/tracks'], (req, res) => {
   res.json({
     total: filtered.length,
     language: language || 'all',
+    era: era || 'all',
     difficulty: difficulty || 'all',
     tracks: filtered
   });
 });
 
-// Get single random track for game round
+// Get single random track for game round (filtered by language and/or era)
 app.get(['/api/round', '/round'], (req, res) => {
-  const { language, difficulty, hook } = req.query;
+  const { language, era, difficulty, hook } = req.query;
   let pool = [...trackCatalog];
 
-  if (language) {
+  if (language && language !== 'all') {
     pool = pool.filter((t) => t.language.toLowerCase() === language.toLowerCase());
   }
 
-  if (difficulty) {
+  if (era && era !== 'all') {
+    const eraMatch = pool.filter((t) => (t.era || getEraFromYear(t.year)) === era.toLowerCase());
+    if (eraMatch.length > 0) {
+      pool = eraMatch;
+    }
+  }
+
+  if (difficulty && difficulty !== 'all') {
     const diffMatch = pool.filter(
       (t) => t.difficulty.toLowerCase() === difficulty.toLowerCase()
     );
@@ -3682,6 +4278,7 @@ app.get(['/api/round', '/round'], (req, res) => {
   }
 
   const selectedTrack = pool[Math.floor(Math.random() * pool.length)];
+  const trackEra = selectedTrack.era || getEraFromYear(selectedTrack.year);
 
   res.json({
     roundId: 'RND-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
@@ -3691,6 +4288,7 @@ app.get(['/api/round', '/round'], (req, res) => {
       artist: selectedTrack.artist,
       album: selectedTrack.album,
       year: selectedTrack.year,
+      era: trackEra,
       language: selectedTrack.language,
       difficulty: selectedTrack.difficulty,
       stages: selectedTrack.stages,
@@ -3698,7 +4296,12 @@ app.get(['/api/round', '/round'], (req, res) => {
       previewUrl: selectedTrack.previewUrl,
       hints: selectedTrack.hints
     },
-    options: trackCatalog.map(t => `${t.title} - ${t.artist}`)
+    options: trackCatalog.map(t => `${t.title} - ${t.artist}`),
+    activeFilters: {
+      language: language || 'all',
+      era: era || 'all',
+      poolCount: pool.length
+    }
   });
 });
 
