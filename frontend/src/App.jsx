@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
+import { TRACK_CATALOG, generateRoundData, getFilteredTracks } from './data/tracks';
 
 export default function App() {
   // State for selections
@@ -16,9 +17,9 @@ export default function App() {
 
   // Backend status and data
   const [isBackendOffline, setIsBackendOffline] = useState(false);
-  const [tracksCount, setTracksCount] = useState(3);
+  const [tracksCount, setTracksCount] = useState(10);
   const [isWaking, setIsWaking] = useState(false);
-  const [showToast, setShowToast] = useState(true);
+  const [showToast, setShowToast] = useState(false);
 
   // Stats state
   const [stats, setStats] = useState({
@@ -40,36 +41,30 @@ export default function App() {
       const res = await fetch('/api/health');
       if (res.ok) {
         setIsBackendOffline(false);
-        // Hide toast once server is verified active
         setShowToast(false);
-      } else {
-        setIsBackendOffline(true);
-        setShowToast(true);
       }
     } catch {
-      setIsBackendOffline(true);
-      setShowToast(true);
+      // Backend unavailable; client catalog remains fully active
     }
   }, []);
 
   // Fetch track count for selected filters
   const fetchTrackCount = useCallback(async () => {
+    const localTracks = getFilteredTracks(selectedLanguage, selectedDifficulty);
     try {
       const res = await fetch(
         `/api/tracks?language=${selectedLanguage}&difficulty=${selectedDifficulty}`
       );
       if (res.ok) {
         const data = await res.json();
-        // Set count from backend, fallback to 3
-        setTracksCount(data.total > 0 ? data.total : 3);
+        setTracksCount(data.total > 0 ? data.total : localTracks.length);
         setIsBackendOffline(false);
-      } else {
-        // Fallback mock track count
-        setTracksCount(3);
+        return;
       }
     } catch {
-      setTracksCount(3);
+      // Use local catalog count
     }
+    setTracksCount(localTracks.length);
   }, [selectedLanguage, selectedDifficulty]);
 
   // Fetch listening log stats
@@ -129,85 +124,21 @@ export default function App() {
         }
         setActiveRoundData(data);
         setIsGameModalOpen(true);
-      } else {
-        // Fallback local mock round if backend isn't reached
-        launchLocalMockRound(isDaily);
+        return;
       }
     } catch {
-      launchLocalMockRound(isDaily);
+      // Backend request failed or timed out; fall through to instant local generator
     }
+
+    launchLocalMockRound(isDaily);
   };
 
   const launchLocalMockRound = (isDaily) => {
-    const mockTitles = {
-      hindi: {
-        title: "Tum Hi Ho",
-        artist: "Arijit Singh",
-        album: "Aashiqui 2",
-        year: 2013,
-        language: "hindi",
-        difficulty: selectedDifficulty,
-        previewUrl: "/audio/tum-hi-ho.m4a",
-        stages: [1, 2, 4, 7, 11, 16]
-      },
-      punjabi: {
-        title: "Brown Munde",
-        artist: "AP Dhillon, Gurinder Gill",
-        album: "Brown Munde",
-        year: 2020,
-        language: "punjabi",
-        difficulty: selectedDifficulty,
-        previewUrl: "/audio/brown-munde.m4a",
-        stages: [1, 2, 4, 7, 11, 16]
-      },
-      haryanvi: {
-        title: "52 Gaj Ka Daman",
-        artist: "Renuka Panwar",
-        album: "52 Gaj Ka Daman",
-        year: 2020,
-        language: "haryanvi",
-        difficulty: selectedDifficulty,
-        previewUrl: "/audio/52-gaj-ka-daman.m4a",
-        stages: [1, 2, 4, 7, 11, 16]
-      }
-    };
-
-    const track = mockTitles[selectedLanguage] || mockTitles.hindi;
-    setActiveRoundData({
-      roundId: isDaily ? 'DAILY CHALLENGE' : 'ROUND 001',
-      track,
-      options: [
-        'Tum Hi Ho - Arijit Singh',
-        'Chaiyya Chaiyya - Sukhwinder Singh',
-        'Kesariya - Arijit Singh',
-        'Kal Ho Naa Ho - Sonu Nigam',
-        'Apna Bana Le - Arijit Singh',
-        'Kabira - Tochi Raina, Rekha Bhardwaj',
-        'Gerua - Arijit Singh, Antara Mitra',
-        'Ghungroo - Arijit Singh, Shilpa Rao',
-        'Kun Faya Kun - A.R. Rahman, Mohit Chauhan',
-        'Tujh Mein Rab Dikhta Hai - Roop Kumar Rathod',
-        'Brown Munde - AP Dhillon',
-        'Amplifier - Imran Khan',
-        'Lover - Diljit Dosanjh',
-        'Excuses - AP Dhillon, Gurinder Gill',
-        'Insane - AP Dhillon, Shinda Kahlon',
-        'High Rated Gabru - Guru Randhawa',
-        'Lahore - Guru Randhawa',
-        'Proper Patola - Diljit Dosanjh, Badshah',
-        'Do You Know - Diljit Dosanjh',
-        'Prada - Jass Manak',
-        '52 Gaj Ka Daman - Renuka Panwar',
-        'Solid Body - Raju Punjabi',
-        'Bahu Kale Ki - Gajender Phogat',
-        'Moto - Diler Kharkiya',
-        'Chatak Matak - Renuka Panwar',
-        'Gypsy - GD Kaur, Pranjal Dahiya',
-        'Teri Aakhya Ka Yo Kajal - DC Madana',
-        'Middle Class - Gulzaar Chhaniwala',
-        'Jug Jug Jeeve - Gulzaar Chhaniwala'
-      ]
-    });
+    const localData = generateRoundData(selectedLanguage, selectedDifficulty, startFromHook);
+    if (isDaily) {
+      localData.roundId = 'DAILY · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+    }
+    setActiveRoundData(localData);
     setIsGameModalOpen(true);
   };
 

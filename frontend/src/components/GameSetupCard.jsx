@@ -137,7 +137,6 @@ export default function GameSetupCard({
         <button
           type="button"
           onClick={onStartRound}
-          disabled={isBackendOffline}
           className="bg-[#22E06B] hover:bg-[#2ECC71] text-[#0A0A0B] font-extrabold px-7 py-3.5 rounded-full transition-all duration-200 shadow-[0_0_20px_rgba(34,224,107,0.35)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none group"
         >
           <span>Start a round</span>
@@ -156,16 +155,6 @@ export default function GameSetupCard({
           <span>Daily challenge</span>
         </button>
       </div>
-
-      {/* STATUS / ERROR LINE (conditionally rendered) */}
-      {isBackendOffline && (
-        <div className="mt-4 pt-3 flex items-center gap-2 text-xs text-rose-400 animate-in fade-in duration-200">
-          <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-          <span>
-            Catalog connection is offline. The shell is ready; reconnect to load previews.
-          </span>
-        </div>
-      )}
     </div>
   );
 }
