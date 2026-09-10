@@ -154,13 +154,22 @@ export default function AntakshariModal({
     setGameState('transitioning');
     setIsLoadingNext(true);
 
-    // Save to chain history
+    // Save to chain history with complete sound transition metadata
     const historyItem = {
       step: chainLength,
       track: solvedTrack,
       connectingSound: solvedTrack.endSound,
-      connectingSyllable: solvedTrack.endSyllable,
-      connectingLabel: solvedTrack.endSoundLabel
+      connectingWord: solvedTrack.endWord || solvedTrack.endSyllable,
+      connectingSyllable: solvedTrack.endWord || solvedTrack.endSyllable,
+      connectingLabel: solvedTrack.endSoundLabel,
+      startWord: solvedTrack.startWord || solvedTrack.startSyllable,
+      endWord: solvedTrack.endWord || solvedTrack.endSyllable,
+      startSound: solvedTrack.startSound,
+      endSound: solvedTrack.endSound,
+      startSoundLabel: solvedTrack.startSoundLabel,
+      endSoundLabel: solvedTrack.endSoundLabel,
+      startDevanagari: solvedTrack.startDevanagari,
+      endDevanagari: solvedTrack.endDevanagari
     };
     const updatedHistory = [...chainHistory, historyItem];
     setChainHistory(updatedHistory);
@@ -170,7 +179,8 @@ export default function AntakshariModal({
       sound: solvedTrack.endSound,
       label: solvedTrack.endSoundLabel,
       devanagari: solvedTrack.endDevanagari,
-      fromSyllable: solvedTrack.endSyllable,
+      fromWord: solvedTrack.endWord || solvedTrack.endSyllable,
+      fromSyllable: solvedTrack.endWord || solvedTrack.endSyllable,
       fromTitle: solvedTrack.title
     });
 
@@ -306,12 +316,12 @@ export default function AntakshariModal({
   const handleShare = () => {
     const chainScore = gameState === 'beat_chain' ? `${chainLength} 🏆 (BEAT THE CHAIN!)` : `${chainLength} songs`;
     const chainLinksPreview = chainHistory.length > 0
-      ? chainHistory.slice(-4).map(h => h.track.title).join(' ➔ ')
-      : (currentTrack ? currentTrack.title : '');
+      ? chainHistory.map(h => `${h.track.title} […${h.track.endSound}]`).join(' ➔ ')
+      : (currentTrack ? `${currentTrack.title} […${currentTrack.endSound}]` : '');
 
     const textLines = [
       `Surftest 🔗 ANTAKSHARI MODE`,
-      `I built a chain of ${chainScore}! 🎵🔗`,
+      `I built a sound chain of ${chainScore}! 🎵🔗`,
       `🔗 Pathway: ${chainLinksPreview}`,
       `Can you beat my sound chain?`,
       `https://surftest.vercel.app`
@@ -376,44 +386,71 @@ export default function AntakshariModal({
 
         {/* Connecting Sound Transition Alert (shows why this song was picked!) */}
         {connectingSound && (
-          <div className="mb-5 p-3 rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 to-orange-950/30 text-amber-200 text-xs flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="mb-5 p-3.5 rounded-xl border border-amber-500/50 bg-gradient-to-r from-amber-950/60 via-[#22180d] to-orange-950/50 text-amber-200 text-xs shadow-[0_0_20px_rgba(245,158,11,0.15)] animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-amber-400 text-base leading-none">🔗</span>
+                <span className="font-mono font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+                  ANTAKSHARI SOUND LINK
+                </span>
+              </div>
+              <span className="text-[10px] font-mono font-black px-2.5 py-0.5 rounded-full bg-amber-500/25 text-amber-300 border border-amber-500/40 uppercase">
+                SOUND: {connectingSound.label || connectingSound.sound}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap text-xs">
+              <span className="text-[#A3A8A5]">Previous Song Ended:</span>
+              <span className="font-mono text-white font-bold bg-white/10 px-2 py-0.5 rounded">
+                "{connectingSound.fromWord || connectingSound.fromSyllable}" […{connectingSound.sound}]
+              </span>
+              <span className="text-amber-400 font-black text-sm">➔</span>
+              <span className="text-[#A3A8A5]">This Song Must Start With:</span>
+              <span className="font-mono text-amber-300 font-bold bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30">
+                [{connectingSound.sound}…]
+              </span>
+            </div>
+            {connectingSound.explanation && (
+              <div className="text-[11px] text-amber-300/80 mt-2 italic font-sans flex items-center gap-1.5">
+                <span>💡</span>
+                <span>{connectingSound.explanation}</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Round 1 Intro Banner (when starting a fresh chain) */}
+        {!connectingSound && currentTrack && (
+          <div className="mb-5 p-3.5 rounded-xl border border-amber-500/30 bg-amber-950/25 text-amber-200 text-xs flex items-center justify-between gap-3 animate-in fade-in duration-200">
             <div className="flex items-center gap-2.5">
-              <span className="text-base leading-none">🔗</span>
+              <span className="text-base leading-none">🎤</span>
               <div>
-                <span className="font-bold text-amber-300">Connected on Sound: </span>
-                <span className="font-mono text-white font-semibold">
-                  ...{connectingSound.fromSyllable || connectingSound.sound}
-                </span>
-                <span className="text-amber-400 font-bold mx-1.5">➔</span>
-                <span className="font-mono text-amber-300 font-bold">
-                  {connectingSound.toSyllable || connectingSound.sound}
-                </span>
-                <span className="text-amber-200/80 ml-1.5 text-[11px]">
-                  ({connectingSound.label || connectingSound.sound})
+                <span className="font-bold text-amber-300">Round 1 (Chain Starter): </span>
+                <span className="text-[#C4C9C6]">Title starts with sound </span>
+                <span className="font-mono font-bold text-white bg-white/10 px-2 py-0.5 rounded ml-1">
+                  {currentTrack.startSoundLabel} ({currentTrack.startWord || currentTrack.startSyllable})
                 </span>
               </div>
             </div>
             <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase shrink-0">
-              SOUND MATCH
+              STARTING SONG
             </span>
           </div>
         )}
 
         {/* Transitioning Overlay Animation Banner */}
         {gameState === 'transitioning' && (
-          <div className="mb-5 p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 text-xs flex items-center justify-between gap-3 animate-in zoom-in-95 duration-200">
+          <div className="mb-5 p-4 rounded-xl border border-emerald-500/50 bg-emerald-950/40 text-emerald-200 text-xs flex items-center justify-between gap-3 animate-in zoom-in-95 duration-200 shadow-[0_0_25px_rgba(34,224,107,0.2)]">
             <div className="flex items-center gap-2.5">
-              <Sparkles className="w-4 h-4 text-emerald-400 animate-spin" />
+              <Sparkles className="w-5 h-5 text-emerald-400 animate-spin shrink-0" />
               <div>
-                <span className="font-bold text-emerald-300 text-sm">Correct Guess! </span>
-                <span>
-                  Linking on <strong className="text-white">...{transitionBanner?.fromSyllable}</strong> to next song starting with <strong className="text-emerald-300">{transitionBanner?.label}</strong>...
-                </span>
+                <div className="font-bold text-emerald-300 text-sm">Correct Guess! Chain +1 🔗</div>
+                <div className="mt-0.5 text-emerald-200/90">
+                  Ended with "<strong className="text-white">{transitionBanner?.fromWord || transitionBanner?.fromSyllable}</strong>" […{transitionBanner?.sound}] ➔ Next song starts with sound <strong className="text-amber-300">[{transitionBanner?.sound}…] ({transitionBanner?.label})</strong>
+                </div>
               </div>
             </div>
-            <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1">
-              <span>+1 Chain</span>
-              <span>🔗</span>
+            <span className="text-xs font-mono font-black text-emerald-400 bg-emerald-900/50 border border-emerald-500/40 px-3 py-1 rounded-full flex items-center gap-1 shrink-0">
+              <span>Next Link ➔</span>
             </span>
           </div>
         )}
@@ -567,37 +604,52 @@ export default function AntakshariModal({
               The chain broke on song #{chainLength}. The secret song was:
             </p>
 
-            <div className="mt-3 p-3 rounded-lg bg-black/40 border border-white/10 text-left flex items-center justify-between">
+            <div className="mt-3 p-3.5 rounded-xl bg-black/50 border border-amber-500/30 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <div className="text-sm font-bold text-white">{currentTrack?.title}</div>
-                <div className="text-xs text-[#8B8F8C]">{currentTrack?.artist} · {currentTrack?.year}</div>
+                <div className="text-sm font-bold text-white flex items-center gap-2">
+                  <span>{currentTrack?.title}</span>
+                  <span className="text-[11px] font-mono text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30">
+                    {currentTrack?.startSoundLabel}
+                  </span>
+                </div>
+                <div className="text-xs text-[#8B8F8C] mt-0.5">{currentTrack?.artist} · {currentTrack?.year}</div>
               </div>
-              <div className="text-right">
-                <span className="text-[10px] font-mono text-[#8B8F8C] block uppercase">End Sound</span>
-                <span className="text-xs font-mono font-bold text-amber-400">
-                  {currentTrack?.endSoundLabel} ({currentTrack?.endSyllable})
-                </span>
+              <div className="flex items-center gap-2.5 text-xs font-mono">
+                <div className="bg-white/5 px-2.5 py-1 rounded border border-white/10">
+                  <span className="text-[#8B8F8C] text-[10px] block uppercase">Starts On</span>
+                  <span className="text-white font-bold">{currentTrack?.startWord} [{currentTrack?.startSound}]</span>
+                </div>
+                <div className="bg-amber-500/15 px-2.5 py-1 rounded border border-amber-500/30">
+                  <span className="text-amber-400/80 text-[10px] block uppercase">Ends On</span>
+                  <span className="text-amber-300 font-bold">{currentTrack?.endWord} [{currentTrack?.endSound}]</span>
+                </div>
               </div>
             </div>
 
             {/* List of songs chained in this session */}
             {chainHistory.length > 0 && (
               <div className="mt-4 text-left">
-                <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-wider mb-2">
-                  Chained in this session ({chainHistory.length}):
+                <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-wider mb-2 flex items-center justify-between">
+                  <span>Chained in this session ({chainHistory.length}):</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Word & Sound Links</span>
                 </div>
-                <div className="space-y-1.5 max-h-32 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
                   {chainHistory.map((item, idx) => (
                     <div
                       key={idx}
-                      className="px-3 py-1.5 rounded bg-white/[0.03] border border-white/5 text-xs flex items-center justify-between"
+                      className="px-3.5 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1"
                     >
-                      <span className="text-white font-medium truncate">
-                        {idx + 1}. {item.track.title}
-                      </span>
-                      <span className="text-amber-400 font-mono text-[10px] shrink-0 ml-2">
-                        ended in {item.track.endSyllable || item.connectingSound}
-                      </span>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="font-mono text-amber-400 font-bold shrink-0">{idx + 1}.</span>
+                        <span className="text-white font-semibold truncate">{item.track.title}</span>
+                      </div>
+                      <div className="text-[11px] font-mono text-amber-300/90 flex items-center gap-1.5 shrink-0">
+                        <span className="text-[#8B8F8C]">ended on:</span>
+                        <span className="text-white font-semibold">"{item.endWord || item.connectingWord || item.connectingSyllable}"</span>
+                        <span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30 font-bold">
+                          …{item.track.endSound} ({item.track.endSoundLabel})
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -650,21 +702,26 @@ export default function AntakshariModal({
             {/* List of songs chained in this session */}
             {chainHistory.length > 0 && (
               <div className="mt-4 text-left">
-                <div className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider mb-2">
-                  Master Chain Pathway ({chainHistory.length}):
+                <div className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+                  <span>Master Chain Pathway ({chainHistory.length}):</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Sound Progression</span>
                 </div>
-                <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
                   {chainHistory.map((item, idx) => (
                     <div
                       key={idx}
-                      className="px-3 py-1.5 rounded bg-amber-500/10 border border-amber-500/20 text-xs flex items-center justify-between"
+                      className="px-3.5 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1"
                     >
-                      <span className="text-white font-medium truncate">
-                        {idx + 1}. {item.track.title}
-                      </span>
-                      <span className="text-amber-400 font-mono text-[10px] shrink-0 ml-2">
-                        {item.track.endSyllable} ➔
-                      </span>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="font-mono text-amber-400 font-bold shrink-0">{idx + 1}.</span>
+                        <span className="text-white font-semibold truncate">{item.track.title}</span>
+                      </div>
+                      <div className="text-[11px] font-mono text-amber-300 flex items-center gap-1.5 shrink-0">
+                        <span className="text-white">"{item.endWord || item.connectingWord || item.connectingSyllable}"</span>
+                        <span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30 font-bold">
+                          ➔ [{item.track.endSound}]
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -701,6 +758,25 @@ export default function AntakshariModal({
         {/* Input & Action Controls (only when playing) */}
         {gameState === 'playing' && (
           <div className="space-y-3 relative">
+            {/* Antakshari Rule Clue Pill */}
+            <div className="p-2.5 rounded-xl bg-[#191209] border border-amber-500/30 flex items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-amber-400 font-bold flex items-center gap-1">
+                  <span>🔗</span>
+                  <span>Antakshari Clue:</span>
+                </span>
+                <span className="text-[#C4C9C6]">Song #{chainLength} title starts with sound:</span>
+                <span className="font-mono font-black text-amber-300 bg-amber-500/25 border border-amber-500/50 px-2 py-0.5 rounded text-xs shadow-sm">
+                  {currentTrack?.startSoundLabel}
+                </span>
+              </div>
+              {connectingSound && (
+                <span className="text-[11px] font-mono text-amber-300/80 hidden sm:inline">
+                  (linked from "{connectingSound.fromWord || connectingSound.fromSyllable}" […{connectingSound.sound}])
+                </span>
+              )}
+            </div>
+
             {/* Search / Input with Autocomplete */}
             <div className="relative">
               <input

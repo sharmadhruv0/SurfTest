@@ -49,7 +49,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Tum",
+    "endWord": "Ho"
   },
   {
     "id": "hi_02",
@@ -82,7 +84,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Chaiyya",
+    "endWord": "Chaiyya"
   },
   {
     "id": "hi_03",
@@ -115,7 +119,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Kesariya",
+    "endWord": "Kesariya"
   },
   {
     "id": "hi_04",
@@ -148,7 +154,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Kal",
+    "endWord": "Ho"
   },
   {
     "id": "hi_05",
@@ -181,7 +189,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Apna",
+    "endWord": "Le"
   },
   {
     "id": "hi_06",
@@ -214,7 +224,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Kabira",
+    "endWord": "Kabira"
   },
   {
     "id": "hi_07",
@@ -241,13 +253,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "/audio/reversed/gerua.m4a",
     "startSound": "G",
-    "endSound": "R",
+    "endSound": "A",
     "startSyllable": "Gerua",
     "endSyllable": "Gerua",
     "startSoundLabel": "G (ग)",
-    "endSoundLabel": "R (र)",
+    "endSoundLabel": "A (आ)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "अ/आ",
+    "startWord": "Gerua",
+    "endWord": "Gerua"
   },
   {
     "id": "hi_08",
@@ -280,7 +294,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Ghungroo",
+    "endWord": "Ghungroo"
   },
   {
     "id": "hi_09",
@@ -313,7 +329,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Kun",
+    "endWord": "Kun"
   },
   {
     "id": "hi_10",
@@ -346,7 +364,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Tujh",
+    "endWord": "Hai"
   },
   {
     "id": "hi_11",
@@ -373,13 +393,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/67/61/b0/6761b0f0-ceda-55ab-f85d-635a4f522bcf/mzaf_14668412813825465699.plus.aac.p.m4a",
     "startSound": "R",
-    "endSound": "T",
+    "endSound": "H",
     "startSyllable": "Raat",
     "endSyllable": "Thi",
     "startSoundLabel": "R (र)",
-    "endSoundLabel": "T (त)",
+    "endSoundLabel": "H (ह)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "ह",
+    "startWord": "Raat",
+    "endWord": "Thi"
   },
   {
     "id": "hi_12",
@@ -412,7 +434,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Chaleya",
+    "endWord": "Chaleya"
   },
   {
     "id": "hi_13",
@@ -445,7 +469,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "Tujhe",
+    "endWord": "Lage"
   },
   {
     "id": "hi_14",
@@ -477,8 +503,10 @@ const trackCatalog = [
     "endSyllable": "Pal",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "L (ल)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "ल"
+    "startDevanagari": "प",
+    "endDevanagari": "ल",
+    "startWord": "Pal",
+    "endWord": "Pal"
   },
   {
     "id": "hi_15",
@@ -511,7 +539,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Agar",
+    "endWord": "Ho"
   },
   {
     "id": "hi_16",
@@ -544,7 +574,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Sapphire",
+    "endWord": "Sapphire"
   },
   {
     "id": "hi_17",
@@ -577,7 +609,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Dhun",
+    "endWord": "Dhun"
   },
   {
     "id": "hi_18",
@@ -610,7 +644,9 @@ const trackCatalog = [
     "startSoundLabel": "E (ए)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ए/ऐ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Enna",
+    "endWord": "Sona"
   },
   {
     "id": "hi_19",
@@ -643,7 +679,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Channa",
+    "endWord": "Mereya"
   },
   {
     "id": "hi_20",
@@ -676,7 +714,9 @@ const trackCatalog = [
     "startSoundLabel": "N (न)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Nashe",
+    "endWord": "Gayi"
   },
   {
     "id": "hi_21",
@@ -709,7 +749,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Aavan",
+    "endWord": "Jaavan"
   },
   {
     "id": "hi_22",
@@ -741,8 +783,10 @@ const trackCatalog = [
     "endSyllable": "Pathaan",
     "startSoundLabel": "J (ज)",
     "endSoundLabel": "N (न)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "न/ण"
+    "startDevanagari": "ज/झ",
+    "endDevanagari": "न/ण",
+    "startWord": "Jhoome",
+    "endWord": "Pathaan"
   },
   {
     "id": "hi_23",
@@ -775,7 +819,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Kalank",
+    "endWord": "Kalank"
   },
   {
     "id": "hi_24",
@@ -808,7 +854,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ह",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Hawayein",
+    "endWord": "Hawayein"
   },
   {
     "id": "hi_25",
@@ -841,7 +889,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Dilliwaali",
+    "endWord": "Girlfriend"
   },
   {
     "id": "hi_26",
@@ -874,7 +924,9 @@ const trackCatalog = [
     "startSoundLabel": "R (र)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Raabta",
+    "endWord": "Raabta"
   },
   {
     "id": "hi_27",
@@ -907,7 +959,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Samjhawan",
+    "endWord": "Samjhawan"
   },
   {
     "id": "hi_28",
@@ -934,13 +988,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/72/9f/cc/729fccc5-f040-286a-9280-c4db3340e895/mzaf_7361386354918913207.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "K",
+    "endSound": "E",
     "startSyllable": "Soch",
     "endSyllable": "Sake",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "K (क)",
+    "endSoundLabel": "E (ए)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "ए/ऐ",
+    "startWord": "Soch",
+    "endWord": "Sake"
   },
   {
     "id": "hi_29",
@@ -973,7 +1029,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "The",
+    "endWord": "Song"
   },
   {
     "id": "hi_30",
@@ -1006,7 +1064,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Ae",
+    "endWord": "Mushkil"
   },
   {
     "id": "hi_31",
@@ -1039,7 +1099,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Tera",
+    "endWord": "Main"
   },
   {
     "id": "hi_32",
@@ -1065,14 +1127,16 @@ const trackCatalog = [
     ],
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cd/9f/4a/cd9f4a3f-8f5d-922b-2db9-933751017f8f/mzaf_8736831722992033377.plus.aac.p.m4a",
-    "startSound": "J",
+    "startSound": "Z",
     "endSound": "M",
     "startSyllable": "Zaalima",
     "endSyllable": "Zaalima",
-    "startSoundLabel": "J (ज)",
+    "startSoundLabel": "Z (ज़)",
     "endSoundLabel": "M (म)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "म"
+    "startDevanagari": "ज़",
+    "endDevanagari": "म",
+    "startWord": "Zaalima",
+    "endWord": "Zaalima"
   },
   {
     "id": "hi_33",
@@ -1099,13 +1163,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4b/2d/4f/4b2d4f04-d0cc-f881-d727-681654bc70b6/mzaf_13367997401121922565.plus.aac.p.m4a",
     "startSound": "J",
-    "endSound": "H",
+    "endSound": "N",
     "startSyllable": "Jeene",
     "endSyllable": "Hoon",
     "startSoundLabel": "J (ज)",
-    "endSoundLabel": "H (ह)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "ह"
+    "endSoundLabel": "N (न)",
+    "startDevanagari": "ज/झ",
+    "endDevanagari": "न/ण",
+    "startWord": "Jeene",
+    "endWord": "Hoon"
   },
   {
     "id": "hi_34",
@@ -1138,7 +1204,9 @@ const trackCatalog = [
     "startSoundLabel": "R (र)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Rang",
+    "endWord": "Lagyo"
   },
   {
     "id": "hi_35",
@@ -1171,7 +1239,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Tere",
+    "endWord": "Liye"
   },
   {
     "id": "hi_36",
@@ -1203,8 +1273,10 @@ const trackCatalog = [
     "endSyllable": "Piya",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "Y (य)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "य"
+    "startDevanagari": "प",
+    "endDevanagari": "य",
+    "startWord": "Piya",
+    "endWord": "Piya"
   },
   {
     "id": "hi_37",
@@ -1237,7 +1309,9 @@ const trackCatalog = [
     "startSoundLabel": "N (न)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Naamumkin",
+    "endWord": "Naamumkin"
   },
   {
     "id": "hi_38",
@@ -1270,7 +1344,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Saiyaara",
+    "endWord": "Reprise"
   },
   {
     "id": "hi_39",
@@ -1303,7 +1379,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Thodi",
+    "endWord": "Daaru"
   },
   {
     "id": "hi_40",
@@ -1336,7 +1414,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Teri",
+    "endWord": "Meri"
   },
   {
     "id": "hi_41",
@@ -1369,7 +1449,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Teri",
+    "endWord": "Ore"
   },
   {
     "id": "hi_42",
@@ -1402,7 +1484,9 @@ const trackCatalog = [
     "startSoundLabel": "N (न)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Nagada",
+    "endWord": "Dhol"
   },
   {
     "id": "hi_43",
@@ -1434,8 +1518,10 @@ const trackCatalog = [
     "endSyllable": "Sundari",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "R (र)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "र/ड़"
+    "startDevanagari": "प",
+    "endDevanagari": "र/ड़",
+    "startWord": "Param",
+    "endWord": "Sundari"
   },
   {
     "id": "hi_44",
@@ -1462,13 +1548,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/96/32/f0/9632f09e-f0d7-6a8d-3237-7d060cbc2c38/mzaf_9620523506585837672.plus.aac.p.m4a",
     "startSound": "T",
-    "endSound": "G",
+    "endSound": "Y",
     "startSyllable": "Tabaah",
     "endSyllable": "Gaye",
     "startSoundLabel": "T (त)",
-    "endSoundLabel": "G (ग)",
+    "endSoundLabel": "Y (य)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "य",
+    "startWord": "Tabaah",
+    "endWord": "Gaye"
   },
   {
     "id": "hi_45",
@@ -1501,7 +1589,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Deewani",
+    "endWord": "Mastani"
   },
   {
     "id": "hi_46",
@@ -1534,7 +1624,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "म",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Main",
+    "endWord": "Kahoon"
   },
   {
     "id": "hi_47",
@@ -1567,7 +1659,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Ghoomar",
+    "endWord": "Ghoomar"
   },
   {
     "id": "hi_48",
@@ -1600,7 +1694,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Tum",
+    "endWord": "Mile"
   },
   {
     "id": "hi_49",
@@ -1633,7 +1729,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Barso",
+    "endWord": "Re"
   },
   {
     "id": "hi_50",
@@ -1666,7 +1764,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Ghar",
+    "endWord": "Pardesiya"
   },
   {
     "id": "hi_51",
@@ -1699,7 +1799,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Chikni",
+    "endWord": "Chameli"
   },
   {
     "id": "hi_52",
@@ -1732,7 +1834,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "म",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "Manwa",
+    "endWord": "Laage"
   },
   {
     "id": "pb_01",
@@ -1765,7 +1869,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Brown",
+    "endWord": "Munde"
   },
   {
     "id": "pb_02",
@@ -1798,7 +1904,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Amplifier",
+    "endWord": "Amplifier"
   },
   {
     "id": "pb_03",
@@ -1831,7 +1939,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ल",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Lover",
+    "endWord": "Lover"
   },
   {
     "id": "pb_04",
@@ -1864,7 +1974,9 @@ const trackCatalog = [
     "startSoundLabel": "E (ए)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "ए/ऐ",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Excuses",
+    "endWord": "Excuses"
   },
   {
     "id": "pb_05",
@@ -1897,7 +2009,9 @@ const trackCatalog = [
     "startSoundLabel": "I (ई)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "इ/ई",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Insane",
+    "endWord": "Insane"
   },
   {
     "id": "pb_06",
@@ -1930,7 +2044,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ह",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "High",
+    "endWord": "Gabru"
   },
   {
     "id": "pb_07",
@@ -1963,7 +2079,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ल",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Lahore",
+    "endWord": "Lahore"
   },
   {
     "id": "pb_08",
@@ -1995,8 +2113,10 @@ const trackCatalog = [
     "endSyllable": "Patola",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "L (ल)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "ल"
+    "startDevanagari": "प",
+    "endDevanagari": "ल",
+    "startWord": "Proper",
+    "endWord": "Patola"
   },
   {
     "id": "pb_09",
@@ -2029,7 +2149,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "V (व)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "व/W"
+    "endDevanagari": "व/W",
+    "startWord": "Do",
+    "endWord": "Know"
   },
   {
     "id": "pb_10",
@@ -2061,8 +2183,10 @@ const trackCatalog = [
     "endSyllable": "Prada",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "D (द)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "startDevanagari": "प",
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Prada",
+    "endWord": "Prada"
   },
   {
     "id": "pb_11",
@@ -2095,7 +2219,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "म",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Morni",
+    "endWord": "Morni"
   },
   {
     "id": "pb_12",
@@ -2128,7 +2254,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Tere",
+    "endWord": "Main"
   },
   {
     "id": "pb_13",
@@ -2161,7 +2289,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "म",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Maskara",
+    "endWord": "Maskara"
   },
   {
     "id": "pb_14",
@@ -2194,7 +2324,9 @@ const trackCatalog = [
     "startSoundLabel": "N (न)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Naina",
+    "endWord": "Naina"
   },
   {
     "id": "pb_15",
@@ -2227,7 +2359,9 @@ const trackCatalog = [
     "startSoundLabel": "V (व)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "व/W",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Waliyan",
+    "endWord": "Waliyan"
   },
   {
     "id": "pb_16",
@@ -2253,14 +2387,16 @@ const trackCatalog = [
     ],
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/eb/74/e5/eb74e5dd-b56a-651b-339b-b7807b5b258f/mzaf_1729878272172403337.plus.aac.p.m4a",
-    "startSound": "P",
+    "startSound": "F",
     "endSound": "N",
     "startSyllable": "Fizawan",
     "endSyllable": "Fizawan",
-    "startSoundLabel": "P (प)",
+    "startSoundLabel": "F (फ़)",
     "endSoundLabel": "N (न)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "न/ण"
+    "startDevanagari": "फ़/फ",
+    "endDevanagari": "न/ण",
+    "startWord": "Fizawan",
+    "endWord": "Fizawan"
   },
   {
     "id": "pb_17",
@@ -2293,7 +2429,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "Sweet",
+    "endWord": "Ting"
   },
   {
     "id": "pb_18",
@@ -2326,7 +2464,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "ल",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Love",
+    "endWord": "This"
   },
   {
     "id": "pb_19",
@@ -2359,7 +2499,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "B (ब)",
     "startDevanagari": "ल",
-    "endDevanagari": "ब/भ"
+    "endDevanagari": "ब/भ",
+    "startWord": "Lambo",
+    "endWord": "Lambo"
   },
   {
     "id": "pb_20",
@@ -2386,13 +2528,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/38/5a/87/385a8772-917d-9366-113f-ff974edd39e6/mzaf_3106516877787382513.plus.aac.p.m4a",
     "startSound": "G",
-    "endSound": "K",
+    "endSound": "H",
     "startSyllable": "Gustakhi",
     "endSyllable": "Gustakhi",
     "startSoundLabel": "G (ग)",
-    "endSoundLabel": "K (क)",
+    "endSoundLabel": "H (ह)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "ह",
+    "startWord": "Gustakhi",
+    "endWord": "Gustakhi"
   },
   {
     "id": "pb_21",
@@ -2425,7 +2569,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Dealer",
+    "endWord": "Dealer"
   },
   {
     "id": "pb_22",
@@ -2458,7 +2604,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Devil",
+    "endWord": "Devil"
   },
   {
     "id": "pb_23",
@@ -2491,7 +2639,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Goat",
+    "endWord": "Goat"
   },
   {
     "id": "pb_24",
@@ -2524,7 +2674,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "ह",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Hass",
+    "endWord": "Hass"
   },
   {
     "id": "pb_25",
@@ -2557,7 +2709,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Kinni",
+    "endWord": "Kinni"
   },
   {
     "id": "pb_26",
@@ -2590,7 +2744,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "God",
+    "endWord": "Bless"
   },
   {
     "id": "pb_27",
@@ -2623,7 +2779,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Born",
+    "endWord": "Shine"
   },
   {
     "id": "pb_28",
@@ -2656,7 +2814,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Charmer",
+    "endWord": "Charmer"
   },
   {
     "id": "pb_29",
@@ -2689,7 +2849,9 @@ const trackCatalog = [
     "startSoundLabel": "V (व)",
     "endSoundLabel": "B (ब)",
     "startDevanagari": "व/W",
-    "endDevanagari": "ब/भ"
+    "endDevanagari": "ब/भ",
+    "startWord": "Vibe",
+    "endWord": "Vibe"
   },
   {
     "id": "pb_30",
@@ -2722,7 +2884,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Kufar",
+    "endWord": "Kufar"
   },
   {
     "id": "pb_31",
@@ -2748,14 +2912,16 @@ const trackCatalog = [
     ],
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fa/2d/fc/fa2dfc04-a11e-1f92-b930-3570a2b9f678/mzaf_385503078900813650.plus.aac.p.m4a",
-    "startSound": "CH",
+    "startSound": "K",
     "endSound": "S",
     "startSyllable": "Clash",
     "endSyllable": "Clash",
-    "startSoundLabel": "CH (च)",
+    "startSoundLabel": "K (क)",
     "endSoundLabel": "S (स)",
-    "startDevanagari": "च/छ",
-    "endDevanagari": "स/श/ष"
+    "startDevanagari": "क/ख",
+    "endDevanagari": "स/श/ष",
+    "startWord": "Clash",
+    "endWord": "Clash"
   },
   {
     "id": "pb_32",
@@ -2788,7 +2954,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ल",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Lalkara",
+    "endWord": "Lalkara"
   },
   {
     "id": "pb_33",
@@ -2821,7 +2989,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "ह",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "High",
+    "endWord": "End"
   },
   {
     "id": "pb_34",
@@ -2854,7 +3024,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Din",
+    "endWord": "Da"
   },
   {
     "id": "pb_35",
@@ -2887,7 +3059,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Black",
+    "endWord": "White"
   },
   {
     "id": "pb_36",
@@ -2920,7 +3094,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "ल",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Lemonade",
+    "endWord": "Lemonade"
   },
   {
     "id": "pb_37",
@@ -2947,13 +3123,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/cf/6f/b6/cf6fb600-051d-66f2-4acb-df0259000b60/mzaf_13129631117141800671.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "G",
+    "endSound": "H",
     "startSyllable": "So",
     "endSyllable": "High",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "G (ग)",
+    "endSoundLabel": "H (ह)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ह",
+    "startWord": "So",
+    "endWord": "High"
   },
   {
     "id": "pb_38",
@@ -2986,7 +3164,9 @@ const trackCatalog = [
     "startSoundLabel": "N (न)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Never",
+    "endWord": "Fold"
   },
   {
     "id": "pb_39",
@@ -3019,7 +3199,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "The",
+    "endWord": "Ride"
   },
   {
     "id": "pb_40",
@@ -3052,7 +3234,9 @@ const trackCatalog = [
     "startSoundLabel": "E (ए)",
     "endSoundLabel": "M (म)",
     "startDevanagari": "ए/ऐ",
-    "endDevanagari": "म"
+    "endDevanagari": "म",
+    "startWord": "Eyes",
+    "endWord": "Me"
   },
   {
     "id": "pb_41",
@@ -3085,7 +3269,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Barota",
+    "endWord": "Barota"
   },
   {
     "id": "pb_42",
@@ -3118,7 +3304,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "म",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Mafia",
+    "endWord": "Style"
   },
   {
     "id": "pb_43",
@@ -3144,14 +3332,16 @@ const trackCatalog = [
     ],
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8b/e2/6d/8be26df0-dda9-0f52-e466-72236b0b7b6b/mzaf_6366668529718034129.plus.aac.p.m4a",
-    "startSound": "CH",
+    "startSound": "S",
     "endSound": "R",
     "startSyllable": "Celebrity",
     "endSyllable": "Killer",
-    "startSoundLabel": "CH (च)",
+    "startSoundLabel": "S (स)",
     "endSoundLabel": "R (र)",
-    "startDevanagari": "च/छ",
-    "endDevanagari": "र/ड़"
+    "startDevanagari": "स/श/ष",
+    "endDevanagari": "र/ड़",
+    "startWord": "Celebrity",
+    "endWord": "Killer"
   },
   {
     "id": "pb_44",
@@ -3178,13 +3368,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/73/50/a2/7350a22e-c82f-5f73-a5ab-f6ebfaeb740b/mzaf_16018650222916631510.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "P",
+    "endSound": "F",
     "startSyllable": "Same",
     "endSyllable": "Beef",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "P (प)",
+    "endSoundLabel": "F (फ़)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "प/फ"
+    "endDevanagari": "फ़/फ",
+    "startWord": "Same",
+    "endWord": "Beef"
   },
   {
     "id": "pb_45",
@@ -3217,7 +3409,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "G",
+    "endWord": "Wagon"
   },
   {
     "id": "pb_46",
@@ -3244,13 +3438,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/65/56/94/655694f2-c58e-00f6-4ef9-e5e130a90440/mzaf_1189930010027731457.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "G",
+    "endSound": "D",
     "startSyllable": "Sohne",
     "endSyllable": "Lagde",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "G (ग)",
+    "endSoundLabel": "D (द)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Sohne",
+    "endWord": "Lagde"
   },
   {
     "id": "pb_47",
@@ -3283,7 +3479,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Badfella",
+    "endWord": "Badfella"
   },
   {
     "id": "pb_48",
@@ -3315,8 +3513,10 @@ const trackCatalog = [
     "endSyllable": "Muqabala",
     "startSoundLabel": "J (ज)",
     "endSoundLabel": "L (ल)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "ल"
+    "startDevanagari": "ज/झ",
+    "endDevanagari": "ल",
+    "startWord": "Jatt",
+    "endWord": "Muqabala"
   },
   {
     "id": "pb_49",
@@ -3343,13 +3543,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7f/f3/6d/7ff36d63-b933-3993-cd2f-f3fd770c3763/mzaf_12675758250838366519.plus.aac.p.m4a",
     "startSound": "D",
-    "endSound": "V",
+    "endSound": "E",
     "startSyllable": "Do",
     "endSyllable": "Pichanve",
     "startSoundLabel": "D (द)",
-    "endSoundLabel": "V (व)",
+    "endSoundLabel": "E (ए)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "व/W"
+    "endDevanagari": "ए/ऐ",
+    "startWord": "Do",
+    "endWord": "Pichanve"
   },
   {
     "id": "pb_50",
@@ -3382,7 +3584,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Tochan",
+    "endWord": "Tochan"
   },
   {
     "id": "pb_51",
@@ -3415,7 +3619,9 @@ const trackCatalog = [
     "startSoundLabel": "E (ए)",
     "endSoundLabel": "V (व)",
     "startDevanagari": "ए/ऐ",
-    "endDevanagari": "व/W"
+    "endDevanagari": "व/W",
+    "startWord": "East",
+    "endWord": "Flow"
   },
   {
     "id": "pb_52",
@@ -3441,14 +3647,16 @@ const trackCatalog = [
     ],
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/cc/d2/00/ccd20040-d9d8-7c56-8deb-5b3b2e3662c7/mzaf_8318391531308955047.plus.aac.p.m4a",
-    "startSound": "J",
+    "startSound": "Z",
     "endSound": "D",
     "startSyllable": "Zero",
     "endSyllable": "Hundred",
-    "startSoundLabel": "J (ज)",
+    "startSoundLabel": "Z (ज़)",
     "endSoundLabel": "D (द)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "द/ध/ड/ढ"
+    "startDevanagari": "ज़",
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Zero",
+    "endWord": "Hundred"
   },
   {
     "id": "hr_01",
@@ -3481,7 +3689,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Bawan",
+    "endWord": "Daman"
   },
   {
     "id": "hr_02",
@@ -3514,7 +3724,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Solid",
+    "endWord": "Body"
   },
   {
     "id": "hr_03",
@@ -3547,7 +3759,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Bahu",
+    "endWord": "Ki"
   },
   {
     "id": "hr_04",
@@ -3580,7 +3794,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "म",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Moto",
+    "endWord": "Moto"
   },
   {
     "id": "hr_05",
@@ -3613,7 +3829,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Chatak",
+    "endWord": "Matak"
   },
   {
     "id": "hr_06",
@@ -3646,7 +3864,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Gypsy",
+    "endWord": "Gypsy"
   },
   {
     "id": "hr_07",
@@ -3679,7 +3899,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Teri",
+    "endWord": "Kajal"
   },
   {
     "id": "hr_08",
@@ -3712,7 +3934,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "म",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Middle",
+    "endWord": "Class"
   },
   {
     "id": "hr_09",
@@ -3744,8 +3968,10 @@ const trackCatalog = [
     "endSyllable": "Jeeve",
     "startSoundLabel": "J (ज)",
     "endSoundLabel": "V (व)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "व/W"
+    "startDevanagari": "ज/झ",
+    "endDevanagari": "व/W",
+    "startWord": "Jug",
+    "endWord": "Jeeve"
   },
   {
     "id": "hr_10",
@@ -3778,7 +4004,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Kabootar",
+    "endWord": "Kabootar"
   },
   {
     "id": "hr_11",
@@ -3805,13 +4033,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6f/c2/13/6fc213ad-446a-29cd-ad57-aab00d382a7d/mzaf_15230458548270488584.plus.aac.p.m4a",
     "startSound": "CH",
-    "endSound": "T",
+    "endSound": "E",
     "startSyllable": "Child",
     "endSyllable": "The",
     "startSoundLabel": "CH (च)",
-    "endSoundLabel": "T (त)",
+    "endSoundLabel": "E (ए)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "ए/ऐ",
+    "startWord": "Child",
+    "endWord": "The"
   },
   {
     "id": "hr_12",
@@ -3844,7 +4074,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "M (म)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "म"
+    "endDevanagari": "म",
+    "startWord": "KARIZMA",
+    "endWord": "KARIZMA"
   },
   {
     "id": "hr_13",
@@ -3871,13 +4103,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/2b/9f/d6/2b9fd6db-e72a-49a9-5051-ee6a59378639/mzaf_3002018446614906445.plus.aac.p.m4a",
     "startSound": "L",
-    "endSound": "CH",
+    "endSound": "H",
     "startSyllable": "Laung",
     "endSyllable": "Laachi",
     "startSoundLabel": "L (ल)",
-    "endSoundLabel": "CH (च)",
+    "endSoundLabel": "H (ह)",
     "startDevanagari": "ल",
-    "endDevanagari": "च/छ"
+    "endDevanagari": "ह",
+    "startWord": "Laung",
+    "endWord": "Laachi"
   },
   {
     "id": "hr_14",
@@ -3910,7 +4144,9 @@ const trackCatalog = [
     "startSoundLabel": "L (ल)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "ल",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "Lanka",
+    "endWord": "Lutegi"
   },
   {
     "id": "hr_15",
@@ -3942,8 +4178,10 @@ const trackCatalog = [
     "endSyllable": "Patbijna",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "N (न)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "न/ण"
+    "startDevanagari": "प",
+    "endDevanagari": "न/ण",
+    "startWord": "Patbijna",
+    "endWord": "Patbijna"
   },
   {
     "id": "hr_16",
@@ -3970,13 +4208,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/03/c3/c5/03c3c5a9-d683-f423-9790-093b08d76fe9/mzaf_741794275442954036.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "N",
+    "endSound": "Y",
     "startSyllable": "Sun",
     "endSyllable": "Sonio",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "N (न)",
+    "endSoundLabel": "Y (य)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "य",
+    "startWord": "Sun",
+    "endWord": "Sonio"
   },
   {
     "id": "hr_17",
@@ -4009,7 +4249,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Bhaga",
+    "endWord": "Aala"
   },
   {
     "id": "hr_18",
@@ -4042,7 +4284,9 @@ const trackCatalog = [
     "startSoundLabel": "I (ई)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "इ/ई",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Illegal",
+    "endWord": "Hathiyar"
   },
   {
     "id": "hr_19",
@@ -4075,7 +4319,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Baar",
+    "endWord": "Baar"
   },
   {
     "id": "hr_20",
@@ -4108,7 +4354,9 @@ const trackCatalog = [
     "startSoundLabel": "R (र)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Raataan",
+    "endWord": "Lambiyan"
   },
   {
     "id": "hr_21",
@@ -4140,8 +4388,10 @@ const trackCatalog = [
     "endSyllable": "Tilledar",
     "startSoundLabel": "J (ज)",
     "endSoundLabel": "R (र)",
-    "startDevanagari": "ज/झ/ज़",
-    "endDevanagari": "र/ड़"
+    "startDevanagari": "ज/झ",
+    "endDevanagari": "र/ड़",
+    "startWord": "Jutti",
+    "endWord": "Tilledar"
   },
   {
     "id": "hr_22",
@@ -4174,7 +4424,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Bairan",
+    "endWord": "Begani"
   },
   {
     "id": "hr_23",
@@ -4207,7 +4459,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Khuda",
+    "endWord": "Inayat"
   },
   {
     "id": "hr_24",
@@ -4240,7 +4494,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Saiyaan",
+    "endWord": "Bandook"
   },
   {
     "id": "hr_25",
@@ -4273,7 +4529,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "ह",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Hooka",
+    "endWord": "Hooka"
   },
   {
     "id": "hr_26",
@@ -4306,7 +4564,9 @@ const trackCatalog = [
     "startSoundLabel": "U (ऊ)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "उ/ऊ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Unchi",
+    "endWord": "Haveli"
   },
   {
     "id": "hr_27",
@@ -4333,13 +4593,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/09/9b/64/099b64bf-5942-3673-50aa-84704d8f2a2b/mzaf_5912032597442136498.plus.aac.p.m4a",
     "startSound": "N",
-    "endSound": "T",
+    "endSound": "R",
     "startSyllable": "Naina",
     "endSyllable": "Teer",
     "startSoundLabel": "N (न)",
-    "endSoundLabel": "T (त)",
+    "endSoundLabel": "R (र)",
     "startDevanagari": "न/ण",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "र/ड़",
+    "startWord": "Naina",
+    "endWord": "Teer"
   },
   {
     "id": "hr_28",
@@ -4366,13 +4628,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview118/v4/00/b4/6c/00b46c8d-a571-503b-299a-74deab2c0adb/mzaf_6562622995107148693.plus.aac.p.m4a",
     "startSound": "L",
-    "endSound": "J",
+    "endSound": "A",
     "startSyllable": "Laad",
     "endSyllable": "Jaa",
     "startSoundLabel": "L (ल)",
-    "endSoundLabel": "J (ज)",
+    "endSoundLabel": "A (आ)",
     "startDevanagari": "ल",
-    "endDevanagari": "ज/झ/ज़"
+    "endDevanagari": "अ/आ",
+    "startWord": "Laad",
+    "endWord": "Jaa"
   },
   {
     "id": "hr_29",
@@ -4405,7 +4669,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Banno",
+    "endWord": "Banno"
   },
   {
     "id": "hr_30",
@@ -4438,7 +4704,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "V (व)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "व/W"
+    "endDevanagari": "व/W",
+    "startWord": "About",
+    "endWord": "We"
   },
   {
     "id": "hr_31",
@@ -4471,7 +4739,9 @@ const trackCatalog = [
     "startSoundLabel": "Y (य)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "य",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Yanta",
+    "endWord": "Yanta"
   },
   {
     "id": "hr_32",
@@ -4504,7 +4774,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Chittiyan",
+    "endWord": "Kalaiyan"
   },
   {
     "id": "hr_33",
@@ -4537,7 +4809,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Chunni",
+    "endWord": "Chunni"
   },
   {
     "id": "hr_34",
@@ -4570,7 +4844,9 @@ const trackCatalog = [
     "startSoundLabel": "H (ह)",
     "endSoundLabel": "T (त)",
     "startDevanagari": "ह",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "त/थ/ट/ठ",
+    "startWord": "Haryanvi",
+    "endWord": "Beat"
   },
   {
     "id": "hr_35",
@@ -4603,7 +4879,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Been",
+    "endWord": "Been"
   },
   {
     "id": "hr_36",
@@ -4636,7 +4914,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Kasoote",
+    "endWord": "Do"
   },
   {
     "id": "hr_37",
@@ -4662,14 +4942,16 @@ const trackCatalog = [
     ],
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/d1/52/e7/d152e7da-c799-71d7-5fd1-b7ccbc2b61b8/mzaf_8065671175245437248.plus.aac.p.m4a",
-    "startSound": "P",
+    "startSound": "F",
     "endSound": "D",
     "startSyllable": "Faad",
     "endSyllable": "Faad",
-    "startSoundLabel": "P (प)",
+    "startSoundLabel": "F (फ़)",
     "endSoundLabel": "D (द)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "startDevanagari": "फ़/फ",
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Faad",
+    "endWord": "Faad"
   },
   {
     "id": "hr_38",
@@ -4702,7 +4984,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "V (व)",
     "startDevanagari": "म",
-    "endDevanagari": "व/W"
+    "endDevanagari": "व/W",
+    "startWord": "Mafia",
+    "endWord": "Love"
   },
   {
     "id": "hr_39",
@@ -4735,7 +5019,9 @@ const trackCatalog = [
     "startSoundLabel": "G (ग)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Godfather",
+    "endWord": "Godfather"
   },
   {
     "id": "hr_40",
@@ -4768,7 +5054,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Chidi",
+    "endWord": "Udd"
   },
   {
     "id": "hr_41",
@@ -4801,7 +5089,9 @@ const trackCatalog = [
     "startSoundLabel": "Y (य)",
     "endSoundLabel": "J (ज)",
     "startDevanagari": "य",
-    "endDevanagari": "ज/झ/ज़"
+    "endDevanagari": "ज/झ",
+    "startWord": "Yamraaj",
+    "endWord": "Yamraaj"
   },
   {
     "id": "hr_42",
@@ -4828,13 +5118,15 @@ const trackCatalog = [
     "era": "new",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b0/89/5e/b0895e4b-af85-32a6-4a7d-89c82cd7b1be/mzaf_2720650966860832647.plus.aac.p.m4a",
     "startSound": "S",
-    "endSound": "B",
+    "endSound": "U",
     "startSyllable": "Shambhu",
     "endSyllable": "Shambhu",
     "startSoundLabel": "S (स)",
-    "endSoundLabel": "B (ब)",
+    "endSoundLabel": "U (ऊ)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "ब/भ"
+    "endDevanagari": "उ/ऊ",
+    "startWord": "Shambhu",
+    "endWord": "Shambhu"
   },
   {
     "id": "hr_43",
@@ -4867,7 +5159,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Dada",
+    "endWord": "Ravan"
   },
   {
     "id": "hr_44",
@@ -4900,7 +5194,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Kanya",
+    "endWord": "Kanya"
   },
   {
     "id": "hr_45",
@@ -4933,7 +5229,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "D (द)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "द/ध/ड/ढ"
+    "endDevanagari": "द/ध/ड/ढ",
+    "startWord": "Thandi",
+    "endWord": "Thandi"
   },
   {
     "id": "hr_46",
@@ -4966,7 +5264,9 @@ const trackCatalog = [
     "startSoundLabel": "U (ऊ)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "उ/ऊ",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Us",
+    "endWord": "Us"
   },
   {
     "id": "hr_47",
@@ -4999,7 +5299,9 @@ const trackCatalog = [
     "startSoundLabel": "R (र)",
     "endSoundLabel": "S (स)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "स/श/ष"
+    "endDevanagari": "स/श/ष",
+    "startWord": "Raakshas",
+    "endWord": "Raakshas"
   },
   {
     "id": "hr_48",
@@ -5031,8 +5333,10 @@ const trackCatalog = [
     "endSyllable": "Pinch",
     "startSoundLabel": "P (प)",
     "endSoundLabel": "CH (च)",
-    "startDevanagari": "प/फ",
-    "endDevanagari": "च/छ"
+    "startDevanagari": "प",
+    "endDevanagari": "च/छ",
+    "startWord": "Pinch",
+    "endWord": "Pinch"
   },
   {
     "id": "hr_49",
@@ -5065,7 +5369,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Chandrashekhar",
+    "endWord": "Chandrashekhar"
   },
   {
     "id": "hr_50",
@@ -5098,7 +5404,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "G (ग)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "ग/घ"
+    "endDevanagari": "ग/घ",
+    "startWord": "Bang",
+    "endWord": "Bang"
   },
   {
     "id": "hr_51",
@@ -5131,7 +5439,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "M (म)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "म"
+    "endDevanagari": "म",
+    "startWord": "Dhooma",
+    "endWord": "Dhooma"
   },
   {
     "id": "hr_52",
@@ -5158,13 +5468,15 @@ const trackCatalog = [
     "era": "2010s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/68/2a/e1/682ae1b7-3664-7287-83df-cbec418caacb/mzaf_16961943560268402284.plus.aac.p.m4a",
     "startSound": "R",
-    "endSound": "T",
+    "endSound": "Y",
     "startSyllable": "Randa",
     "endSyllable": "Party",
     "startSoundLabel": "R (र)",
-    "endSoundLabel": "T (त)",
+    "endSoundLabel": "Y (य)",
     "startDevanagari": "र/ड़",
-    "endDevanagari": "त/थ/ट/ठ"
+    "endDevanagari": "य",
+    "startWord": "Randa",
+    "endWord": "Party"
   },
   {
     "id": "hi_old_01",
@@ -5197,7 +5509,9 @@ const trackCatalog = [
     "startSoundLabel": "K (क)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "क/ख",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Kuch",
+    "endWord": "Hai"
   },
   {
     "id": "hi_old_02",
@@ -5230,7 +5544,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "M (म)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "म"
+    "endDevanagari": "म",
+    "startWord": "Suraj",
+    "endWord": "Maddham"
   },
   {
     "id": "hi_old_03",
@@ -5263,7 +5579,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Bole",
+    "endWord": "Chudiyan"
   },
   {
     "id": "hi_old_04",
@@ -5296,7 +5614,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "M (म)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "म"
+    "endDevanagari": "म",
+    "startWord": "Tere",
+    "endWord": "Naam"
   },
   {
     "id": "hi_old_05",
@@ -5329,7 +5649,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "K (क)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "क/ख"
+    "endDevanagari": "क/ख",
+    "startWord": "Tumse",
+    "endWord": "Ka"
   },
   {
     "id": "hi_old_06",
@@ -5362,7 +5684,9 @@ const trackCatalog = [
     "startSoundLabel": "M (म)",
     "endSoundLabel": "J (ज)",
     "startDevanagari": "म",
-    "endDevanagari": "ज/झ/ज़"
+    "endDevanagari": "ज/झ",
+    "startWord": "Mauja",
+    "endWord": "Mauja"
   },
   {
     "id": "hi_old_07",
@@ -5395,7 +5719,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "H (ह)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "ह"
+    "endDevanagari": "ह",
+    "startWord": "Tum",
+    "endWord": "Hi"
   },
   {
     "id": "hi_old_08",
@@ -5428,7 +5754,9 @@ const trackCatalog = [
     "startSoundLabel": "A (आ)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "अ/आ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Aankhon",
+    "endWord": "Teri"
   },
   {
     "id": "pb_old_01",
@@ -5461,7 +5789,9 @@ const trackCatalog = [
     "startSoundLabel": "B (ब)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Bolo",
+    "endWord": "Ra"
   },
   {
     "id": "pb_old_02",
@@ -5494,7 +5824,9 @@ const trackCatalog = [
     "startSoundLabel": "T (त)",
     "endSoundLabel": "N (न)",
     "startDevanagari": "त/थ/ट/ठ",
-    "endDevanagari": "न/ण"
+    "endDevanagari": "न/ण",
+    "startWord": "Tunak",
+    "endWord": "Tun"
   },
   {
     "id": "pb_old_03",
@@ -5527,7 +5859,9 @@ const trackCatalog = [
     "startSoundLabel": "CH (च)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "च/छ",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Challa",
+    "endWord": "Challa"
   },
   {
     "id": "pb_old_04",
@@ -5560,7 +5894,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "Y (य)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "य"
+    "endDevanagari": "य",
+    "startWord": "Dil",
+    "endWord": "Luteya"
   },
   {
     "id": "pb_old_05",
@@ -5593,7 +5929,9 @@ const trackCatalog = [
     "startSoundLabel": "S (स)",
     "endSoundLabel": "L (ल)",
     "startDevanagari": "स/श/ष",
-    "endDevanagari": "ल"
+    "endDevanagari": "ल",
+    "startWord": "Sadi",
+    "endWord": "Gali"
   },
   {
     "id": "pb_old_06",
@@ -5620,13 +5958,15 @@ const trackCatalog = [
     "era": "2000s",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ad/7e/03/ad7e0344-93ad-e24f-ef07-4228c2c1995f/mzaf_11322238473489816226.plus.aac.p.m4a",
     "startSound": "B",
-    "endSound": "P",
+    "endSound": "F",
     "startSyllable": "Bewafa",
     "endSyllable": "Bewafa",
     "startSoundLabel": "B (ब)",
-    "endSoundLabel": "P (प)",
+    "endSoundLabel": "F (फ़)",
     "startDevanagari": "ब/भ",
-    "endDevanagari": "प/फ"
+    "endDevanagari": "फ़/फ",
+    "startWord": "Bewafa",
+    "endWord": "Bewafa"
   },
   {
     "id": "hr_old_01",
@@ -5653,13 +5993,15 @@ const trackCatalog = [
     "era": "old-is-gold",
     "reversedPreviewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/3c/6d/8e3c6d69-3610-84c4-7fae-f65561a35a64/mzaf_15729707921389814402.plus.aac.p.m4a",
     "startSound": "G",
-    "endSound": "CH",
+    "endSound": "H",
     "startSyllable": "Gagan",
     "endSyllable": "Chhai",
     "startSoundLabel": "G (ग)",
-    "endSoundLabel": "CH (च)",
+    "endSoundLabel": "H (ह)",
     "startDevanagari": "ग/घ",
-    "endDevanagari": "च/छ"
+    "endDevanagari": "ह",
+    "startWord": "Gagan",
+    "endWord": "Chhai"
   },
   {
     "id": "hr_old_02",
@@ -5692,7 +6034,9 @@ const trackCatalog = [
     "startSoundLabel": "D (द)",
     "endSoundLabel": "R (र)",
     "startDevanagari": "द/ध/ड/ढ",
-    "endDevanagari": "र/ड़"
+    "endDevanagari": "र/ड़",
+    "startWord": "Dhakad",
+    "endWord": "Chhora"
   }
 ];
 
@@ -5998,8 +6342,12 @@ app.get(['/api/antakshari/start', '/antakshari/start'], (req, res) => {
     artist: selectedTrack.artist,
     startSound: selectedTrack.startSound,
     endSound: selectedTrack.endSound,
-    startSyllable: selectedTrack.startSyllable,
-    endSyllable: selectedTrack.endSyllable
+    startWord: selectedTrack.startWord || selectedTrack.startSyllable,
+    endWord: selectedTrack.endWord || selectedTrack.endSyllable,
+    startSyllable: selectedTrack.startWord || selectedTrack.startSyllable,
+    endSyllable: selectedTrack.endWord || selectedTrack.endSyllable,
+    startSoundLabel: selectedTrack.startSoundLabel,
+    endSoundLabel: selectedTrack.endSoundLabel
   }];
 
   const trackEra = selectedTrack.era || getEraFromYear(selectedTrack.year);
@@ -6024,8 +6372,10 @@ app.get(['/api/antakshari/start', '/antakshari/start'], (req, res) => {
       hints: selectedTrack.hints,
       startSound: selectedTrack.startSound,
       endSound: selectedTrack.endSound,
-      startSyllable: selectedTrack.startSyllable,
-      endSyllable: selectedTrack.endSyllable,
+      startWord: selectedTrack.startWord || selectedTrack.startSyllable,
+      endWord: selectedTrack.endWord || selectedTrack.endSyllable,
+      startSyllable: selectedTrack.startWord || selectedTrack.startSyllable,
+      endSyllable: selectedTrack.endWord || selectedTrack.endSyllable,
       startSoundLabel: selectedTrack.startSoundLabel,
       endSoundLabel: selectedTrack.endSoundLabel,
       startDevanagari: selectedTrack.startDevanagari,
@@ -6085,7 +6435,8 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
         label: prevTrack.endSoundLabel || targetSound,
         devanagari: prevTrack.endDevanagari,
         fromTitle: prevTrack.title,
-        fromSyllable: prevTrack.endSyllable
+        fromWord: prevTrack.endWord || prevTrack.endSyllable,
+        fromSyllable: prevTrack.endWord || prevTrack.endSyllable
       },
       history: session.history
     });
@@ -6102,8 +6453,10 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
     artist: nextTrack.artist,
     startSound: nextTrack.startSound,
     endSound: nextTrack.endSound,
-    startSyllable: nextTrack.startSyllable,
-    endSyllable: nextTrack.endSyllable,
+    startWord: nextTrack.startWord || nextTrack.startSyllable,
+    endWord: nextTrack.endWord || nextTrack.endSyllable,
+    startSyllable: nextTrack.startWord || nextTrack.startSyllable,
+    endSyllable: nextTrack.endWord || nextTrack.endSyllable,
     connectingSound: targetSound
   });
 
@@ -6119,10 +6472,13 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
       label: prevTrack.endSoundLabel || targetSound,
       devanagari: prevTrack.endDevanagari,
       fromTitle: prevTrack.title,
-      fromSyllable: prevTrack.endSyllable,
+      fromWord: prevTrack.endWord || prevTrack.endSyllable,
+      fromSyllable: prevTrack.endWord || prevTrack.endSyllable,
       toTitle: nextTrack.title,
-      toSyllable: nextTrack.startSyllable,
-      transitionText: `${prevTrack.endSyllable || prevTrack.endSound} → ${nextTrack.startSyllable || nextTrack.startSound}`
+      toWord: nextTrack.startWord || nextTrack.startSyllable,
+      toSyllable: nextTrack.startWord || nextTrack.startSyllable,
+      transitionText: `${prevTrack.endWord || prevTrack.endSyllable} […${targetSound}] ➔ [${targetSound}…] ${nextTrack.startWord || nextTrack.startSyllable}`,
+      explanation: `"${prevTrack.title}" ended with sound ${targetSound} (from "${prevTrack.endWord || prevTrack.endSyllable}") ➔ Next song starts with sound ${targetSound} ("${nextTrack.startWord || nextTrack.startSyllable}")`
     },
     track: {
       id: nextTrack.id,
@@ -6139,8 +6495,10 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
       hints: nextTrack.hints,
       startSound: nextTrack.startSound,
       endSound: nextTrack.endSound,
-      startSyllable: nextTrack.startSyllable,
-      endSyllable: nextTrack.endSyllable,
+      startWord: nextTrack.startWord || nextTrack.startSyllable,
+      endWord: nextTrack.endWord || nextTrack.endSyllable,
+      startSyllable: nextTrack.startWord || nextTrack.startSyllable,
+      endSyllable: nextTrack.endWord || nextTrack.endSyllable,
       startSoundLabel: nextTrack.startSoundLabel,
       endSoundLabel: nextTrack.endSoundLabel,
       startDevanagari: nextTrack.startDevanagari,
@@ -6150,7 +6508,9 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
   });
 });
 
-if (!process.env.VERCEL) {
+const isDirectRun = Boolean(process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]));
+
+if (!process.env.VERCEL && isDirectRun) {
   app.listen(PORT, '::', () => {
     console.log(`SurTest Catalog API running on port ${PORT} (dual-stack IPv4/IPv6)`);
   });

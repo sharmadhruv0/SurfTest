@@ -64,8 +64,24 @@ async function runApiTests() {
       prevTrack = nextData.track;
     }
 
-    // 5. Test dead-end or invalid previous song handling
-    console.log('\n5. Testing error/edge-case handling...');
+    // 5. Test user explicit rule example: "Main Agar Kahoon" (Kahoon -> N) to "Nashe Si Chadh Gayi" (Nashe -> N)
+    console.log('\n5. Testing user example: "Main Agar Kahoon" -> "Nashe Si Chadh Gayi"...');
+    const { computeSongSounds, matchSounds } = await import('../shared/antakshari.js');
+    const s1 = computeSongSounds('Main Agar Kahoon');
+    const s2 = computeSongSounds('Nashe Si Chadh Gayi');
+    if (s1.endSound !== 'N' || s1.endWord !== 'Kahoon') {
+      throw new Error(`Expected Main Agar Kahoon to end in N (Kahoon), got sound ${s1.endSound}, word ${s1.endWord}`);
+    }
+    if (s2.startSound !== 'N' || s2.startWord !== 'Nashe') {
+      throw new Error(`Expected Nashe Si Chadh Gayi to start in N (Nashe), got sound ${s2.startSound}, word ${s2.startWord}`);
+    }
+    if (!matchSounds(s1.endSound, s2.startSound)) {
+      throw new Error(`Sound match failed between ${s1.endSound} and ${s2.startSound}`);
+    }
+    console.log(`[PASS] Verified exact user example: "${s1.endWord}" […${s1.endSound}] ➔ [${s2.startSound}…] "${s2.startWord}" matched successfully!`);
+
+    // 6. Test dead-end or invalid previous song handling
+    console.log('\n6. Testing error/edge-case handling...');
     res = await fetch(`${baseUrl}/api/antakshari/next?sessionId=${currentSessionId}&previousSongId=invalid_song_999`);
     if (res.status === 400) {
       console.log('[PASS] Correctly returns 400 error on non-existent song ID');
