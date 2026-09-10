@@ -37,10 +37,27 @@ export const GAME_MODES = [
       accent: "#C084FC",
       badge: "bg-purple-500/20 text-purple-300 border-purple-500/40"
     }
+  },
+  {
+    id: "antakshari",
+    label: "Antakshari Mode",
+    shortLabel: "Antakshari",
+    tagline: "The legendary sound chain! Connect song to song 🔗",
+    badge: "CHAIN 🔗",
+    copy: "Guess a song, connect on its ending sound, and build the ultimate Antakshari chain!",
+    accentColor: "#F59E0B",
+    iconName: "Link",
+    theme: {
+      border: "border-amber-500/20",
+      selectedBorder: "border-amber-400",
+      selectedBg: "bg-amber-950/25",
+      accent: "#FBBF24",
+      badge: "bg-amber-500/20 text-amber-300 border-amber-500/40"
+    }
   }
 ];
 
-export const VALID_MODE_IDS = ["normal", "reverse"];
+export const VALID_MODE_IDS = ["normal", "reverse", "antakshari"];
 
 export function getModeMeta(modeId) {
   return GAME_MODES.find(m => m.id === modeId) || GAME_MODES[0];

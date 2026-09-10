@@ -12,6 +12,10 @@ Built with **React**, **Tailwind CSS**, and an **Express / Node.js** catalog bac
   - **Hindi (हिंदी)**: Bollywood + pop anthems
   - **Punjabi (ਪੰਜਾਬੀ)**: Bhangra + Punjabi pop hits
   - **Haryanvi (हरियाणवी)**: Desi high-energy dance anthems
+- **Game Modes**:
+  - **Normal Mode**: Standard forward audio playback with 6 progressive clip unlocks (1s → 16s)
+  - **Reverse Mode**: Plays audio backwards! Inverted vocals and reversed beats for deep music lovers
+  - **Antakshari Mode 🔗**: The iconic Desi sound-chaining game! Each song you guess connects to the next on its title's ending sound syllable (`...Ho → H → Hawayein`). Build your longest chain or beat the entire catalog!
 - **6-Stage Gameplay Engine**:
   - Progressive clip unlocking: 1s → 2s → 4s → 7s → 11s → 16s / 30s
   - Interactive audio visualizer and waveform bars

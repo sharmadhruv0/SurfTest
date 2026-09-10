@@ -7,7 +7,8 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
-import { TRACK_CATALOG, generateRoundData, getFilteredTracks } from './data/tracks';
+import AntakshariModal from './components/AntakshariModal';
+import { TRACK_CATALOG, generateRoundData, getFilteredTracks, startLocalAntakshariSession } from './data/tracks';
 import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
 
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
     return localStorage.getItem('surftest_era') || 'all'; // 'all' | 'old-is-gold' | '2000s' | '2010s' | 'new'
   });
   const [selectedMode, setSelectedMode] = useState(() => {
-    return localStorage.getItem('surftest_mode') || 'normal'; // 'normal' | 'reverse'
+    return localStorage.getItem('surftest_mode') || 'normal'; // 'normal' | 'reverse' | 'antakshari'
   });
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy'); // 'easy' | 'medium' | 'hard' | 'expert' | 'impossible'
   const [startFromHook, setStartFromHook] = useState(false);
@@ -32,20 +33,33 @@ export default function App() {
   const [showToast, setShowToast] = useState(false);
 
   // Stats state
-  const [stats, setStats] = useState({
-    played: 0,
-    wins: 0,
-    winRate: 0,
-    streak: 0,
-    bestStreak: 0,
-    normal: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
-    reverse: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 }
+  const [stats, setStats] = useState(() => {
+    const saved = localStorage.getItem('surftest_stats');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return {
+      played: 0,
+      wins: 0,
+      winRate: 0,
+      streak: 0,
+      bestStreak: 0,
+      normal: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
+      reverse: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
+      antakshari: { played: 0, bestChain: 0, totalChained: 0 }
+    };
   });
 
   // Modal states
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isGameModalOpen, setIsGameModalOpen] = useState(false);
   const [activeRoundData, setActiveRoundData] = useState(null);
+
+  // Standalone Antakshari modal state
+  const [isAntakshariModalOpen, setIsAntakshariModalOpen] = useState(false);
+  const [activeAntakshariData, setActiveAntakshariData] = useState(null);
 
   // Save language, era & mode preferences
   const handleSelectLanguage = (lang) => {
@@ -182,6 +196,26 @@ export default function App() {
 
   // Start a game round
   const handleStartRound = async (isDaily = false) => {
+    // STANDALONE ANTAKSHARI MODE BRANCH
+    if (selectedMode === 'antakshari') {
+      try {
+        const res = await fetch(`/api/antakshari/start?language=${selectedLanguage}`);
+        if (res.ok) {
+          const data = await res.json();
+          setActiveAntakshariData(data);
+          setIsAntakshariModalOpen(true);
+          return;
+        }
+      } catch {
+        // Fallback to local Antakshari session generator
+      }
+
+      const localData = startLocalAntakshariSession(selectedLanguage);
+      setActiveAntakshariData(localData);
+      setIsAntakshariModalOpen(true);
+      return;
+    }
+
     const dailyLabel = `DAILY · ${selectedLanguage === 'all' ? 'MIXED' : selectedLanguage.toUpperCase()} · ${selectedEra === 'all' ? 'ALL ERAS' : selectedEra.toUpperCase()}${selectedMode === 'reverse' ? ' · REVERSED 🔄' : ''}`;
 
     try {
@@ -268,6 +302,27 @@ export default function App() {
     });
   };
 
+  // Record Antakshari chain result
+  const handleRecordAntakshariChain = (chainLength, beatChain) => {
+    setStats((prev) => {
+      const ant = prev.antakshari || { played: 0, bestChain: 0, totalChained: 0 };
+      const played = ant.played + 1;
+      const bestChain = Math.max(ant.bestChain || 0, chainLength);
+      const totalChained = (ant.totalChained || 0) + chainLength;
+
+      const newStats = {
+        ...prev,
+        antakshari: {
+          played,
+          bestChain,
+          totalChained
+        }
+      };
+      localStorage.setItem('surftest_stats', JSON.stringify(newStats));
+      return newStats;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-[#F5F5F5] relative selection:bg-[#22E06B] selection:text-[#0A0A0B] overflow-x-hidden">
       {/* Subtle warm stage glow behind top-left hero */}
@@ -335,12 +390,22 @@ export default function App() {
       {/* Modals */}
       <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
 
+      {/* Standard / Reverse Game Play Modal */}
       <GamePlayModal
         isOpen={isGameModalOpen}
         onClose={() => setIsGameModalOpen(false)}
         roundData={activeRoundData}
         onRecordResult={handleRecordResult}
         onPlayNext={() => handleStartRound(false)}
+      />
+
+      {/* Standalone Antakshari Game Modal */}
+      <AntakshariModal
+        isOpen={isAntakshariModalOpen}
+        onClose={() => setIsAntakshariModalOpen(false)}
+        initialData={activeAntakshariData}
+        selectedLanguage={selectedLanguage}
+        onRecordChain={handleRecordAntakshariChain}
       />
     </div>
   );

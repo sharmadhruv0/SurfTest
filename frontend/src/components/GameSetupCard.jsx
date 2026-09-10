@@ -151,23 +151,29 @@ export default function GameSetupCard({
         </div>
       )}
 
-      {/* STEP 3: CHOOSE PLAY MODE (NORMAL VS REVERSE) */}
+      {/* STEP 3: CHOOSE PLAY MODE (NORMAL, REVERSE & ANTAKSHARI) */}
       <div className="mb-8 pt-6 border-t border-white/5">
         <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
           <span>03 / CHOOSE PLAY MODE</span>
           <span
             className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
-              selectedMode === 'reverse'
+              selectedMode === 'antakshari'
+                ? 'text-amber-300 bg-amber-500/15 border border-amber-500/30'
+                : selectedMode === 'reverse'
                 ? 'text-purple-300 bg-purple-500/15 border border-purple-500/30'
                 : 'text-[#22E06B] bg-[#22E06B]/10 border border-[#22E06B]/20'
             }`}
           >
-            {selectedMode === 'reverse' ? 'REVERSED MODE 🔄' : 'NORMAL MODE ▶'}
+            {selectedMode === 'antakshari'
+              ? 'ANTTAKSHARI MODE 🔗'
+              : selectedMode === 'reverse'
+              ? 'REVERSED MODE 🔄'
+              : 'NORMAL MODE ▶'}
           </span>
         </div>
 
-        {/* 2 Game Mode Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* 3 Game Mode Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {GAME_MODES.map((mode) => (
             <ModeCard
               key={mode.id}
@@ -191,6 +197,19 @@ export default function GameSetupCard({
               <span className="font-bold text-purple-300">Reverse Mode Active: </span>
               <span>
                 Audio is played completely backwards! Test your ear on reversed melodies, backwards beats, and inverted vocals.
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Antakshari Mode Callout Banner when selected */}
+        {selectedMode === 'antakshari' && (
+          <div className="mt-3.5 p-3.5 rounded-xl border border-amber-500/30 bg-amber-950/25 text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in duration-200">
+            <span className="text-base leading-none mt-0.5">🔗</span>
+            <div>
+              <span className="font-bold text-amber-300">Antakshari Mode Active: </span>
+              <span>
+                Classic Desi Antakshari! Every song you guess connects to the next song on its ending sound syllable (...Ho → H → Hawayein). Chain as many songs as you can!
               </span>
             </div>
           </div>
@@ -265,12 +284,20 @@ export default function GameSetupCard({
           type="button"
           onClick={onStartRound}
           className={`${
-            selectedMode === 'reverse'
+            selectedMode === 'antakshari'
+              ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#0A0A0B] shadow-[0_0_25px_rgba(245,158,11,0.45)]'
+              : selectedMode === 'reverse'
               ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(168,85,247,0.4)]'
               : 'bg-[#22E06B] hover:bg-[#2ECC71] text-[#0A0A0B] shadow-[0_0_20px_rgba(34,224,107,0.35)]'
           } font-extrabold px-7 py-3.5 rounded-full transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-95 group`}
         >
-          <span>{selectedMode === 'reverse' ? 'Start Reverse Round 🔄' : 'Start a round'}</span>
+          <span>
+            {selectedMode === 'antakshari'
+              ? 'Start Antakshari Chain 🔗'
+              : selectedMode === 'reverse'
+              ? 'Start Reverse Round 🔄'
+              : 'Start a round'}
+          </span>
           <span className="font-mono text-base font-bold transition-transform group-hover:translate-x-0.5">
             &gt;
           </span>
