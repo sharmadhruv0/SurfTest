@@ -1,4 +1,12 @@
-import { ANTAKSHARI_BUCKETS, VALID_SOUND_BUCKET_IDS, computeSongSounds, matchSounds, ensureSongSounds } from '../shared/antakshari.js';
+import {
+  ANTAKSHARI_BUCKETS,
+  VALID_SOUND_BUCKET_IDS,
+  computeSongSounds,
+  matchSounds,
+  ensureSongSounds,
+  validateAntakshariSubmission,
+  normalizeSongTitle
+} from '../shared/antakshari.js';
 import { ERAS, VALID_ERA_IDS, getEraFromYear } from '../shared/eras.js';
 import { GAME_MODES, VALID_MODE_IDS, getModeMeta } from '../shared/modes.js';
 import express from 'express';
@@ -6505,6 +6513,387 @@ app.get(['/api/antakshari/next', '/antakshari/next'], (req, res) => {
       endDevanagari: nextTrack.endDevanagari
     },
     options: trackCatalog.map(t => `${t.title} - ${t.artist}`)
+  });
+});
+
+// ============================================================================
+// REAL-TIME MULTIPLAYER ANTAKSHARI ROOMS & MATCH MANAGER
+// Turn-based team competition with 30s countdown, phonetics validation & steals
+// ============================================================================
+
+const antakshariRooms = new Map();
+
+// Generate human-friendly 5-character room code (e.g. SURF42, TAAL19, RAGA88)
+const ROOM_WORDS = ['TAAL', 'SURF', 'RAGA', 'DHUN', 'GEET', 'DESI', 'BEAT', 'DHOL', 'SAAZ', 'GAAN', 'SURR', 'JOSH'];
+function generateRoomCode() {
+  for (let i = 0; i < 30; i++) {
+    const word = ROOM_WORDS[Math.floor(Math.random() * ROOM_WORDS.length)];
+    const digit = Math.floor(10 + Math.random() * 89);
+    const code = `${word}${digit}`;
+    if (!antakshariRooms.has(code)) return code;
+  }
+  return 'ANT' + Math.random().toString(36).substring(2, 6).toUpperCase();
+}
+
+// Clean up rooms older than 12 hours
+function cleanupStaleRooms() {
+  const now = Date.now();
+  for (const [code, room] of antakshariRooms.entries()) {
+    if (now - room.createdAt > 12 * 60 * 60 * 1000) {
+      antakshariRooms.delete(code);
+    }
+  }
+}
+
+// Check and process timeout for active turn
+function checkRoomTimeout(room) {
+  if (!room || room.status !== 'active') return false;
+  const now = Date.now();
+
+  if (room.turnExpiresAt && now >= room.turnExpiresAt) {
+    const timedOutTeam = room.currentTurn;
+    const opposingTeam = timedOutTeam === 'A' ? 'B' : 'A';
+
+    // Award +1 point to opposing team on timeout
+    room.teams[opposingTeam].score += 1;
+    room.lastAction = {
+      type: 'timeout',
+      team: timedOutTeam,
+      message: `⏰ 30-second timer expired for ${room.teams[timedOutTeam].name}! Point awarded to ${room.teams[opposingTeam].name}.`,
+      timestamp: now
+    };
+
+    // Check if target score reached
+    if (room.teams[opposingTeam].score >= room.targetScore) {
+      room.status = 'game_over';
+      room.winner = opposingTeam;
+      room.turnExpiresAt = null;
+      return true;
+    }
+
+    // Switch turn to opposing team with fresh timer
+    room.currentTurn = opposingTeam;
+    room.turnNumber += 1;
+    room.turnStartedAt = now;
+    room.turnExpiresAt = now + (room.turnDuration * 1000);
+    return true;
+  }
+  return false;
+}
+
+// 1. POST /api/antakshari/rooms/create
+app.post(['/api/antakshari/rooms/create', '/antakshari/rooms/create'], (req, res) => {
+  cleanupStaleRooms();
+  const { hostName, teamAName, teamBName, turnDuration, targetScore, startImmediately } = req.body || {};
+
+  const roomCode = generateRoomCode();
+  const hostPlayerId = 'usr_' + Math.random().toString(36).substring(2, 9);
+  const durationSec = Math.min(Math.max(Number(turnDuration) || 30, 10), 60);
+  const targetPts = Math.min(Math.max(Number(targetScore) || 5, 3), 15);
+  const isAutoStart = Boolean(startImmediately);
+
+  const room = {
+    code: roomCode,
+    status: isAutoStart ? 'active' : 'waiting', // 'waiting' for Team B, 'active', 'game_over'
+    targetScore: targetPts,
+    turnDuration: durationSec,
+    teams: {
+      A: {
+        id: 'A',
+        name: (teamAName || 'Team A').trim().substring(0, 24),
+        score: 0,
+        players: [{ id: hostPlayerId, name: (hostName || 'Player 1').trim().substring(0, 24), isHost: true }]
+      },
+      B: {
+        id: 'B',
+        name: (teamBName || 'Team B').trim().substring(0, 24),
+        score: 0,
+        players: []
+      }
+    },
+    currentTurn: 'A',
+    turnNumber: 1,
+    turnStartedAt: isAutoStart ? Date.now() : null,
+    turnExpiresAt: isAutoStart ? Date.now() + (durationSec * 1000) : null,
+    currentRequiredSound: null, // null for round 1 (any opening song of choice!)
+    previousSong: null,
+    usedSongs: [],
+    chainHistory: [],
+    winner: null,
+    lastAction: {
+      type: 'room_created',
+      team: 'A',
+      message: isAutoStart
+        ? `Match started! ${teamAName || 'Team A'} kicks off with any song of choice!`
+        : `Room ${roomCode} created! Share code with Team B to start.`,
+      timestamp: Date.now()
+    },
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  };
+
+  antakshariRooms.set(roomCode, room);
+
+  res.json({
+    success: true,
+    roomCode,
+    playerId: hostPlayerId,
+    myTeam: 'A',
+    room
+  });
+});
+
+// 2. POST /api/antakshari/rooms/join
+app.post(['/api/antakshari/rooms/join', '/antakshari/rooms/join'], (req, res) => {
+  const { roomCode, playerName, teamName } = req.body || {};
+  const code = String(roomCode || '').trim().toUpperCase();
+  const room = antakshariRooms.get(code);
+
+  if (!room) {
+    return res.status(404).json({ error: 'Room not found! Please check the 5-character code.' });
+  }
+
+  if (room.status === 'game_over') {
+    return res.status(400).json({ error: 'This match has already ended!' });
+  }
+
+  const joinPlayerId = 'usr_' + Math.random().toString(36).substring(2, 9);
+  const playerDisplayName = (playerName || 'Player 2').trim().substring(0, 24);
+
+  if (teamName && teamName.trim()) {
+    room.teams.B.name = teamName.trim().substring(0, 24);
+  }
+  room.teams.B.players.push({ id: joinPlayerId, name: playerDisplayName });
+
+  // Activate game if it was waiting
+  if (room.status === 'waiting') {
+    room.status = 'active';
+    room.currentTurn = 'A';
+    room.turnStartedAt = Date.now();
+    room.turnExpiresAt = Date.now() + (room.turnDuration * 1000);
+    room.lastAction = {
+      type: 'match_started',
+      team: 'A',
+      message: `${playerDisplayName} joined Team B! ${room.teams.A.name} kicks off with any song of choice!`,
+      timestamp: Date.now()
+    };
+  }
+
+  room.updatedAt = Date.now();
+
+  res.json({
+    success: true,
+    roomCode: code,
+    playerId: joinPlayerId,
+    myTeam: 'B',
+    room
+  });
+});
+
+// 3. GET /api/antakshari/rooms/:roomCode
+app.get(['/api/antakshari/rooms/:roomCode', '/antakshari/rooms/:roomCode'], (req, res) => {
+  const code = String(req.params.roomCode || '').trim().toUpperCase();
+  const room = antakshariRooms.get(code);
+
+  if (!room) {
+    return res.status(404).json({ error: 'Room not found' });
+  }
+
+  checkRoomTimeout(room);
+  room.updatedAt = Date.now();
+
+  res.json({
+    room,
+    serverTime: Date.now()
+  });
+});
+
+// 4. POST /api/antakshari/rooms/:roomCode/submit
+app.post(['/api/antakshari/rooms/:roomCode/submit', '/antakshari/rooms/:roomCode/submit'], (req, res) => {
+  const code = String(req.params.roomCode || '').trim().toUpperCase();
+  const room = antakshariRooms.get(code);
+
+  if (!room) {
+    return res.status(404).json({ error: 'Room not found' });
+  }
+
+  checkRoomTimeout(room);
+
+  if (room.status !== 'active') {
+    return res.status(400).json({ error: room.status === 'game_over' ? 'Match is already over!' : 'Match has not started yet!' });
+  }
+
+  const { team, songTitle } = req.body || {};
+
+  if (team !== room.currentTurn) {
+    return res.status(403).json({ error: `It is currently ${room.teams[room.currentTurn].name}'s turn!` });
+  }
+
+  // Validate Antakshari rules (required sound, duplicate history, catalog lookup)
+  const validation = validateAntakshariSubmission(
+    songTitle,
+    room.currentRequiredSound,
+    room.usedSongs,
+    trackCatalog
+  );
+
+  if (!validation.valid) {
+    return res.status(422).json({
+      success: false,
+      error: validation.error
+    });
+  }
+
+  const song = validation.song;
+  const submittingTeam = team;
+  const opposingTeam = team === 'A' ? 'B' : 'A';
+
+  // Award +1 point to submitting team
+  room.teams[submittingTeam].score += 1;
+
+  // Add to used songs (normalized)
+  room.usedSongs.push({
+    title: song.title,
+    normalized: normalizeSongTitle(song.title),
+    artist: song.artist,
+    team: submittingTeam,
+    startSound: song.startSound,
+    endSound: song.endSound
+  });
+
+  // Record turn in chain history
+  const turnHistoryItem = {
+    turnNumber: room.turnNumber,
+    team: submittingTeam,
+    teamName: room.teams[submittingTeam].name,
+    songTitle: song.title,
+    artist: song.artist,
+    previewUrl: song.previewUrl,
+    startWord: song.startWord,
+    startSound: song.startSound,
+    startSoundLabel: song.startSoundLabel,
+    endWord: song.endWord,
+    endSound: song.endSound,
+    endSoundLabel: song.endSoundLabel,
+    transitionText: room.currentRequiredSound
+      ? `…${room.currentRequiredSound.sound} ➔ "${song.startWord}" [${song.startSound}] … "${song.endWord}" [${song.endSound}]`
+      : `Opening song: "${song.title}" […${song.endSound}]`,
+    timestamp: Date.now()
+  };
+
+  room.chainHistory.push(turnHistoryItem);
+  room.previousSong = {
+    title: song.title,
+    artist: song.artist,
+    previewUrl: song.previewUrl,
+    startWord: song.startWord,
+    endWord: song.endWord,
+    startSound: song.startSound,
+    endSound: song.endSound,
+    startSoundLabel: song.startSoundLabel,
+    endSoundLabel: song.endSoundLabel,
+    submittedByTeam: submittingTeam,
+    submittedByTeamName: room.teams[submittingTeam].name
+  };
+
+  // Next required sound is the ending sound of this song
+  const endBucket = ANTAKSHARI_BUCKETS[song.endSound] || { label: `${song.endSound} (${song.endSound})`, devanagari: song.endSound };
+  room.currentRequiredSound = {
+    sound: song.endSound,
+    label: song.endSoundLabel || endBucket.label,
+    devanagari: song.endDevanagari || endBucket.devanagari,
+    fromWord: song.endWord,
+    fromTitle: song.title
+  };
+
+  // Check Win Condition (First to target score)
+  if (room.teams[submittingTeam].score >= room.targetScore) {
+    room.status = 'game_over';
+    room.winner = submittingTeam;
+    room.turnExpiresAt = null;
+    room.lastAction = {
+      type: 'game_over',
+      team: submittingTeam,
+      message: `🏆 ${room.teams[submittingTeam].name} wins the match with ${room.teams[submittingTeam].score} points!`,
+      timestamp: Date.now()
+    };
+  } else {
+    // Switch turn to opposing team
+    room.currentTurn = opposingTeam;
+    room.turnNumber += 1;
+    const now = Date.now();
+    room.turnStartedAt = now;
+    room.turnExpiresAt = now + (room.turnDuration * 1000);
+    room.lastAction = {
+      type: 'song_accepted',
+      team: submittingTeam,
+      message: `🎵 ${room.teams[submittingTeam].name} sang "${song.title}" (ended in ${song.endSoundLabel}). Next up: ${room.teams[opposingTeam].name} on sound ${song.endSoundLabel}!`,
+      timestamp: now
+    };
+  }
+
+  room.updatedAt = Date.now();
+
+  res.json({
+    success: true,
+    song,
+    room
+  });
+});
+
+// 5. POST /api/antakshari/rooms/:roomCode/timeout
+app.post(['/api/antakshari/rooms/:roomCode/timeout', '/antakshari/rooms/:roomCode/timeout'], (req, res) => {
+  const code = String(req.params.roomCode || '').trim().toUpperCase();
+  const room = antakshariRooms.get(code);
+
+  if (!room) {
+    return res.status(404).json({ error: 'Room not found' });
+  }
+
+  checkRoomTimeout(room);
+  room.updatedAt = Date.now();
+
+  res.json({
+    success: true,
+    room
+  });
+});
+
+// 6. POST /api/antakshari/rooms/:roomCode/rematch
+app.post(['/api/antakshari/rooms/:roomCode/rematch', '/antakshari/rooms/:roomCode/rematch'], (req, res) => {
+  const code = String(req.params.roomCode || '').trim().toUpperCase();
+  const room = antakshariRooms.get(code);
+
+  if (!room) {
+    return res.status(404).json({ error: 'Room not found' });
+  }
+
+  // Swap starting team on rematch
+  const newStartingTeam = room.winner === 'A' ? 'B' : 'A';
+
+  room.status = 'active';
+  room.teams.A.score = 0;
+  room.teams.B.score = 0;
+  room.currentTurn = newStartingTeam;
+  room.turnNumber = 1;
+  room.turnStartedAt = Date.now();
+  room.turnExpiresAt = Date.now() + (room.turnDuration * 1000);
+  room.currentRequiredSound = null;
+  room.previousSong = null;
+  room.usedSongs = [];
+  room.chainHistory = [];
+  room.winner = null;
+  room.lastAction = {
+    type: 'rematch_started',
+    team: newStartingTeam,
+    message: `Rematch started! ${room.teams[newStartingTeam].name} kicks off!`,
+    timestamp: Date.now()
+  };
+  room.updatedAt = Date.now();
+
+  res.json({
+    success: true,
+    room
   });
 });
 

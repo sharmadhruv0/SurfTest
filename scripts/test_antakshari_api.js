@@ -87,7 +87,83 @@ async function runApiTests() {
       console.log('[PASS] Correctly returns 400 error on non-existent song ID');
     }
 
-    console.log('\n=== ALL API TESTS PASSED SUCCESSFULLY! ===');
+    // 7. Test Real-Time Multiplayer Room Match Flow
+    console.log('\n7. Testing Multiplayer Room Match Flow...');
+    // 7a. Create Room
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hostName: 'Aarav', teamAName: 'Team Sur', teamBName: 'Team Taal', targetScore: 3 })
+    });
+    const createData = await res.json();
+    if (!createData.roomCode || createData.room.status !== 'waiting') {
+      throw new Error('Room creation failed');
+    }
+    console.log(`[PASS] Created Multiplayer Room: ${createData.roomCode} (Status: ${createData.room.status})`);
+
+    // 7b. Join Room
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roomCode: createData.roomCode, playerName: 'Diya', teamName: 'Team Taal' })
+    });
+    const joinData = await res.json();
+    if (joinData.room.status !== 'active' || joinData.room.currentTurn !== 'A') {
+      throw new Error('Room join failed to activate match');
+    }
+    console.log(`[PASS] Team B joined, match is now ACTIVE. Current turn: ${joinData.room.currentTurn}`);
+
+    // 7c. Team A submits opening song of choice
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/${createData.roomCode}/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ team: 'A', songTitle: 'Main Agar Kahoon' })
+    });
+    const submitA = await res.json();
+    if (!submitA.success || submitA.room.teams.A.score !== 1 || submitA.room.currentRequiredSound.sound !== 'N') {
+      throw new Error('Opening song submission failed');
+    }
+    console.log(`[PASS] Team A Opening song accepted! Score: A=1, B=0. Next sound for Team B: ${submitA.room.currentRequiredSound.label}`);
+
+    // 7d. Team B submits invalid starting letter
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/${createData.roomCode}/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ team: 'B', songTitle: 'Tum Hi Ho' })
+    });
+    if (res.status === 422) {
+      const errRes = await res.json();
+      console.log(`[PASS] Invalid sound rejected with 422: "${errRes.error}"`);
+    } else {
+      throw new Error('Expected 422 on invalid starting sound');
+    }
+
+    // 7e. Team B submits valid song
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/${createData.roomCode}/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ team: 'B', songTitle: 'Nashe Si Chadh Gayi' })
+    });
+    const submitB = await res.json();
+    if (!submitB.success || submitB.room.teams.B.score !== 1 || submitB.room.currentRequiredSound.sound !== 'Y') {
+      throw new Error('Team B valid song submission failed');
+    }
+    console.log(`[PASS] Team B song accepted! Score: A=1, B=1. Next sound for Team A: ${submitB.room.currentRequiredSound.label}`);
+
+    // 7f. Duplicate song rejected
+    res = await fetch(`${baseUrl}/api/antakshari/rooms/${createData.roomCode}/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ team: 'A', songTitle: 'Main Agar Kahoon' })
+    });
+    if (res.status === 422) {
+      const dupRes = await res.json();
+      console.log(`[PASS] Duplicate song rejected with 422: "${dupRes.error}"`);
+    } else {
+      throw new Error('Expected 422 on duplicate song');
+    }
+
+    console.log('\n=== ALL API & MULTIPLAYER TESTS PASSED SUCCESSFULLY! ===');
   } finally {
     server.close();
   }

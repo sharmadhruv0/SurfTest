@@ -234,3 +234,99 @@ export function ensureSongSounds(track) {
     endDevanagari: sounds.endDevanagari
   };
 }
+
+// Normalize title string for strict duplicate prevention
+export function normalizeSongTitle(title) {
+  return String(title || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+/**
+ * Validate an Antakshari song submission against required sound, duplicate history, and catalog
+ */
+export function validateAntakshariSubmission(songTitle, requiredSound, usedSongs = [], catalog = []) {
+  if (!songTitle || !String(songTitle).trim()) {
+    return { valid: false, error: 'Please enter or pick a song title!' };
+  }
+
+  const cleanInput = String(songTitle).trim();
+  const normalized = normalizeSongTitle(cleanInput);
+
+  if (!normalized) {
+    return { valid: false, error: 'Invalid song title!' };
+  }
+
+  // Check for duplicates in used songs
+  const isDuplicate = usedSongs.some(item => {
+    const norm = typeof item === 'string' ? normalizeSongTitle(item) : normalizeSongTitle(item.title || item.normalized);
+    return norm === normalized;
+  });
+
+  if (isDuplicate) {
+    return {
+      valid: false,
+      error: `"${cleanInput}" has already been used in this match! You must choose an unused song.`
+    };
+  }
+
+  // Check if it exists in the catalog (for richer metadata & audio preview)
+  const catalogMatch = catalog.find(t => {
+    return (
+      normalizeSongTitle(t.title) === normalized ||
+      normalizeSongTitle(`${t.title} ${t.artist}`) === normalized ||
+      normalizeSongTitle(`${t.title} - ${t.artist}`) === normalized
+    );
+  });
+
+  let songMeta;
+  if (catalogMatch) {
+    const sounds = computeSongSounds(catalogMatch.title);
+    songMeta = {
+      id: catalogMatch.id,
+      title: catalogMatch.title,
+      artist: catalogMatch.artist,
+      previewUrl: catalogMatch.previewUrl,
+      album: catalogMatch.album,
+      year: catalogMatch.year,
+      language: catalogMatch.language,
+      isCatalog: true,
+      ...sounds
+    };
+  } else {
+    // Custom song title
+    const sounds = computeSongSounds(cleanInput);
+    songMeta = {
+      id: 'custom_' + Math.random().toString(36).substring(2, 8),
+      title: cleanInput,
+      artist: 'Custom Indian Track',
+      previewUrl: null,
+      isCatalog: false,
+      ...sounds
+    };
+  }
+
+  // If requiredSound is null/undefined (Turn 1 / opening song), any song is valid!
+  if (!requiredSound) {
+    return {
+      valid: true,
+      song: songMeta
+    };
+  }
+
+  const targetSoundId = typeof requiredSound === 'string' ? requiredSound : requiredSound.sound;
+  const isSoundMatch = matchSounds(targetSoundId, songMeta.startSound);
+
+  if (!isSoundMatch) {
+    const targetLabel = (typeof requiredSound === 'object' && requiredSound.label) ? requiredSound.label : targetSoundId;
+    return {
+      valid: false,
+      error: `Song starts with "${songMeta.startSoundLabel}" ("${songMeta.startWord}"), but must start with "${targetLabel}"!`
+    };
+  }
+
+  return {
+    valid: true,
+    song: songMeta
+  };
+}
