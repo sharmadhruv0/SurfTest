@@ -4,7 +4,7 @@ import HowItWorksStep from './HowItWorksStep';
 import { SlidersHorizontal, Headphones, RotateCcw, Play, Link2 } from 'lucide-react';
 
 /**
- * Listening Log Sidebar Panel (sticky on desktop)
+ * Listening Log Sidebar Panel styled with Liquid Glass aesthetic
  * Supports separate stats tracking for Normal, Reverse, and Antakshari modes.
  */
 export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectMode, onOpenSettings }) {
@@ -33,32 +33,36 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
 
   return (
     <aside className="lg:sticky lg:top-28 space-y-4">
-      <div className="bg-[#101111] border border-white/8 rounded-2xl p-6 sm:p-7 shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
+      <div className="liquid-panel rounded-3xl p-6 sm:p-7 relative overflow-hidden transition-all duration-300">
+        {/* Top Specular Rim Glare */}
+        <div className="liquid-specular-rim" />
+
         {/* Header Row */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/8">
-          <span className="text-[11px] font-bold text-[#8B8F8C] uppercase tracking-widest-plus">
-            YOUR LISTENING LOG
+        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus flex items-center gap-2">
+            <span>YOUR LISTENING LOG</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#22E06B] animate-pulse" />
           </span>
           <button
             type="button"
             onClick={onOpenSettings}
             aria-label="Filter or stats settings"
-            className="p-1.5 rounded-lg text-[#8B8F8C] hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+            className="liquid-btn-ghost p-2 rounded-xl text-slate-400 hover:text-white cursor-pointer"
           >
             <SlidersHorizontal className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Mode Switcher Tabs for Stats */}
-        <div className="pt-4 pb-2">
-          <div className="grid grid-cols-3 gap-1 p-1 bg-black/40 rounded-xl border border-white/8">
+        {/* Liquid Glass Mode Switcher Tabs */}
+        <div className="pt-4 pb-3">
+          <div className="grid grid-cols-3 gap-1.5 p-1.5 rounded-2xl liquid-pill border-white/[0.08]">
             <button
               type="button"
               onClick={() => handleTabChange('normal')}
-              className={`py-1.5 px-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+              className={`py-2 px-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'normal'
-                  ? 'bg-[#22E06B] text-black shadow-sm font-bold'
-                  : 'text-[#8B8F8C] hover:text-white hover:bg-white/5'
+                  ? 'liquid-btn-brand text-black'
+                  : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
               <Play className="w-3 h-3 fill-current" />
@@ -68,10 +72,10 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
             <button
               type="button"
               onClick={() => handleTabChange('reverse')}
-              className={`py-1.5 px-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+              className={`py-2 px-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'reverse'
-                  ? 'bg-purple-600 text-white shadow-sm font-bold'
-                  : 'text-[#8B8F8C] hover:text-purple-300 hover:bg-purple-950/20'
+                  ? 'liquid-btn-purple text-white'
+                  : 'text-slate-400 hover:text-purple-300 hover:bg-white/[0.06]'
               }`}
             >
               <RotateCcw className="w-3 h-3" />
@@ -81,10 +85,10 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
             <button
               type="button"
               onClick={() => handleTabChange('antakshari')}
-              className={`py-1.5 px-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+              className={`py-2 px-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'antakshari'
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-sm font-bold'
-                  : 'text-[#8B8F8C] hover:text-amber-300 hover:bg-amber-950/20'
+                  ? 'liquid-btn-amber text-black'
+                  : 'text-slate-400 hover:text-amber-300 hover:bg-white/[0.06]'
               }`}
             >
               <Link2 className="w-3 h-3" />
@@ -94,31 +98,31 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
         </div>
 
         {/* Stats Row (Three equal columns) */}
-        <div className="grid grid-cols-3 gap-2 py-5 border-b border-white/8">
+        <div className="grid grid-cols-3 gap-2.5 py-4 border-b border-white/[0.08]">
           {isAntakshari ? (
             <>
               <StatBlock label="CHAINS" value={played} />
               <StatBlock label="BEST CHAIN" value={`${bestChain} 🔗`} />
-              <StatBlock label="TOTAL SONGS" value={modeStats.totalChained || played * 3} />
+              <StatBlock label="SONGS" value={modeStats.totalChained || played * 3} />
             </>
           ) : (
             <>
               <StatBlock label="PLAYED" value={played} />
               <StatBlock label="WIN RATE" value={`${winRate}%`} />
-              <StatBlock label="BEST STREAK" value={bestStreak} />
+              <StatBlock label="STREAK" value={bestStreak} />
             </>
           )}
         </div>
 
-        {/* Quote Block */}
-        <div className="py-6 border-b border-white/8 flex items-start gap-3.5">
+        {/* Quote Block with Liquid Glass Capsule */}
+        <div className="py-5 border-b border-white/[0.08] flex items-start gap-3.5">
           <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 border ${
+            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 border backdrop-blur-md shadow-sm ${
               isAntakshari
-                ? 'bg-amber-900/20 border-amber-500/30 text-amber-300'
+                ? 'bg-amber-500/20 border-amber-500/40 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
                 : isReverse
-                ? 'bg-purple-900/20 border-purple-500/30 text-purple-300'
-                : 'bg-[#22E06B]/10 border-[#22E06B]/20 text-[#22E06B]'
+                ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.25)]'
+                : 'bg-[#22E06B]/20 border-[#22E06B]/40 text-[#22E06B] shadow-[0_0_12px_rgba(34,224,107,0.25)]'
             }`}
           >
             {isAntakshari ? (
@@ -130,14 +134,14 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
             )}
           </div>
           <div>
-            <p className="text-sm font-medium italic text-[#F5F5F5] leading-snug">
+            <p className="text-sm font-medium italic text-white leading-snug">
               {isAntakshari
                 ? '“Baithe baithe kya karein, karna hai kuch kaam, shuru karo Antakshari!”'
                 : isReverse
                 ? '“Listen backwards, guess forwards. Can you un-hear this?”'
                 : '“The first note is all you need.”'}
             </p>
-            <span className="text-xs text-[#8B8F8C] block mt-1.5 font-normal">
+            <span className="text-xs text-slate-400 block mt-1.5 font-normal">
               {isAntakshari
                 ? '— the timeless Desi Antakshari tradition'
                 : isReverse
@@ -148,23 +152,23 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
         </div>
 
         {/* How It Works List */}
-        <div className="pt-6 pb-6">
-          <div className="text-[11px] font-bold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+        <div className="pt-5 pb-5">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-3 flex items-center justify-between">
             <span>HOW IT WORKS</span>
             <span
-              className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
+              className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border backdrop-blur-md ${
                 isAntakshari
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/35'
                   : isReverse
-                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
-                  : 'bg-white/10 text-[#8B8F8C]'
+                  ? 'bg-purple-500/20 text-purple-300 border-purple-500/35'
+                  : 'bg-white/10 text-slate-300 border-white/15'
               }`}
             >
               {isAntakshari ? 'CHAIN RULES 🔗' : isReverse ? 'REVERSED RULES' : 'STANDARD'}
             </span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             <HowItWorksStep
               number="01"
               title={isAntakshari ? 'Guess the song' : 'Press play'}
@@ -199,14 +203,17 @@ export default function SidebarPanel({ stats, selectedMode = 'normal', onSelectM
           </div>
         </div>
 
-        {/* Small Gray Pill/Badge at Bottom */}
+        {/* Small Glass Badge at Bottom */}
         <div className="pt-2 flex justify-start">
-          <div className="inline-flex items-center px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] font-mono tracking-widest text-[#8B8F8C] uppercase">
-            {isAntakshari
-              ? '🔗 ANTAKSHARI MODE ACTIVE'
-              : isReverse
-              ? '🔄 REVERSE MODE ACTIVE'
-              : 'BETA · CURATED INDIA POOL'}
+          <div className="liquid-pill px-3.5 py-1.5 rounded-full text-[10px] font-mono tracking-widest text-slate-400 uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#22E06B]" />
+            <span>
+              {isAntakshari
+                ? 'ANTTAKSHARI MODE ACTIVE'
+                : isReverse
+                ? 'REVERSE MODE ACTIVE'
+                : 'CURATED INDIA POOL'}
+            </span>
           </div>
         </div>
       </div>

@@ -560,8 +560,10 @@ export default function AntakshariModal({
       : 'text-emerald-400 bg-emerald-950/40 border-emerald-500/50';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-[#120e09] border border-amber-500/30 rounded-2xl max-w-2xl w-full p-5 sm:p-7 shadow-[0_30px_80px_rgba(245,158,11,0.2)] relative flex flex-col max-h-[94vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
+      <div className="liquid-modal-window rounded-3xl max-w-2xl w-full p-5 sm:p-8 relative flex flex-col max-h-[94vh] overflow-y-auto border-amber-500/40 shadow-[0_30px_90px_rgba(245,158,11,0.25)]">
+        {/* Specular Highlight Rim */}
+        <div className="liquid-specular-rim" />
         {/* Hidden HTML5 Audio Element for sing-along previews */}
         <audio ref={audioRef} src={currentAudioUrl} preload="auto" />
 
@@ -611,14 +613,14 @@ export default function AntakshariModal({
             </div>
 
             {/* Mode Switcher Tabs: Pass & Play vs Online Room */}
-            <div className="grid grid-cols-2 gap-2 p-1 bg-black/40 rounded-xl border border-white/10">
+            <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl liquid-pill border-white/[0.08]">
               <button
                 type="button"
                 onClick={() => { setGameMode('pass_and_play'); setValidationError(null); }}
-                className={`py-2.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   gameMode === 'pass_and_play'
-                    ? 'bg-amber-500 text-black shadow-md'
-                    : 'text-[#A3A8A5] hover:text-white hover:bg-white/5'
+                    ? 'liquid-btn-amber text-black shadow-md'
+                    : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
                 }`}
               >
                 <Users className="w-4 h-4" />
@@ -628,10 +630,10 @@ export default function AntakshariModal({
               <button
                 type="button"
                 onClick={() => { setGameMode('online'); setValidationError(null); }}
-                className={`py-2.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   gameMode === 'online'
-                    ? 'bg-amber-500 text-black shadow-md'
-                    : 'text-[#A3A8A5] hover:text-white hover:bg-white/5'
+                    ? 'liquid-btn-amber text-black shadow-md'
+                    : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
                 }`}
               >
                 <Radio className="w-4 h-4" />

@@ -324,15 +324,50 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-[#F5F5F5] relative selection:bg-[#22E06B] selection:text-[#0A0A0B] overflow-x-hidden">
-      {/* Subtle warm stage glow behind top-left hero */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-100"
-        style={{
-          background:
-            'radial-gradient(ellipse 70% 55% at 8% 12%, rgba(120,40,30,0.22) 0%, rgba(60,20,15,0.08) 45%, transparent 75%)'
-        }}
-      />
+    <div className="min-h-screen bg-[#06070B] text-[#F8FAFC] relative selection:bg-[#22E06B] selection:text-[#06070B] overflow-x-hidden">
+      {/* Dynamic Liquid Glass Background Atmosphere & Glowing Orbs */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        {/* Top-left Emerald / Cyan Liquid Orb */}
+        <div
+          className="absolute -top-[12%] -left-[10%] w-[550px] sm:w-[750px] h-[550px] sm:h-[750px] rounded-full opacity-40 blur-[90px] animate-fluid-1"
+          style={{
+            background: 'radial-gradient(circle, rgba(34,224,107,0.35) 0%, rgba(6,182,212,0.2) 45%, transparent 70%)'
+          }}
+        />
+
+        {/* Top-right Purple / Indigo Liquid Orb */}
+        <div
+          className="absolute -top-[15%] -right-[10%] w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] rounded-full opacity-35 blur-[95px] animate-fluid-2"
+          style={{
+            background: 'radial-gradient(circle, rgba(168,85,247,0.32) 0%, rgba(99,102,241,0.18) 45%, transparent 70%)'
+          }}
+        />
+
+        {/* Mid-center Warm Amber / Orange Liquid Orb */}
+        <div
+          className="absolute top-[40%] left-[25%] w-[450px] sm:w-[600px] h-[450px] sm:h-[600px] rounded-full opacity-25 blur-[100px] animate-fluid-3"
+          style={{
+            background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, rgba(239,68,68,0.12) 50%, transparent 70%)'
+          }}
+        />
+
+        {/* Bottom-right Pink / Magenta Liquid Orb */}
+        <div
+          className="absolute -bottom-[10%] -right-[5%] w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full opacity-30 blur-[90px] animate-fluid-1"
+          style={{
+            background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, rgba(139,92,246,0.15) 50%, transparent 70%)'
+          }}
+        />
+
+        {/* Subtle Liquid Glass Caustic / Vignette Overlay */}
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%)'
+          }}
+        />
+      </div>
 
       {/* Top Bar Navigation */}
       <TopBar streak={stats.streak} onOpenHelp={() => setIsHelpOpen(true)} />

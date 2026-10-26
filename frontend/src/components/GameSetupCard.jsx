@@ -5,7 +5,7 @@ import ModeCard from './ModeCard';
 import DifficultyPill from './DifficultyPill';
 import { ERAS } from '../constants/eras.js';
 import { GAME_MODES } from '../constants/modes.js';
-import { Calendar, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Calendar, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
 
 const LANGUAGES = [
   {
@@ -69,18 +69,24 @@ export default function GameSetupCard({
   };
 
   return (
-    <div className="bg-[#101111] border border-white/8 rounded-2xl p-5 sm:p-8 shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative">
+    <div className="liquid-panel rounded-3xl p-6 sm:p-9 relative overflow-hidden transition-all duration-300">
+      {/* Top Specular Rim Glare */}
+      <div className="liquid-specular-rim" />
+
       {/* STEP 1: CHOOSE YOUR SOUND (LANGUAGE) */}
-      <div className="mb-8">
-        <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
-          <span>01 / CHOOSE YOUR SOUND</span>
-          <span className="text-[10px] font-mono text-[#22E06B] bg-[#22E06B]/10 px-2 py-0.5 rounded-full">
+      <div className="mb-8 sm:mb-10">
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="text-[#22E06B]">01</span>
+            <span>CHOOSE YOUR SOUND</span>
+          </span>
+          <span className="text-[10px] font-mono font-bold text-[#22E06B] liquid-pill px-3 py-1 rounded-full border-[#22E06B]/30">
             {selectedLanguage === 'all' ? 'MIXED LANGUAGES' : selectedLanguage.toUpperCase()}
           </span>
         </div>
 
         {/* 4 Language Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {LANGUAGES.map((lang) => (
             <LanguageCard
               key={lang.id}
@@ -96,16 +102,19 @@ export default function GameSetupCard({
       </div>
 
       {/* STEP 2: CHOOSE YOUR ERA (TIME PERIOD) */}
-      <div className="mb-8 pt-6 border-t border-white/5">
-        <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
-          <span>02 / CHOOSE YOUR ERA</span>
-          <span className="text-[10px] font-mono text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full">
+      <div className="mb-8 sm:mb-10 pt-7 border-t border-white/[0.08]">
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="text-amber-400">02</span>
+            <span>CHOOSE YOUR ERA</span>
+          </span>
+          <span className="text-[10px] font-mono font-bold text-amber-300 liquid-pill px-3 py-1 rounded-full border-amber-500/30">
             {ERAS.find(e => e.id === selectedEra)?.label?.toUpperCase() || 'ALL ERAS'}
           </span>
         </div>
 
         {/* 5 Era Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
           {ERAS.map((era) => (
             <EraCard
               key={era.id}
@@ -125,15 +134,15 @@ export default function GameSetupCard({
 
       {/* THIN POOL WARNING BANNER (if < 10 songs in combo) */}
       {(isThinPool || isZeroPool) && (
-        <div className="mb-6 p-4 rounded-xl border border-amber-500/30 bg-amber-950/20 text-amber-200 animate-in fade-in duration-200">
+        <div className="mb-6 p-4 rounded-2xl border border-amber-400/40 bg-gradient-to-r from-amber-500/15 via-amber-950/20 to-orange-950/20 backdrop-blur-xl text-amber-200 animate-in fade-in duration-200 shadow-[0_10px_25px_rgba(245,158,11,0.15)]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-start gap-2.5">
               <AlertTriangle className="w-4 h-4 shrink-0 text-amber-400 mt-0.5" />
               <div className="text-xs">
-                <span className="font-semibold text-amber-300">
+                <span className="font-bold text-amber-300">
                   {isZeroPool ? 'No songs found' : `Thin catalog (${tracksCount} songs)`} in this combo:
                 </span>{' '}
-                <span className="text-amber-200/80">
+                <span className="text-amber-200/90">
                   {selectedLanguage.toUpperCase()} + {ERAS.find(e => e.id === selectedEra)?.label}. Not enough songs in this combo yet, try Mixed for the best experience!
                 </span>
               </div>
@@ -142,7 +151,7 @@ export default function GameSetupCard({
             <button
               type="button"
               onClick={() => onSelectEra('all')}
-              className="self-start sm:self-center px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold text-amber-300 transition-colors cursor-pointer flex items-center gap-1.5 shrink-0"
+              className="self-start sm:self-center px-3.5 py-1.5 rounded-xl bg-amber-500/25 hover:bg-amber-500/35 border border-amber-400/50 text-xs font-bold text-amber-300 transition-all cursor-pointer flex items-center gap-1.5 shrink-0 shadow-sm"
             >
               <RefreshCw className="w-3 h-3" />
               <span>Switch to All Eras</span>
@@ -152,20 +161,23 @@ export default function GameSetupCard({
       )}
 
       {/* STEP 3: CHOOSE PLAY MODE (NORMAL, REVERSE & ANTAKSHARI) */}
-      <div className="mb-8 pt-6 border-t border-white/5">
-        <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4 flex items-center justify-between">
-          <span>03 / CHOOSE PLAY MODE</span>
+      <div className="mb-8 sm:mb-10 pt-7 border-t border-white/[0.08]">
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="text-purple-400">03</span>
+            <span>CHOOSE PLAY MODE</span>
+          </span>
           <span
-            className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+            className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full border backdrop-blur-md ${
               selectedMode === 'antakshari'
-                ? 'text-amber-300 bg-amber-500/15 border border-amber-500/30'
+                ? 'text-amber-300 bg-amber-500/15 border-amber-500/35 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
                 : selectedMode === 'reverse'
-                ? 'text-purple-300 bg-purple-500/15 border border-purple-500/30'
-                : 'text-[#22E06B] bg-[#22E06B]/10 border border-[#22E06B]/20'
+                ? 'text-purple-300 bg-purple-500/15 border-purple-500/35 shadow-[0_0_12px_rgba(168,85,247,0.2)]'
+                : 'text-[#22E06B] bg-[#22E06B]/10 border-[#22E06B]/30 shadow-[0_0_12px_rgba(34,224,107,0.2)]'
             }`}
           >
             {selectedMode === 'antakshari'
-              ? 'ANTTAKSHARI MODE 🔗'
+              ? 'ANTAKSHARI MODE 🔗'
               : selectedMode === 'reverse'
               ? 'REVERSED MODE 🔄'
               : 'NORMAL MODE ▶'}
@@ -173,7 +185,7 @@ export default function GameSetupCard({
         </div>
 
         {/* 3 Game Mode Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
           {GAME_MODES.map((mode) => (
             <ModeCard
               key={mode.id}
@@ -191,12 +203,12 @@ export default function GameSetupCard({
 
         {/* Reverse Mode Callout Banner when selected */}
         {selectedMode === 'reverse' && (
-          <div className="mt-3.5 p-3.5 rounded-xl border border-purple-500/30 bg-purple-950/20 text-purple-200 text-xs flex items-start gap-2.5 animate-in fade-in duration-200">
-            <span className="text-base leading-none mt-0.5">🔄</span>
+          <div className="mt-4 p-4 rounded-2xl border border-purple-400/40 bg-gradient-to-r from-purple-900/30 via-indigo-950/25 to-purple-950/20 backdrop-blur-xl text-purple-200 text-xs flex items-start gap-3 animate-in fade-in duration-200 shadow-[0_10px_25px_rgba(168,85,247,0.15)]">
+            <span className="text-lg leading-none mt-0.5">🔄</span>
             <div>
               <span className="font-bold text-purple-300">Reverse Mode Active: </span>
-              <span>
-                Audio is played completely backwards! Test your ear on reversed melodies, backwards beats, and inverted vocals.
+              <span className="text-purple-200/90">
+                Audio is played completely backwards! Test your ear on reversed melodies, inverted beats, and upside-down vocals.
               </span>
             </div>
           </div>
@@ -204,11 +216,11 @@ export default function GameSetupCard({
 
         {/* Antakshari Mode Callout Banner when selected */}
         {selectedMode === 'antakshari' && (
-          <div className="mt-3.5 p-3.5 rounded-xl border border-amber-500/30 bg-amber-950/25 text-amber-200 text-xs flex items-start gap-2.5 animate-in fade-in duration-200">
-            <span className="text-base leading-none mt-0.5">🔗</span>
+          <div className="mt-4 p-4 rounded-2xl border border-amber-400/40 bg-gradient-to-r from-amber-900/30 via-orange-950/25 to-amber-950/20 backdrop-blur-xl text-amber-200 text-xs flex items-start gap-3 animate-in fade-in duration-200 shadow-[0_10px_25px_rgba(245,158,11,0.15)]">
+            <span className="text-lg leading-none mt-0.5">🔗</span>
             <div>
               <span className="font-bold text-amber-300">Antakshari Mode Active: </span>
-              <span>
+              <span className="text-amber-200/90">
                 Classic Desi Antakshari! Every song you guess connects to the next song on its ending sound syllable (...Ho → H → Hawayein). Chain as many songs as you can!
               </span>
             </div>
@@ -217,9 +229,13 @@ export default function GameSetupCard({
       </div>
 
       {/* STEP 4: SET THE VIBE (DIFFICULTY & HOOK) */}
-      <div className="mb-8 pt-6 border-t border-white/5">
-        <div className="text-[11px] font-semibold text-[#8B8F8C] uppercase tracking-widest-plus mb-4">
-          04 / SET THE VIBE
+      <div className="mb-8 sm:mb-10 pt-7 border-t border-white/[0.08]">
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-4 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="text-cyan-400">04</span>
+            <span>SET THE VIBE</span>
+          </span>
+          <span className="text-[10px] font-mono text-slate-400">Escalation Difficulty</span>
         </div>
 
         {/* Difficulty Pills */}
@@ -237,59 +253,61 @@ export default function GameSetupCard({
         </div>
 
         {/* Toggle Switch + Track Count Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2 px-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-md">
           {/* Hook Toggle */}
           <div
             className="flex items-center gap-3.5 cursor-pointer select-none group"
             onClick={onToggleHook}
           >
-            {/* Custom Switch Track */}
+            {/* Liquid Switch Track */}
             <div
-              className={`w-11 h-6 rounded-full transition-colors duration-200 relative p-0.5 ${
-                startFromHook ? 'bg-[#22E06B]' : 'bg-[#1E2022]'
+              className={`w-12 h-6.5 rounded-full transition-all duration-300 relative p-0.5 border shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] ${
+                startFromHook
+                  ? 'bg-gradient-to-r from-[#22E06B] to-[#1cb857] border-[#22E06B]/50 shadow-[0_0_12px_rgba(34,224,107,0.4)]'
+                  : 'bg-black/50 border-white/10'
               }`}
             >
               <div
-                className={`w-5 h-5 rounded-full transition-transform duration-200 shadow-sm ${
+                className={`w-5.5 h-5.5 rounded-full transition-all duration-300 shadow-[0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.7)] ${
                   startFromHook
-                    ? 'translate-x-5 bg-[#0A0A0B]'
-                    : 'translate-x-0 bg-[#8B8F8C]'
+                    ? 'translate-x-5.5 bg-white'
+                    : 'translate-x-0 bg-slate-400'
                 }`}
               />
             </div>
 
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-white group-hover:text-[#F5F5F5] transition-colors">
+              <span className="text-sm font-bold text-white group-hover:text-[#22E06B] transition-colors">
                 Start from hook
               </span>
-              <span className="text-xs text-[#8B8F8C]">
+              <span className="text-xs text-slate-400">
                 Jump straight into the chorus
               </span>
             </div>
           </div>
 
           {/* Right Track Count Helper */}
-          <div className="text-xs text-[#8B8F8C] font-mono tracking-wide flex items-center gap-1.5 self-start sm:self-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22E06B]" />
-            <span className="text-white font-bold">{tracksCount}</span>
-            <span>tracks available</span>
+          <div className="text-xs text-slate-300 font-mono tracking-wide flex items-center gap-2 self-start sm:self-center px-3 py-1.5 rounded-xl liquid-pill">
+            <span className="w-2 h-2 rounded-full bg-[#22E06B] shadow-[0_0_8px_#22E06B] animate-pulse" />
+            <span className="text-white font-extrabold">{tracksCount}</span>
+            <span className="text-slate-400">tracks available</span>
           </div>
         </div>
       </div>
 
       {/* ACTION ROW */}
-      <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        {/* Primary Button */}
+      <div className="pt-7 border-t border-white/[0.08] flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+        {/* Primary Liquid Button */}
         <button
           type="button"
           onClick={onStartRound}
           className={`${
             selectedMode === 'antakshari'
-              ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#0A0A0B] shadow-[0_0_25px_rgba(245,158,11,0.45)]'
+              ? 'liquid-btn-amber'
               : selectedMode === 'reverse'
-              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(168,85,247,0.4)]'
-              : 'bg-[#22E06B] hover:bg-[#2ECC71] text-[#0A0A0B] shadow-[0_0_20px_rgba(34,224,107,0.35)]'
-          } font-extrabold px-7 py-3.5 rounded-full transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-95 group`}
+              ? 'liquid-btn-purple'
+              : 'liquid-btn-brand'
+          } font-black text-sm sm:text-base px-8 py-4 rounded-2xl cursor-pointer flex items-center justify-center gap-2.5 group`}
         >
           <span>
             {selectedMode === 'antakshari'
@@ -298,18 +316,18 @@ export default function GameSetupCard({
               ? 'Start Reverse Round 🔄'
               : 'Start a round'}
           </span>
-          <span className="font-mono text-base font-bold transition-transform group-hover:translate-x-0.5">
-            &gt;
+          <span className="font-mono text-lg font-black transition-transform group-hover:translate-x-1">
+            →
           </span>
         </button>
 
-        {/* Secondary Button: Daily challenge per era/language */}
+        {/* Secondary Liquid Button: Daily challenge */}
         <button
           type="button"
           onClick={onStartDaily}
-          className="bg-transparent hover:bg-white/5 text-[#F5F5F5] font-semibold px-6 py-3.5 rounded-full border border-white/12 hover:border-white/30 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-95 text-sm"
+          className="liquid-btn-ghost text-slate-200 font-bold px-6 py-4 rounded-2xl cursor-pointer flex items-center justify-center gap-2.5 text-sm"
         >
-          <Calendar className="w-4 h-4 text-[#8B8F8C]" />
+          <Calendar className="w-4 h-4 text-slate-400 group-hover:text-white" />
           <span>Daily challenge</span>
         </button>
       </div>

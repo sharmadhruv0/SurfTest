@@ -2,7 +2,7 @@ import React from 'react';
 import { Play, RotateCcw, Link2 } from 'lucide-react';
 
 /**
- * ModeCard component for selecting Normal, Reverse, or Antakshari game modes.
+ * ModeCard component for selecting Normal, Reverse, or Antakshari game modes styled with Liquid Glass
  */
 export default function ModeCard({
   id,
@@ -17,39 +17,39 @@ export default function ModeCard({
   const isReverse = id === 'reverse';
   const isAntakshari = id === 'antakshari';
 
+  const getCardClasses = () => {
+    if (isSelected) {
+      if (isAntakshari) return 'liquid-card-active-amber';
+      if (isReverse) return 'liquid-card-active-purple';
+      return 'liquid-card-active-brand';
+    }
+    return 'liquid-card';
+  };
+
   return (
     <button
       type="button"
       onClick={() => onSelect(id)}
-      className={`relative w-full text-left p-4 sm:p-5 rounded-xl transition-all duration-200 cursor-pointer flex flex-col justify-between group outline-none focus-visible:ring-2 border ${
-        isSelected
-          ? isAntakshari
-            ? 'bg-gradient-to-br from-[#2a1a06] via-[#1c1103] to-[#120a02] border-amber-400 shadow-[0_0_24px_-4px_rgba(245,158,11,0.4)] focus-visible:ring-amber-400'
-            : isReverse
-            ? 'bg-gradient-to-br from-[#2a1236] via-[#1c0d25] to-[#120718] border-purple-500 shadow-[0_0_24px_-4px_rgba(168,85,247,0.4)] focus-visible:ring-purple-400'
-            : 'bg-gradient-to-br from-[#0d2217] via-[#091710] to-[#060e0a] border-[#22E06B] shadow-[0_0_24px_-4px_rgba(34,224,107,0.3)] focus-visible:ring-[#22E06B]'
-          : isAntakshari
-            ? 'bg-[#18120a] border-amber-900/30 hover:border-amber-600/50 hover:bg-[#20170d]'
-            : isReverse
-            ? 'bg-[#150f1a] border-purple-900/30 hover:border-purple-600/50 hover:bg-[#1a1222]'
-            : 'bg-[#121314] border-white/8 hover:border-white/20 hover:bg-[#18191b]'
-      }`}
+      className={`relative w-full text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between group outline-none overflow-hidden transition-all duration-300 ${getCardClasses()}`}
     >
-      {/* Top row: Icon + Mode badge */}
+      {/* Specular Top Rim */}
+      <div className="liquid-specular-rim" />
+
+      {/* Top row: Glass Icon + Mode badge */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <div
-          className={`w-9 h-9 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105 ${
+          className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all group-hover:scale-105 ${
             isSelected
               ? isAntakshari
-                ? 'bg-amber-500/25 text-amber-300'
+                ? 'bg-amber-400/25 border-amber-400/50 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.35)]'
                 : isReverse
-                ? 'bg-purple-500/25 text-purple-300'
-                : 'bg-[#22E06B]/25 text-[#22E06B]'
+                ? 'bg-purple-500/25 border-purple-400/50 text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.35)]'
+                : 'bg-[#22E06B]/25 border-[#22E06B]/50 text-[#22E06B] shadow-[0_0_15px_rgba(34,224,107,0.35)]'
               : isAntakshari
-                ? 'bg-amber-900/30 text-amber-400'
+                ? 'bg-amber-500/10 border-amber-500/20 text-amber-400'
                 : isReverse
-                ? 'bg-purple-900/30 text-purple-400'
-                : 'bg-white/5 text-[#8B8F8C] group-hover:text-white'
+                ? 'bg-purple-500/10 border-purple-500/20 text-purple-400'
+                : 'bg-white/10 border-white/15 text-slate-300 group-hover:text-white'
           }`}
         >
           {isAntakshari ? (
@@ -62,12 +62,12 @@ export default function ModeCard({
         </div>
 
         <span
-          className={`text-[10px] font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-full border ${
+          className={`text-[10px] font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-full border backdrop-blur-md ${
             isAntakshari
-              ? 'bg-amber-500/15 text-amber-300 border-amber-500/40'
+              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
               : isReverse
-              ? 'bg-purple-500/15 text-purple-300 border-purple-500/40'
-              : 'bg-[#22E06B]/15 text-[#22E06B] border-[#22E06B]/30'
+              ? 'bg-purple-500/20 text-purple-300 border-purple-500/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
+              : 'bg-[#22E06B]/20 text-[#22E06B] border-[#22E06B]/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
           }`}
         >
           {badge}
@@ -77,7 +77,7 @@ export default function ModeCard({
       {/* Mode Title + Tagline */}
       <div className="mb-2">
         <div className="flex items-center gap-2">
-          <div className="text-base sm:text-lg font-bold text-white group-hover:text-[#F5F5F5] leading-tight flex items-center gap-1.5">
+          <div className="text-base sm:text-lg font-extrabold text-white group-hover:text-white leading-tight flex items-center gap-1.5 drop-shadow-sm">
             {isReverse && (
               <span className="inline-block transform -scale-x-100 text-purple-400">
                 ↺
@@ -89,23 +89,23 @@ export default function ModeCard({
             <span>{label}</span>
           </div>
           {isAntakshari && (
-            <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-400 text-black">
+            <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-400/90 text-black shadow-sm">
               NEW
             </span>
           )}
           {isReverse && (
-            <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-purple-500 text-black">
-              POPULAR
+            <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-purple-500/90 text-white shadow-sm">
+              HOT
             </span>
           )}
         </div>
 
         <div
-          className={`text-xs font-medium mt-1 ${
+          className={`text-xs font-semibold mt-1 ${
             isAntakshari
-              ? 'text-amber-300 font-medium'
+              ? 'text-amber-300'
               : isReverse
-              ? 'text-purple-300 font-medium'
+              ? 'text-purple-300'
               : 'text-[#22E06B]'
           }`}
         >
@@ -113,24 +113,25 @@ export default function ModeCard({
         </div>
       </div>
 
-      {/* Copy / Explainer */}
-      <div className="text-xs text-[#8B8F8C] leading-snug line-clamp-2 mt-1">
+      {/* Copy / Explainer in readable frosted slate */}
+      <div className="text-xs text-slate-300/80 leading-snug line-clamp-2 mt-1">
         {copy}
       </div>
 
-      {/* Active selection glowing dot indicator */}
+      {/* Active selection glowing jewel indicator */}
       {isSelected && (
-        <span
-          className={`absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${
-            isAntakshari
-              ? 'bg-amber-400 shadow-[0_0_8px_#F59E0B]'
-              : isReverse
-              ? 'bg-purple-400 shadow-[0_0_8px_#C084FC]'
-              : 'bg-[#22E06B] shadow-[0_0_8px_#22E06B]'
-          }`}
-        />
+        <span className="absolute top-3.5 right-3.5 flex h-2.5 w-2.5">
+          <span
+            className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+              isAntakshari
+                ? 'bg-amber-400 shadow-[0_0_10px_#F59E0B]'
+                : isReverse
+                ? 'bg-purple-400 shadow-[0_0_10px_#C084FC]'
+                : 'bg-[#22E06B] shadow-[0_0_10px_#22E06B]'
+            }`}
+          />
+        </span>
       )}
     </button>
   );
 }
-

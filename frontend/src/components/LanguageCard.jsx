@@ -1,9 +1,9 @@
 import React from 'react';
 
 /**
- * Reusable LanguageCard component for selecting catalog language
+ * Reusable LanguageCard component with Liquid Glass aesthetic
  * @param {Object} props
- * @param {string} props.id - Language id ('hindi' | 'punjabi' | 'haryanvi')
+ * @param {string} props.id - Language id ('all' | 'hindi' | 'punjabi' | 'haryanvi')
  * @param {string} props.nativeTitle - Native script title (e.g. 'हिंदी')
  * @param {string} props.englishName - English display name (e.g. 'Hindi')
  * @param {string} props.descriptor - Short descriptor (e.g. 'Bollywood + pop')
@@ -22,32 +22,38 @@ export default function LanguageCard({
     <button
       type="button"
       onClick={() => onSelect(id)}
-      className={`relative w-full text-left p-5 rounded-xl transition-all duration-200 cursor-pointer flex flex-col justify-between group outline-none focus-visible:ring-2 focus-visible:ring-[#22E06B] ${
+      className={`relative w-full text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between group outline-none overflow-hidden transition-all duration-300 ${
         isSelected
-          ? 'bg-[#131B16] border-2 border-[#22E06B] shadow-[0_0_24px_-4px_rgba(34,224,107,0.22)]'
-          : 'bg-[#121314] border border-white/8 hover:border-white/20 hover:bg-[#161819]'
+          ? 'liquid-card-active-brand'
+          : 'liquid-card'
       }`}
     >
-      {/* Script-native title */}
-      <div className="text-2xl sm:text-3xl font-bold text-[#F5F5F5] tracking-wide mb-3 transition-colors">
+      {/* Specular Highlight Rim */}
+      <div className="liquid-specular-rim" />
+
+      {/* Script-native title with subtle glassy shadow */}
+      <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide mb-3 transition-colors drop-shadow-sm">
         {nativeTitle}
       </div>
 
       <div>
-        {/* English Name in Accent Green */}
-        <div className="text-sm font-semibold text-[#22E06B] mb-1">
-          {englishName}
+        {/* English Name with Emerald Accent */}
+        <div className="text-sm font-bold text-[#22E06B] mb-1 flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(34,224,107,0.3)]">
+          <span>{englishName}</span>
         </div>
 
-        {/* Descriptor */}
-        <div className="text-xs text-[#8B8F8C] leading-snug">
+        {/* Descriptor in readable frosted slate */}
+        <div className="text-xs text-slate-300/80 leading-snug">
           {descriptor}
         </div>
       </div>
 
-      {/* Subtle active indicator dot in top-right */}
+      {/* Active Liquid Jewel Dot */}
       {isSelected && (
-        <span className="absolute top-3.5 right-3.5 w-2 h-2 rounded-full bg-[#22E06B] shadow-[0_0_8px_#22E06B]" />
+        <span className="absolute top-3.5 right-3.5 flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22E06B] opacity-75" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22E06B] shadow-[0_0_10px_#22E06B]" />
+        </span>
       )}
     </button>
   );
