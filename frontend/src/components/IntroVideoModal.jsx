@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { Film, X, Download, Play, Sparkles, Zap, RotateCcw, Link2, Image as ImageIcon } from 'lucide-react';
+import { Film, X, Download, Play, Sparkles, Zap, RotateCcw, Link2, Image as ImageIcon, Gamepad2 } from 'lucide-react';
 
-const CHAPTERS = [
+const INTRO_CHAPTERS = [
+  { label: '01 · Hero Hook', time: 0, badge: '1s → 16s Intro' },
+  { label: '02 · 847 Desi Songs', time: 4.1, badge: 'Hindi · Punjabi · Haryanvi' },
+  { label: '03 · 4 Music Eras', time: 8.3, badge: 'Pre-2000 → 2020s' },
+  { label: '04 · 4 Game Modes', time: 12.3, badge: 'Normal · Reverse · Chain · Blitz' },
+  { label: '05 · Play Now', time: 16.7, badge: 'Finale CTA' }
+];
+
+const GAMEPLAY_CHAPTERS = [
   { label: '01 · Pick Hindi', time: 0, badge: 'Choose Sound & Mode' },
   { label: '02 · 1s Audio Clip', time: 5.2, badge: 'Listen & Skip (+1s)' },
   { label: '03 · Unlock 2s Clip', time: 11.2, badge: 'Hear the Melody' },
@@ -45,9 +53,16 @@ const INSTAGRAM_SLIDES = [
 export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart }) {
   const videoRef = useRef(null);
   const [activeChapter, setActiveChapter] = useState(0);
-  const [activeTab, setActiveTab] = useState('video'); // 'video' | 'instagram'
+  const [activeTab, setActiveTab] = useState('intro'); // 'intro' (20s) | 'gameplay' (28s) | 'instagram'
 
   if (!isOpen) return null;
+
+  const isIntroVideo = activeTab === 'intro';
+  const activeVideoSrc = isIntroVideo ? '/video/surftest-intro.mp4' : '/video/surftest-gameplay.mp4';
+  const activeDownloadName = isIntroVideo
+    ? 'SurfTest-Intro-Trailer-20s.mp4'
+    : 'SurfTest-Gameplay-Walkthrough-28s.mp4';
+  const currentChapters = isIntroVideo ? INTRO_CHAPTERS : GAMEPLAY_CHAPTERS;
 
   const handleDownloadAllSlides = () => {
     INSTAGRAM_SLIDES.forEach((slide, idx) => {
@@ -73,11 +88,19 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
   const handleTimeUpdate = () => {
     if (!videoRef.current) return;
     const t = videoRef.current.currentTime;
-    if (t >= 22.4) setActiveChapter(4);
-    else if (t >= 16.5) setActiveChapter(3);
-    else if (t >= 11.2) setActiveChapter(2);
-    else if (t >= 5.2) setActiveChapter(1);
-    else setActiveChapter(0);
+    if (isIntroVideo) {
+      if (t >= 16.6) setActiveChapter(4);
+      else if (t >= 12.2) setActiveChapter(3);
+      else if (t >= 8.2) setActiveChapter(2);
+      else if (t >= 4.0) setActiveChapter(1);
+      else setActiveChapter(0);
+    } else {
+      if (t >= 22.4) setActiveChapter(4);
+      else if (t >= 16.5) setActiveChapter(3);
+      else if (t >= 11.2) setActiveChapter(2);
+      else if (t >= 5.2) setActiveChapter(1);
+      else setActiveChapter(0);
+    }
   };
 
   return (
@@ -86,20 +109,39 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
         {/* Specular Top Rim */}
         <div className="liquid-specular-rim" />
 
-        {/* Header Row */}
+        {/* Header Row with 3 Switchable Tabs */}
         <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/[0.08] shrink-0">
           <div className="flex items-center gap-2 flex-wrap">
             <button
               type="button"
-              onClick={() => setActiveTab('video')}
+              onClick={() => {
+                setActiveTab('intro');
+                setActiveChapter(0);
+              }}
               className={`text-xs font-mono font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl border flex items-center gap-1.5 cursor-pointer transition-all ${
-                activeTab === 'video'
+                activeTab === 'intro'
                   ? 'bg-[#22E06B]/20 text-[#22E06B] border-[#22E06B]/50 shadow-[0_0_12px_rgba(34,224,107,0.25)]'
                   : 'bg-white/[0.04] text-slate-400 border-white/10 hover:text-white'
               }`}
             >
               <Film className="w-3.5 h-3.5" />
-              <span>Gameplay Video (28s)</span>
+              <span>1. Intro Video (20s)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('gameplay');
+                setActiveChapter(0);
+              }}
+              className={`text-xs font-mono font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl border flex items-center gap-1.5 cursor-pointer transition-all ${
+                activeTab === 'gameplay'
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
+                  : 'bg-white/[0.04] text-slate-400 border-white/10 hover:text-white'
+              }`}
+            >
+              <Gamepad2 className="w-3.5 h-3.5" />
+              <span>2. Gameplay Video (28s)</span>
             </button>
 
             <button
@@ -112,19 +154,19 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
               }`}
             >
               <ImageIcon className="w-3.5 h-3.5" />
-              <span>Instagram Pictures (5 Slides)</span>
+              <span>3. Instagram Pictures (5)</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2">
-            {activeTab === 'video' ? (
+            {activeTab !== 'instagram' ? (
               <a
-                href="/video/surftest-intro.mp4"
-                download="SurfTest-Gameplay-Walkthrough.mp4"
+                href={activeVideoSrc}
+                download={activeDownloadName}
                 className="px-3 py-1.5 rounded-xl liquid-btn-ghost text-xs font-bold text-[#22E06B] hover:text-white flex items-center gap-1.5 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Download MP4</span>
+                <span>Download {isIntroVideo ? '20s' : '28s'} MP4</span>
               </a>
             ) : (
               <button
@@ -148,13 +190,14 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
           </div>
         </div>
 
-        {/* Main Body: Video Player OR Instagram 5-Slide Pack */}
-        {activeTab === 'video' ? (
+        {/* Main Body: Video Player (20s or 28s) OR Instagram 5-Slide Pack */}
+        {activeTab !== 'instagram' ? (
           <div className="pt-4 space-y-4 overflow-y-auto pr-1">
             <div className="relative rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl aspect-video">
               <video
+                key={activeVideoSrc}
                 ref={videoRef}
-                src="/video/surftest-intro.mp4"
+                src={activeVideoSrc}
                 controls
                 autoPlay
                 playsInline
@@ -165,7 +208,7 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
 
             {/* Interactive Scene Chapters */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              {CHAPTERS.map((chap, idx) => (
+              {currentChapters.map((chap, idx) => (
                 <button
                   key={chap.label}
                   type="button"

@@ -16,8 +16,7 @@ const TOTAL_FRAMES = FPS * DURATION_SEC;
 const videoDir = path.join(rootDir, 'frontend', 'public', 'video');
 fs.mkdirSync(videoDir, { recursive: true });
 
-const outputMp4 = path.join(videoDir, 'surftest-intro.mp4');
-const gameplayMp4 = path.join(videoDir, 'surftest-gameplay.mp4');
+const outputMp4 = path.join(videoDir, 'surftest-gameplay.mp4');
 const assPath = path.join(videoDir, 'gameplay_overlay.ass');
 const kesariyaAudio = path.join(rootDir, 'frontend', 'public', 'audio', 'kesariya.m4a');
 const bgAudio = path.join(rootDir, 'frontend', 'public', 'audio', 'tum-hi-ho.m4a');
@@ -470,7 +469,6 @@ async function generateGameplayVideo() {
   });
 
   if (fs.existsSync(assPath)) fs.unlinkSync(assPath);
-  fs.copyFileSync(outputMp4, gameplayMp4);
 
   const stat = fs.statSync(outputMp4);
   console.log(`✅ Successfully generated Gameplay Walkthrough Video: ${outputMp4} (${(stat.size / (1024 * 1024)).toFixed(2)} MB)`);
