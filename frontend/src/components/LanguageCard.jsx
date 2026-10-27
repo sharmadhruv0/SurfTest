@@ -15,6 +15,7 @@ export default function LanguageCard({
   nativeTitle,
   englishName,
   descriptor,
+  count,
   isSelected,
   onSelect
 }) {
@@ -31,9 +32,16 @@ export default function LanguageCard({
       {/* Specular Highlight Rim */}
       <div className="liquid-specular-rim" />
 
-      {/* Script-native title with subtle glassy shadow */}
-      <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide mb-3 transition-colors drop-shadow-sm">
-        {nativeTitle}
+      <div className="flex items-start justify-between gap-2 mb-3">
+        {/* Script-native title with subtle glassy shadow */}
+        <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide transition-colors drop-shadow-sm">
+          {nativeTitle}
+        </div>
+        {count !== undefined && (
+          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-white/10 text-slate-300 border border-white/15 shrink-0">
+            {count} songs
+          </span>
+        )}
       </div>
 
       <div>

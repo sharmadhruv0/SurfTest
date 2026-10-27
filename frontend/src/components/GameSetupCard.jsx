@@ -5,6 +5,7 @@ import ModeCard from './ModeCard';
 import DifficultyPill from './DifficultyPill';
 import { ERAS } from '../constants/eras.js';
 import { GAME_MODES } from '../constants/modes.js';
+import { TRACK_CATALOG } from '../data/tracks.js';
 import { Calendar, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
 
 const LANGUAGES = [
@@ -68,6 +69,12 @@ export default function GameSetupCard({
     return found.total !== undefined ? found.total : 0;
   };
 
+  // Lookup total track count per language
+  const getCountForLanguage = (langId) => {
+    if (langId === 'all') return TRACK_CATALOG.length;
+    return TRACK_CATALOG.filter((t) => t.language.toLowerCase() === langId.toLowerCase()).length;
+  };
+
   return (
     <div className="liquid-panel rounded-3xl p-6 sm:p-9 relative overflow-hidden transition-all duration-300">
       {/* Top Specular Rim Glare */}
@@ -94,6 +101,7 @@ export default function GameSetupCard({
               nativeTitle={lang.nativeTitle}
               englishName={lang.englishName}
               descriptor={lang.descriptor}
+              count={getCountForLanguage(lang.id)}
               isSelected={selectedLanguage === lang.id}
               onSelect={onSelectLanguage}
             />

@@ -27,7 +27,7 @@ export default function App() {
 
   // Backend status, era statistics and track pool
   const [isBackendOffline, setIsBackendOffline] = useState(false);
-  const [tracksCount, setTracksCount] = useState(52);
+  const [tracksCount, setTracksCount] = useState(() => getFilteredTracks('hindi', 'all', 'all').length);
   const [eraStats, setEraStats] = useState([]);
   const [isWaking, setIsWaking] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -92,17 +92,6 @@ export default function App() {
 
   // Fetch era breakdown for the current language
   const fetchEraStats = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/eras?language=${selectedLanguage}`);
-      if (res.ok) {
-        const data = await res.json();
-        setEraStats(data.eras || []);
-        return;
-      }
-    } catch {
-      // Compute fallback era stats locally from TRACK_CATALOG
-    }
-
     const localEras = ERAS.map((era) => {
       let count = 0;
       for (const t of TRACK_CATALOG) {
@@ -124,19 +113,33 @@ export default function App() {
         theme: era.theme
       };
     });
+
+    try {
+      const res = await fetch(`/api/eras?language=${selectedLanguage}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.eras && (data.total || 0) >= TRACK_CATALOG.length) {
+          setEraStats(data.eras);
+          return;
+        }
+      }
+    } catch {
+      // Compute fallback era stats locally from TRACK_CATALOG
+    }
+
     setEraStats(localEras);
   }, [selectedLanguage]);
 
-  // Fetch track count for selected language + era + difficulty
+  // Fetch track count for selected language + era
   const fetchTrackCount = useCallback(async () => {
-    const localTracks = getFilteredTracks(selectedLanguage, selectedEra, selectedDifficulty);
+    const localTracks = getFilteredTracks(selectedLanguage, selectedEra, 'all');
     try {
       const res = await fetch(
-        `/api/tracks?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}`
+        `/api/tracks?language=${selectedLanguage}&era=${selectedEra}`
       );
       if (res.ok) {
         const data = await res.json();
-        setTracksCount(data.total > 0 ? data.total : localTracks.length);
+        setTracksCount(Math.max(data.total || 0, localTracks.length));
         setIsBackendOffline(false);
         return;
       }
@@ -144,7 +147,7 @@ export default function App() {
       // Use local catalog count
     }
     setTracksCount(localTracks.length);
-  }, [selectedLanguage, selectedEra, selectedDifficulty]);
+  }, [selectedLanguage, selectedEra]);
 
   // Fetch listening log stats
   const fetchStats = useCallback(async () => {
