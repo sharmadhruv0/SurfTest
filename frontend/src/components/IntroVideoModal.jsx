@@ -19,6 +19,20 @@ const GAMEPLAY_CHAPTERS = [
 
 const INSTAGRAM_SLIDES = [
   {
+    id: 'logo-01',
+    title: 'Profile Pic 1 · Official ST Badge',
+    url: '/social/ig-logo-01-emerald-badge.png',
+    filename: 'SurfTest-IG-Logo-01-Emerald-Badge.png',
+    isCirclePreview: true
+  },
+  {
+    id: 'logo-02',
+    title: 'Profile Pic 2 · Soundwave Crest',
+    url: '/social/ig-logo-02-soundwave-crest.png',
+    filename: 'SurfTest-IG-Logo-02-Soundwave-Crest.png',
+    isCirclePreview: true
+  },
+  {
     id: '01',
     title: 'Slide 1 · Hero Cover',
     url: '/social/ig-01-hero-cover.png',
@@ -154,7 +168,7 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
               }`}
             >
               <ImageIcon className="w-3.5 h-3.5" />
-              <span>3. Instagram Pictures (5)</span>
+              <span>3. Instagram Kit (Logos + 5 Posts)</span>
             </button>
           </div>
 
@@ -175,7 +189,7 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
                 className="px-3.5 py-1.5 rounded-xl liquid-btn-cyan text-xs font-bold flex items-center gap-1.5 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Download All 5 PNGs</span>
+                <span>Download All 7 PNGs</span>
               </button>
             )}
 
