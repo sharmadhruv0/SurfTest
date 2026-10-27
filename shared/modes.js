@@ -54,10 +54,27 @@ export const GAME_MODES = [
       accent: "#FBBF24",
       badge: "bg-amber-500/20 text-amber-300 border-amber-500/40"
     }
+  },
+  {
+    id: "blitz",
+    label: "60s Blitz Mode",
+    shortLabel: "Blitz",
+    tagline: "Rapid-fire hooks! +3s bonus per hit ⚡",
+    badge: "60s BLITZ ⚡",
+    copy: "Hooks play back-to-back against a 60-second clock. Guess as many songs as possible with +3s time bonuses!",
+    accentColor: "#06B6D4",
+    iconName: "Zap",
+    theme: {
+      border: "border-cyan-500/20",
+      selectedBorder: "border-cyan-400",
+      selectedBg: "bg-cyan-950/25",
+      accent: "#22D3EE",
+      badge: "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
+    }
   }
 ];
 
-export const VALID_MODE_IDS = ["normal", "reverse", "antakshari"];
+export const VALID_MODE_IDS = ["normal", "reverse", "antakshari", "blitz"];
 
 export function getModeMeta(modeId) {
   return GAME_MODES.find(m => m.id === modeId) || GAME_MODES[0];

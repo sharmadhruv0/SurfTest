@@ -1,8 +1,8 @@
 import React from 'react';
-import { Play, RotateCcw, Link2 } from 'lucide-react';
+import { Play, RotateCcw, Link2, Zap } from 'lucide-react';
 
 /**
- * ModeCard component for selecting Normal, Reverse, or Antakshari game modes styled with Liquid Glass
+ * ModeCard component for selecting Normal, Reverse, Antakshari, or 60s Blitz game modes styled with Liquid Glass
  */
 export default function ModeCard({
   id,
@@ -16,9 +16,11 @@ export default function ModeCard({
 }) {
   const isReverse = id === 'reverse';
   const isAntakshari = id === 'antakshari';
+  const isBlitz = id === 'blitz';
 
   const getCardClasses = () => {
     if (isSelected) {
+      if (isBlitz) return 'liquid-card-active-cyan';
       if (isAntakshari) return 'liquid-card-active-amber';
       if (isReverse) return 'liquid-card-active-purple';
       return 'liquid-card-active-brand';
@@ -40,19 +42,25 @@ export default function ModeCard({
         <div
           className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all group-hover:scale-105 ${
             isSelected
-              ? isAntakshari
+              ? isBlitz
+                ? 'bg-cyan-400/25 border-cyan-400/50 text-cyan-200 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
+                : isAntakshari
                 ? 'bg-amber-400/25 border-amber-400/50 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.35)]'
                 : isReverse
                 ? 'bg-purple-500/25 border-purple-400/50 text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.35)]'
                 : 'bg-[#22E06B]/25 border-[#22E06B]/50 text-[#22E06B] shadow-[0_0_15px_rgba(34,224,107,0.35)]'
-              : isAntakshari
+              : isBlitz
+                ? 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400'
+                : isAntakshari
                 ? 'bg-amber-500/10 border-amber-500/20 text-amber-400'
                 : isReverse
                 ? 'bg-purple-500/10 border-purple-500/20 text-purple-400'
                 : 'bg-white/10 border-white/15 text-slate-300 group-hover:text-white'
           }`}
         >
-          {isAntakshari ? (
+          {isBlitz ? (
+            <Zap className="w-5 h-5 fill-current transition-transform group-hover:scale-110" />
+          ) : isAntakshari ? (
             <Link2 className="w-5 h-5 transition-transform group-hover:rotate-12" />
           ) : isReverse ? (
             <RotateCcw className="w-5 h-5 transition-transform group-hover:-rotate-45" />
@@ -63,7 +71,9 @@ export default function ModeCard({
 
         <span
           className={`text-[10px] font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-full border backdrop-blur-md ${
-            isAntakshari
+            isBlitz
+              ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
+              : isAntakshari
               ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
               : isReverse
               ? 'bg-purple-500/20 text-purple-300 border-purple-500/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
@@ -86,11 +96,19 @@ export default function ModeCard({
             {isAntakshari && (
               <span className="text-amber-400">🔗</span>
             )}
+            {isBlitz && (
+              <span className="text-cyan-400">⚡</span>
+            )}
             <span>{label}</span>
           </div>
+          {isBlitz && (
+            <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-cyan-400 text-black shadow-sm">
+              NEW
+            </span>
+          )}
           {isAntakshari && (
             <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-400/90 text-black shadow-sm">
-              NEW
+              CHAIN
             </span>
           )}
           {isReverse && (
@@ -102,7 +120,9 @@ export default function ModeCard({
 
         <div
           className={`text-xs font-semibold mt-1 ${
-            isAntakshari
+            isBlitz
+              ? 'text-cyan-300'
+              : isAntakshari
               ? 'text-amber-300'
               : isReverse
               ? 'text-purple-300'
@@ -123,7 +143,9 @@ export default function ModeCard({
         <span className="absolute top-3.5 right-3.5 flex h-2.5 w-2.5">
           <span
             className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-              isAntakshari
+              isBlitz
+                ? 'bg-cyan-400 shadow-[0_0_10px_#22D3EE]'
+                : isAntakshari
                 ? 'bg-amber-400 shadow-[0_0_10px_#F59E0B]'
                 : isReverse
                 ? 'bg-purple-400 shadow-[0_0_10px_#C084FC]'

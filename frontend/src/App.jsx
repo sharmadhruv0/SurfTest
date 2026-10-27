@@ -8,6 +8,7 @@ import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
 import AntakshariModal from './components/AntakshariModal';
+import BlitzModal from './components/BlitzModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks, startLocalAntakshariSession } from './data/tracks';
 import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
 
@@ -48,7 +49,8 @@ export default function App() {
       bestStreak: 0,
       normal: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
       reverse: { played: 0, wins: 0, winRate: 0, streak: 0, bestStreak: 0 },
-      antakshari: { played: 0, bestChain: 0, totalChained: 0 }
+      antakshari: { played: 0, bestChain: 0, totalChained: 0 },
+      blitz: { played: 0, bestScore: 0, bestStreak: 0 }
     };
   });
 
@@ -60,6 +62,9 @@ export default function App() {
   // Standalone Antakshari modal state
   const [isAntakshariModalOpen, setIsAntakshariModalOpen] = useState(false);
   const [activeAntakshariData, setActiveAntakshariData] = useState(null);
+
+  // 60s Blitz modal state
+  const [isBlitzModalOpen, setIsBlitzModalOpen] = useState(false);
 
   // Save language, era & mode preferences
   const handleSelectLanguage = (lang) => {
@@ -199,6 +204,12 @@ export default function App() {
 
   // Start a game round
   const handleStartRound = async (isDaily = false) => {
+    // 60s BLITZ MODE BRANCH
+    if (selectedMode === 'blitz') {
+      setIsBlitzModalOpen(true);
+      return;
+    }
+
     // STANDALONE ANTAKSHARI MODE BRANCH
     if (selectedMode === 'antakshari') {
       try {
@@ -326,6 +337,27 @@ export default function App() {
     });
   };
 
+  // Record 60s Blitz run result
+  const handleRecordBlitzRun = (score, runBestCombo) => {
+    setStats((prev) => {
+      const blz = prev.blitz || { played: 0, bestScore: 0, bestStreak: 0 };
+      const played = blz.played + 1;
+      const bestScore = Math.max(blz.bestScore || 0, score);
+      const bestStreak = Math.max(blz.bestStreak || 0, runBestCombo);
+
+      const newStats = {
+        ...prev,
+        blitz: {
+          played,
+          bestScore,
+          bestStreak
+        }
+      };
+      localStorage.setItem('surftest_stats', JSON.stringify(newStats));
+      return newStats;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#06070B] text-[#F8FAFC] relative selection:bg-[#22E06B] selection:text-[#06070B] overflow-x-hidden">
       {/* Dynamic Liquid Glass Background Atmosphere & Glowing Orbs */}
@@ -444,6 +476,15 @@ export default function App() {
         initialData={activeAntakshariData}
         selectedLanguage={selectedLanguage}
         onRecordChain={handleRecordAntakshariChain}
+      />
+
+      {/* 60-Second Blitz Speedrun Modal */}
+      <BlitzModal
+        isOpen={isBlitzModalOpen}
+        onClose={() => setIsBlitzModalOpen(false)}
+        selectedLanguage={selectedLanguage}
+        selectedEra={selectedEra}
+        onRecordBlitzRun={handleRecordBlitzRun}
       />
     </div>
   );

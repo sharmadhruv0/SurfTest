@@ -168,7 +168,7 @@ export default function GameSetupCard({
         </div>
       )}
 
-      {/* STEP 3: CHOOSE PLAY MODE (NORMAL, REVERSE & ANTAKSHARI) */}
+      {/* STEP 3: CHOOSE PLAY MODE (NORMAL, REVERSE, ANTAKSHARI & 60s BLITZ) */}
       <div className="mb-8 sm:mb-10 pt-7 border-t border-white/[0.08]">
         <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest-plus mb-4 flex items-center justify-between">
           <span className="flex items-center gap-2">
@@ -177,14 +177,18 @@ export default function GameSetupCard({
           </span>
           <span
             className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full border backdrop-blur-md ${
-              selectedMode === 'antakshari'
+              selectedMode === 'blitz'
+                ? 'text-cyan-300 bg-cyan-500/15 border-cyan-500/35 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                : selectedMode === 'antakshari'
                 ? 'text-amber-300 bg-amber-500/15 border-amber-500/35 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
                 : selectedMode === 'reverse'
                 ? 'text-purple-300 bg-purple-500/15 border-purple-500/35 shadow-[0_0_12px_rgba(168,85,247,0.2)]'
                 : 'text-[#22E06B] bg-[#22E06B]/10 border-[#22E06B]/30 shadow-[0_0_12px_rgba(34,224,107,0.2)]'
             }`}
           >
-            {selectedMode === 'antakshari'
+            {selectedMode === 'blitz'
+              ? '60s BLITZ MODE ⚡'
+              : selectedMode === 'antakshari'
               ? 'ANTAKSHARI MODE 🔗'
               : selectedMode === 'reverse'
               ? 'REVERSED MODE 🔄'
@@ -192,8 +196,8 @@ export default function GameSetupCard({
           </span>
         </div>
 
-        {/* 3 Game Mode Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+        {/* 4 Game Mode Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
           {GAME_MODES.map((mode) => (
             <ModeCard
               key={mode.id}
@@ -230,6 +234,19 @@ export default function GameSetupCard({
               <span className="font-bold text-amber-300">Antakshari Mode Active: </span>
               <span className="text-amber-200/90">
                 Classic Desi Antakshari! Every song you guess connects to the next song on its ending sound syllable (...Ho → H → Hawayein). Chain as many songs as you can!
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* 60s Blitz Mode Callout Banner when selected */}
+        {selectedMode === 'blitz' && (
+          <div className="mt-4 p-4 rounded-2xl border border-cyan-400/40 bg-gradient-to-r from-cyan-900/30 via-sky-950/25 to-cyan-950/20 backdrop-blur-xl text-cyan-200 text-xs flex items-start gap-3 animate-in fade-in duration-200 shadow-[0_10px_25px_rgba(6,182,212,0.18)]">
+            <span className="text-lg leading-none mt-0.5">⚡</span>
+            <div>
+              <span className="font-bold text-cyan-300">60-Second Blitz Mode Active: </span>
+              <span className="text-cyan-100/90">
+                Hooks play back-to-back against a 60-second clock! Every correct guess awards a <strong className="text-cyan-300">+3s time bonus</strong> and builds your combo streak. Skip any song instantly to keep your momentum going!
               </span>
             </div>
           </div>
@@ -310,7 +327,9 @@ export default function GameSetupCard({
           type="button"
           onClick={onStartRound}
           className={`${
-            selectedMode === 'antakshari'
+            selectedMode === 'blitz'
+              ? 'liquid-btn-cyan'
+              : selectedMode === 'antakshari'
               ? 'liquid-btn-amber'
               : selectedMode === 'reverse'
               ? 'liquid-btn-purple'
@@ -318,7 +337,9 @@ export default function GameSetupCard({
           } font-black text-sm sm:text-base px-8 py-4 rounded-2xl cursor-pointer flex items-center justify-center gap-2.5 group`}
         >
           <span>
-            {selectedMode === 'antakshari'
+            {selectedMode === 'blitz'
+              ? 'Start 60s Blitz ⚡'
+              : selectedMode === 'antakshari'
               ? 'Start Antakshari Chain 🔗'
               : selectedMode === 'reverse'
               ? 'Start Reverse Round 🔄'
