@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Film, X, Download, Play, Sparkles, Zap, RotateCcw, Link2, Music } from 'lucide-react';
 
 const CHAPTERS = [
-  { label: '01 · Intro Hook', time: 0, badge: '1s → 16s' },
-  { label: '02 · 847 Desi Songs', time: 4.1, badge: 'Hindi · Punjabi · Haryanvi' },
-  { label: '03 · 4 Music Eras', time: 8.3, badge: 'Pre-2000 → 2020s' },
-  { label: '04 · 4 Game Modes', time: 12.3, badge: 'Normal · Reverse · Chain · Blitz' },
-  { label: '05 · Play Now', time: 16.7, badge: 'Finale' }
+  { label: '01 · Pick Hindi', time: 0, badge: 'Choose Sound & Mode' },
+  { label: '02 · 1s Audio Clip', time: 5.2, badge: 'Listen & Skip (+1s)' },
+  { label: '03 · Unlock 2s Clip', time: 11.2, badge: 'Hear the Melody' },
+  { label: '04 · Type & Select', time: 16.5, badge: 'Kesariya - Arijit Singh' },
+  { label: '05 · Win & Share', time: 22.4, badge: 'Full Song & Streak +1' }
 ];
 
 export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart }) {
@@ -26,10 +26,10 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
   const handleTimeUpdate = () => {
     if (!videoRef.current) return;
     const t = videoRef.current.currentTime;
-    if (t >= 16.6) setActiveChapter(4);
-    else if (t >= 12.2) setActiveChapter(3);
-    else if (t >= 8.2) setActiveChapter(2);
-    else if (t >= 4.0) setActiveChapter(1);
+    if (t >= 22.4) setActiveChapter(4);
+    else if (t >= 16.5) setActiveChapter(3);
+    else if (t >= 11.2) setActiveChapter(2);
+    else if (t >= 5.2) setActiveChapter(1);
     else setActiveChapter(0);
   };
 
@@ -44,10 +44,10 @@ export default function IntroVideoModal({ isOpen, onClose, onSelectModeAndStart 
           <div className="flex items-center gap-2.5 flex-wrap">
             <span className="text-[10px] font-mono font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md border bg-[#22E06B]/20 text-[#22E06B] border-[#22E06B]/40 flex items-center gap-1.5">
               <Film className="w-3.5 h-3.5" />
-              <span>OFFICIAL FEATURE TRAILER</span>
+              <span>HOW TO PLAY · GAMEPLAY WALKTHROUGH</span>
             </span>
             <span className="text-xs text-slate-300 font-semibold hidden sm:inline">
-              SurfTest · 847 Songs · 4 Game Modes · 3 Languages
+              Watch how a player guesses a Hindi song in 2 stages!
             </span>
           </div>
 

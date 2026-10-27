@@ -34,7 +34,7 @@ export default function Hero({ onOpenTrailer }) {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full liquid-btn-ghost text-[11px] font-mono font-bold text-cyan-300 hover:text-white border-cyan-500/35 cursor-pointer group"
           >
             <Film className="w-3.5 h-3.5 text-[#22E06B] group-hover:scale-110 transition-transform" />
-            <span>Watch Intro Video</span>
+            <span>Watch How to Play (28s Video)</span>
             <Play className="w-2.5 h-2.5 fill-current text-cyan-300" />
           </button>
         )}
