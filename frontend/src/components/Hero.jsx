@@ -1,29 +1,43 @@
 import React from 'react';
-import { Sparkles, Music } from 'lucide-react';
+import { Sparkles, Film, Play } from 'lucide-react';
 
 /**
  * Hero section styled with Liquid Glass aesthetic
  */
-export default function Hero() {
+export default function Hero({ onOpenTrailer }) {
   return (
     <section className="mb-10 sm:mb-12 relative select-none">
-      {/* Glass Eyebrow Pill */}
-      <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full liquid-pill mb-5 group cursor-default">
-        {/* Pulsing Liquid Glow Indicator */}
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22E06B] opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22E06B] shadow-[0_0_10px_#22E06B]" />
-        </span>
+      {/* Top Row: Glass Eyebrow Pill + Watch Intro Video Button */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full liquid-pill group cursor-default">
+          {/* Pulsing Liquid Glow Indicator */}
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22E06B] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22E06B] shadow-[0_0_10px_#22E06B]" />
+          </span>
 
-        <span className="text-[10px] sm:text-[11px] font-bold text-slate-300 uppercase tracking-widest font-mono">
-          ROUND 001 · INDIA'S SOUNDTRACK
-        </span>
+          <span className="text-[10px] sm:text-[11px] font-bold text-slate-300 uppercase tracking-widest font-mono">
+            ROUND 001 · INDIA'S SOUNDTRACK
+          </span>
 
-        <span className="w-1 h-1 rounded-full bg-white/20" />
-        <span className="text-[10px] font-mono text-[#22E06B] font-semibold flex items-center gap-1">
-          <Sparkles className="w-3 h-3 animate-pulse" />
-          <span>LIVE</span>
-        </span>
+          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span className="text-[10px] font-mono text-[#22E06B] font-semibold flex items-center gap-1">
+            <Sparkles className="w-3 h-3 animate-pulse" />
+            <span>LIVE</span>
+          </span>
+        </div>
+
+        {onOpenTrailer && (
+          <button
+            type="button"
+            onClick={onOpenTrailer}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full liquid-btn-ghost text-[11px] font-mono font-bold text-cyan-300 hover:text-white border-cyan-500/35 cursor-pointer group"
+          >
+            <Film className="w-3.5 h-3.5 text-[#22E06B] group-hover:scale-110 transition-transform" />
+            <span>Watch Intro Video</span>
+            <Play className="w-2.5 h-2.5 fill-current text-cyan-300" />
+          </button>
+        )}
       </div>
 
       {/* Massive Headline with Liquid Iridescent Gradient */}
