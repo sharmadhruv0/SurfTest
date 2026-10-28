@@ -6,7 +6,7 @@ import {
   Users,
   Play,
   Trophy,
-  Instagram,
+  Share2,
   Smartphone,
   Monitor,
   Lock,
@@ -232,7 +232,7 @@ export default function AdminDashboardModal({
             <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
               <div className="flex items-center justify-between text-xs text-slate-400 font-mono uppercase">
                 <span>Instagram Visits</span>
-                <Instagram className="w-4 h-4 text-pink-400" />
+                <Share2 className="w-4 h-4 text-pink-400" />
               </div>
               <div className="text-2xl sm:text-3xl font-black text-pink-400 font-mono mt-1.5">
                 {data.instagramVisits}
