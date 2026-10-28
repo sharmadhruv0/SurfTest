@@ -1,13 +1,13 @@
 import React from 'react';
-import { Sparkles, Film, Play } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 /**
  * Hero section styled with Liquid Glass aesthetic
  */
-export default function Hero({ onOpenTrailer }) {
+export default function Hero() {
   return (
     <section className="mb-10 sm:mb-12 relative select-none">
-      {/* Top Row: Glass Eyebrow Pill + Watch Intro Video Button */}
+      {/* Top Row: Glass Eyebrow Pill */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
         <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full liquid-pill group cursor-default">
           {/* Pulsing Liquid Glow Indicator */}
@@ -26,18 +26,6 @@ export default function Hero({ onOpenTrailer }) {
             <span>LIVE</span>
           </span>
         </div>
-
-        {onOpenTrailer && (
-          <button
-            type="button"
-            onClick={onOpenTrailer}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full liquid-btn-ghost text-[11px] font-mono font-bold text-cyan-300 hover:text-white border-cyan-500/35 cursor-pointer group"
-          >
-            <Film className="w-3.5 h-3.5 text-[#22E06B] group-hover:scale-110 transition-transform" />
-            <span>Watch How to Play (28s Video)</span>
-            <Play className="w-2.5 h-2.5 fill-current text-cyan-300" />
-          </button>
-        )}
       </div>
 
       {/* Massive Headline with Liquid Iridescent Gradient */}

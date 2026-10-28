@@ -9,7 +9,6 @@ import HelpModal from './components/HelpModal';
 import GamePlayModal from './components/GamePlayModal';
 import AntakshariModal from './components/AntakshariModal';
 import BlitzModal from './components/BlitzModal';
-import IntroVideoModal from './components/IntroVideoModal';
 import AdminDashboardModal from './components/AdminDashboardModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks, startLocalAntakshariSession } from './data/tracks';
 import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
@@ -68,9 +67,6 @@ export default function App() {
 
   // 60s Blitz modal state
   const [isBlitzModalOpen, setIsBlitzModalOpen] = useState(false);
-
-  // Intro Video Trailer modal state
-  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
 
   // Global telemetry & Secret Owner Admin Dashboard state
   const [telemetry, setTelemetry] = useState(null);
@@ -493,7 +489,7 @@ export default function App() {
           {/* Left Column (~60-65% width) */}
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col">
             {/* Hero Section */}
-            <Hero onOpenTrailer={() => setIsTrailerOpen(true)} />
+            <Hero />
 
             {/* Game Setup Card with Language, Era, and Mode Selection */}
             <GameSetupCard
@@ -565,19 +561,6 @@ export default function App() {
         selectedLanguage={selectedLanguage}
         selectedEra={selectedEra}
         onRecordBlitzRun={handleRecordBlitzRun}
-      />
-
-      {/* Official Feature Intro Video Modal */}
-      <IntroVideoModal
-        isOpen={isTrailerOpen}
-        onClose={() => setIsTrailerOpen(false)}
-        onSelectModeAndStart={(mode) => {
-          handleSelectMode(mode);
-          setIsTrailerOpen(false);
-          if (mode === 'blitz') {
-            setIsBlitzModalOpen(true);
-          }
-        }}
       />
 
       {/* Secret Owner Live Analytics Dashboard Modal */}
