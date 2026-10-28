@@ -29699,6 +29699,101 @@ let playerStats = {
   }
 };
 
+// Global live telemetry store for public counter & secret owner dashboard
+const globalTelemetry = {
+  baselinePlays: 148,
+  baselineVisits: 215,
+  totalVisits: 0,
+  instagramVisits: 0,
+  directVisits: 0,
+  gamesStarted: 0,
+  roundsCompleted: 0,
+  songsGuessed: 0,
+  byMode: {
+    normal: 0,
+    reverse: 0,
+    antakshari: 0,
+    blitz: 0
+  },
+  byLanguage: {
+    hindi: 0,
+    punjabi: 0,
+    haryanvi: 0,
+    all: 0
+  },
+  recentEvents: []
+};
+
+app.get(['/api/telemetry', '/telemetry'], (req, res) => {
+  res.json({
+    ...globalTelemetry,
+    publicTotalPlays: globalTelemetry.baselinePlays + globalTelemetry.gamesStarted + globalTelemetry.roundsCompleted,
+    publicTotalVisits: globalTelemetry.baselineVisits + globalTelemetry.totalVisits,
+    serverTimestamp: Date.now()
+  });
+});
+
+app.post(['/api/telemetry/event', '/telemetry/event'], (req, res) => {
+  const {
+    type = 'play_start',
+    mode = 'normal',
+    language = 'hindi',
+    won = false,
+    stage = null,
+    score = null,
+    songTitle = null,
+    source = 'Direct',
+    device = 'Mobile'
+  } = req.body || {};
+
+  if (type === 'visit') {
+    globalTelemetry.totalVisits += 1;
+    if (String(source).toLowerCase().includes('instagram')) {
+      globalTelemetry.instagramVisits += 1;
+    } else {
+      globalTelemetry.directVisits += 1;
+    }
+  } else if (type === 'play_start') {
+    globalTelemetry.gamesStarted += 1;
+    if (globalTelemetry.byMode[mode] !== undefined) {
+      globalTelemetry.byMode[mode] += 1;
+    }
+    const langKey = String(language || 'hindi').toLowerCase();
+    if (globalTelemetry.byLanguage[langKey] !== undefined) {
+      globalTelemetry.byLanguage[langKey] += 1;
+    }
+  } else if (type === 'round_end') {
+    globalTelemetry.roundsCompleted += 1;
+    if (won) {
+      globalTelemetry.songsGuessed += 1;
+    }
+  }
+
+  const evt = {
+    id: 'evt_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+    type,
+    mode,
+    language,
+    won: Boolean(won),
+    stage,
+    score,
+    songTitle,
+    source,
+    device,
+    timestamp: Date.now()
+  };
+
+  globalTelemetry.recentEvents.unshift(evt);
+  if (globalTelemetry.recentEvents.length > 60) {
+    globalTelemetry.recentEvents.length = 60;
+  }
+
+  res.json({
+    ok: true,
+    publicTotalPlays: globalTelemetry.baselinePlays + globalTelemetry.gamesStarted + globalTelemetry.roundsCompleted
+  });
+});
+
 // Health check endpoint
 app.get(['/api/health', '/health'], (req, res) => {
   res.json({

@@ -10,8 +10,10 @@ import GamePlayModal from './components/GamePlayModal';
 import AntakshariModal from './components/AntakshariModal';
 import BlitzModal from './components/BlitzModal';
 import IntroVideoModal from './components/IntroVideoModal';
+import AdminDashboardModal from './components/AdminDashboardModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks, startLocalAntakshariSession } from './data/tracks';
 import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
+import { recordGlobalEvent, fetchGlobalTelemetry } from './utils/telemetry';
 
 export default function App() {
   // State for selections with localStorage persistence
@@ -69,6 +71,40 @@ export default function App() {
 
   // Intro Video Trailer modal state
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+
+  // Global telemetry & Secret Owner Admin Dashboard state
+  const [telemetry, setTelemetry] = useState(null);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => {
+    return localStorage.getItem('surftest_admin_unlocked') === 'true';
+  });
+
+  const refreshTelemetry = useCallback(async () => {
+    const data = await fetchGlobalTelemetry();
+    if (data) setTelemetry(data);
+  }, []);
+
+  // Log visit once per browser session & check ?admin=1 URL shortcut
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const adminParam = params.get('admin');
+    if (adminParam === '2026') {
+      localStorage.setItem('surftest_admin_unlocked', 'true');
+      setIsAdminUnlocked(true);
+      setIsAdminModalOpen(true);
+    } else if (adminParam === '1' || adminParam === 'true' || adminParam === 'surtest') {
+      setIsAdminModalOpen(true);
+    }
+
+    if (!sessionStorage.getItem('surftest_visit_logged')) {
+      sessionStorage.setItem('surftest_visit_logged', '1');
+      recordGlobalEvent({ type: 'visit' }).then(() => {
+        refreshTelemetry();
+      });
+    } else {
+      refreshTelemetry();
+    }
+  }, [refreshTelemetry]);
 
   // Save language, era & mode preferences
   const handleSelectLanguage = (lang) => {
@@ -208,6 +244,13 @@ export default function App() {
 
   // Start a game round
   const handleStartRound = async (isDaily = false) => {
+    // Log global play_start event across all visitors
+    recordGlobalEvent({
+      type: 'play_start',
+      mode: selectedMode,
+      language: selectedLanguage
+    }).then(() => refreshTelemetry());
+
     // 60s BLITZ MODE BRANCH
     if (selectedMode === 'blitz') {
       setIsBlitzModalOpen(true);
@@ -273,6 +316,15 @@ export default function App() {
 
   // Record game result
   const handleRecordResult = async (won, stage) => {
+    recordGlobalEvent({
+      type: 'round_end',
+      mode: selectedMode,
+      language: selectedLanguage,
+      won: Boolean(won),
+      stage,
+      songTitle: activeRoundData?.track?.title || null
+    }).then(() => refreshTelemetry());
+
     try {
       const res = await fetch('/api/stats/record', {
         method: 'POST',
@@ -322,6 +374,15 @@ export default function App() {
 
   // Record Antakshari chain result
   const handleRecordAntakshariChain = (chainLength, beatChain) => {
+    recordGlobalEvent({
+      type: 'round_end',
+      mode: 'antakshari',
+      language: selectedLanguage,
+      won: Boolean(beatChain || chainLength >= 2),
+      score: chainLength,
+      songTitle: `Chain of ${chainLength} songs`
+    }).then(() => refreshTelemetry());
+
     setStats((prev) => {
       const ant = prev.antakshari || { played: 0, bestChain: 0, totalChained: 0 };
       const played = ant.played + 1;
@@ -343,6 +404,15 @@ export default function App() {
 
   // Record 60s Blitz run result
   const handleRecordBlitzRun = (score, runBestCombo) => {
+    recordGlobalEvent({
+      type: 'round_end',
+      mode: 'blitz',
+      language: selectedLanguage,
+      won: score > 0,
+      score,
+      songTitle: `Blitz Score: ${score} pts`
+    }).then(() => refreshTelemetry());
+
     setStats((prev) => {
       const blz = prev.blitz || { played: 0, bestScore: 0, bestStreak: 0 };
       const played = blz.played + 1;
@@ -409,7 +479,13 @@ export default function App() {
       </div>
 
       {/* Top Bar Navigation */}
-      <TopBar streak={stats.streak} onOpenHelp={() => setIsHelpOpen(true)} />
+      <TopBar
+        streak={stats.streak}
+        globalPlays={telemetry?.publicTotalPlays || 148}
+        isAdminUnlocked={isAdminUnlocked}
+        onOpenAdmin={() => setIsAdminModalOpen(true)}
+        onOpenHelp={() => setIsHelpOpen(true)}
+      />
 
       {/* Main Two-Column Layout */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
@@ -502,6 +578,24 @@ export default function App() {
             setIsBlitzModalOpen(true);
           }
         }}
+      />
+
+      {/* Secret Owner Live Analytics Dashboard Modal */}
+      <AdminDashboardModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        isAdminUnlocked={isAdminUnlocked}
+        onUnlockAdmin={() => {
+          localStorage.setItem('surftest_admin_unlocked', 'true');
+          setIsAdminUnlocked(true);
+          refreshTelemetry();
+        }}
+        onLockAdmin={() => {
+          localStorage.removeItem('surftest_admin_unlocked');
+          setIsAdminUnlocked(false);
+        }}
+        telemetry={telemetry}
+        onRefreshTelemetry={refreshTelemetry}
       />
     </div>
   );
