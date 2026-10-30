@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Play, Pause, FastForward, Check, X, Volume2, RotateCcw, Award, Share2, Copy } from 'lucide-react';
 import { getEraMeta, getEraFromYear } from '../constants/eras.js';
-import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow, cycleAmbientPalette } from '../utils/audioReactive.js';
 
 const STAGE_DURATIONS = [1, 2, 4, 7, 11, 16]; // seconds unlocked at each stage
 const TOTAL_DURATION = 16; // 16s total
@@ -103,6 +103,13 @@ export default function GamePlayModal({
       // Will be applied in onLoadedMetadata once stream metadata is ready
     }
   };
+
+  // Switch to a fresh multi-color ambient palette on every new round AND every stage/turn
+  useEffect(() => {
+    if (isOpen) {
+      cycleAmbientPalette();
+    }
+  }, [isOpen, roundData, currentStage]);
 
   // When round changes or opens, set up audio
   useEffect(() => {
@@ -565,22 +572,23 @@ export default function GamePlayModal({
             </div>
           </div>
 
-          {/* Real-Time AnalyserNode Frequency Bars */}
+          {/* Real-Time AnalyserNode Multi-Color Frequency Bars */}
           <div className="flex items-end gap-1.5 h-8 px-3">
-            {[40, 70, 30, 90, 60, 100, 45, 80, 50, 65].map((val, i) => (
-              <div
-                key={i}
-                data-audio-bar
-                className={`w-1.5 h-full rounded-full animate-eq-bar ${
-                  isPlaying
-                    ? isReversedMode
-                      ? 'bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.5)]'
-                      : 'bg-[#22E06B] shadow-[0_0_8px_rgba(34,224,107,0.5)]'
-                    : 'bg-white/15'
-                }`}
-                style={{ transform: 'scaleY(0.22)' }}
-              />
-            ))}
+            {[40, 70, 30, 90, 60, 100, 45, 80, 50, 65].map((val, i) => {
+              const colorVar = `--glow-c${(i % 4) + 1}`;
+              return (
+                <div
+                  key={i}
+                  data-audio-bar
+                  className="w-1.5 h-full rounded-full animate-eq-bar"
+                  style={{
+                    transform: 'scaleY(0.22)',
+                    backgroundColor: isPlaying ? `rgb(var(${colorVar}))` : 'rgba(255,255,255,0.15)',
+                    boxShadow: isPlaying ? `0 0 10px rgba(var(${colorVar}), 0.65)` : 'none'
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
 

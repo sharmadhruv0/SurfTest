@@ -1,13 +1,109 @@
-// Real-Time Web Audio API (AnalyserNode) Ambient Glow & Beat-Kick Engine
-// Zero React re-renders: updates GPU-composited CSS custom properties at 60fps via requestAnimationFrame
+// Real-Time Web Audio API (AnalyserNode) Multi-Color Ambient Glow & Beat-Kick Engine
+// Rotates through vibrant multi-color aurora palettes on every round, turn, and track
+
+const MULTICOLOR_PALETTES = [
+  // 0: Cyber Sunset (Hot Rose, Electric Violet, Solar Amber, Cyber Cyan)
+  {
+    name: 'Cyber Sunset',
+    c1: '244, 63, 94',
+    c2: '168, 85, 247',
+    c3: '245, 158, 11',
+    c4: '6, 182, 212'
+  },
+  // 1: Tropical Aurora (Neon Emerald, Deep Cyan, Electric Indigo, Hot Pink)
+  {
+    name: 'Tropical Aurora',
+    c1: '34, 224, 107',
+    c2: '6, 182, 212',
+    c3: '99, 102, 241',
+    c4: '236, 72, 153'
+  },
+  // 2: Bollywood Festival (Marigold Gold, Crimson Berry, Royal Purple, Turquoise)
+  {
+    name: 'Bollywood Festival',
+    c1: '251, 191, 36',
+    c2: '225, 29, 72',
+    c3: '147, 51, 234',
+    c4: '20, 184, 166'
+  },
+  // 3: Cosmic Supernova (Hyper Blue, Neon Fuchsia, Sunset Coral, Lime Glow)
+  {
+    name: 'Cosmic Supernova',
+    c1: '59, 130, 246',
+    c2: '217, 70, 239',
+    c3: '249, 115, 22',
+    c4: '132, 204, 22'
+  },
+  // 4: Desi Synthwave (Neon Pink, Tangerine Flame, Electric Cyan, Ultraviolet)
+  {
+    name: 'Desi Synthwave',
+    c1: '236, 72, 153',
+    c2: '249, 115, 22',
+    c3: '34, 211, 238',
+    c4: '124, 58, 237'
+  },
+  // 5: Peacock Iridescence (Peacock Teal, Royal Sapphire, Magenta Orchid, Gold Spark)
+  {
+    name: 'Peacock Iridescence',
+    c1: '6, 182, 212',
+    c2: '79, 70, 229',
+    c3: '232, 121, 249',
+    c4: '234, 179, 8'
+  },
+  // 6: Midnight Prism (Ruby Red, Amber Flame, Emerald Mint, Violet Glow)
+  {
+    name: 'Midnight Prism',
+    c1: '239, 68, 68',
+    c2: '245, 158, 11',
+    c3: '16, 185, 129',
+    c4: '139, 92, 246'
+  },
+  // 7: Volcano & Glacier (Fiery Orange, Rose Pink, Glacial Sky, Neon Green)
+  {
+    name: 'Volcano & Glacier',
+    c1: '251, 146, 60',
+    c2: '244, 114, 182',
+    c3: '56, 189, 248',
+    c4: '74, 222, 128'
+  }
+];
+
+let currentPaletteIndex = -1;
+let lastTrackSrcForPalette = null;
+
+/**
+ * Cycles to a new multi-color ambient palette (guaranteed different from the previous one)
+ * and applies its 4 RGB color stops to :root CSS custom properties.
+ */
+export function cycleAmbientPalette() {
+  if (typeof document === 'undefined') return null;
+
+  let nextIdx = Math.floor(Math.random() * MULTICOLOR_PALETTES.length);
+  if ( nextIdx === currentPaletteIndex ) {
+    nextIdx = (currentPaletteIndex + 1 + Math.floor(Math.random() * (MULTICOLOR_PALETTES.length - 1))) % MULTICOLOR_PALETTES.length;
+  }
+  currentPaletteIndex = nextIdx;
+
+  const palette = MULTICOLOR_PALETTES[currentPaletteIndex];
+  const root = document.documentElement;
+  root.style.setProperty('--glow-c1', palette.c1);
+  root.style.setProperty('--glow-c2', palette.c2);
+  root.style.setProperty('--glow-c3', palette.c3);
+  root.style.setProperty('--glow-c4', palette.c4);
+  return palette;
+}
+
+// Initialize a random multi-color palette on module load
+if (typeof document !== 'undefined') {
+  cycleAmbientPalette();
+}
 
 let sharedAudioCtx = null;
 let sharedAnalyser = null;
 let silentSinkGain = null;
 let freqDataArray = null;
-let timeDataArray = null;
 
-// Cache decoded AudioBuffers by URL so multi-stage replays (1s -> 2s -> 4s -> 7s -> 11s -> 16s) are instant (0ms)
+// Cache decoded AudioBuffers by URL so multi-stage replays are instant (0ms)
 const decodedBufferCache = new Map();
 const pendingDecodes = new Map();
 
@@ -24,6 +120,7 @@ let smoothedBass = 0;
 let smoothedMid = 0;
 let rollingBassAvg = 0.22;
 let beatPulse = 0;
+let hueShiftDeg = 0;
 
 function getOrCreateAudioGraph() {
   if (typeof window === 'undefined') return null;
@@ -44,7 +141,6 @@ function getOrCreateAudioGraph() {
     silentSinkGain.connect(sharedAudioCtx.destination);
 
     freqDataArray = new Uint8Array(sharedAnalyser.frequencyBinCount);
-    timeDataArray = new Uint8Array(sharedAnalyser.fftSize);
   }
   return { audioCtx: sharedAudioCtx, analyser: sharedAnalyser };
 }
@@ -139,7 +235,7 @@ async function loadAndSyncAudioBuffer(url, audioEl) {
   }
 }
 
-function setRootGlowVars(scale, opacity, spreadPx, beatFlash, barHeights = null) {
+function setRootGlowVars(scale, opacity, spreadPx, beatFlash, hueShift, barHeights = null) {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   root.setAttribute('data-audio-playing', 'true');
@@ -147,6 +243,7 @@ function setRootGlowVars(scale, opacity, spreadPx, beatFlash, barHeights = null)
   root.style.setProperty('--audio-kick-opacity', opacity.toFixed(3));
   root.style.setProperty('--audio-glow-spread', `${spreadPx.toFixed(1)}px`);
   root.style.setProperty('--audio-beat-flash', beatFlash.toFixed(3));
+  root.style.setProperty('--audio-hue-shift', `${hueShift.toFixed(1)}deg`);
 
   if (barHeights) {
     const bars = document.querySelectorAll('[data-audio-bar]');
@@ -161,10 +258,11 @@ function resetRootGlowVars() {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   root.removeAttribute('data-audio-playing');
-  root.style.setProperty('--audio-kick-scale', '0.94');
-  root.style.setProperty('--audio-kick-opacity', '0.18');
+  root.style.setProperty('--audio-kick-scale', '0.96');
+  root.style.setProperty('--audio-kick-opacity', '0.32');
   root.style.setProperty('--audio-glow-spread', '0px');
   root.style.setProperty('--audio-beat-flash', '0');
+  root.style.setProperty('--audio-hue-shift', '0deg');
 
   const bars = document.querySelectorAll('[data-audio-bar]');
   for (let i = 0; i < bars.length; i++) {
@@ -229,7 +327,6 @@ function tickAudioReactive() {
   // Rhythmic beat-synced fallback while buffer decodes or if stream bytes are silent
   if (bassNorm < 0.015 && midNorm < 0.015) {
     const t = activeAudioEl.currentTime || performance.now() / 1000;
-    // ~124 BPM four-on-the-floor kick + syncopated dhol/desi off-beat
     const primaryKick = Math.pow(Math.max(0, Math.sin(t * Math.PI * 4.15)), 6);
     const syncopatedBeat = Math.pow(Math.max(0, Math.sin(t * Math.PI * 2.075 + 0.85)), 8) * 0.55;
     const kickEnv = Math.min(1, primaryKick + syncopatedBeat);
@@ -262,29 +359,38 @@ function tickAudioReactive() {
     ? smoothedMid * 0.4 + midNorm * 0.6
     : smoothedMid * 0.85 + midNorm * 0.15;
 
+  // Continuous color-wheel drift accelerated by kicks & beats
+  hueShiftDeg = (hueShiftDeg + 0.45 + beatPulse * 2.4 + smoothedMid * 0.6) % 360;
+
   // Ambient breathing baseline + punchy radial expansion on every kick/beat
-  const scale = 1.08 + smoothedBass * 0.26 + beatPulse * 0.34 + smoothedMid * 0.1; // ~1.08 -> 1.68 on kicks
-  const opacity = Math.min(0.98, 0.44 + smoothedBass * 0.3 + beatPulse * 0.32 + smoothedMid * 0.1);
-  const spreadPx = 22 + smoothedBass * 28 + beatPulse * 42;
+  const scale = 1.08 + smoothedBass * 0.26 + beatPulse * 0.35 + smoothedMid * 0.1;
+  const opacity = Math.min(0.98, 0.52 + smoothedBass * 0.26 + beatPulse * 0.28 + smoothedMid * 0.08);
+  const spreadPx = 24 + smoothedBass * 30 + beatPulse * 44;
   const beatFlash = Math.min(1, beatPulse * 1.15);
 
-  setRootGlowVars(scale, opacity, spreadPx, beatFlash, barValues);
+  setRootGlowVars(scale, opacity, spreadPx, beatFlash, hueShiftDeg, barValues);
   rafId = requestAnimationFrame(tickAudioReactive);
 }
 
 /**
- * Connect an HTMLAudioElement to the Web Audio API AnalyserNode and start the 60fps ambient glow loop.
+ * Connect an HTMLAudioElement to the Web Audio API AnalyserNode and start the 60fps multi-color ambient glow loop.
  */
 export function startAudioReactiveGlow(audioEl) {
   if (!audioEl) return;
   activeAudioEl = audioEl;
+
+  const src = audioEl.currentSrc || audioEl.src;
+  // Whenever a different track plays, automatically switch to a fresh multi-color palette
+  if (src && src !== lastTrackSrcForPalette) {
+    lastTrackSrcForPalette = src;
+    cycleAmbientPalette();
+  }
 
   const graph = getOrCreateAudioGraph();
   if (graph && graph.audioCtx.state === 'suspended') {
     graph.audioCtx.resume().catch(() => {});
   }
 
-  const src = audioEl.currentSrc || audioEl.src;
   if (src) {
     activeBufferUrl = src;
     loadAndSyncAudioBuffer(src, audioEl);
@@ -295,7 +401,7 @@ export function startAudioReactiveGlow(audioEl) {
 }
 
 /**
- * Stop the ambient glow loop and smoothly return the backlight to resting state.
+ * Stop the ambient glow loop and smoothly return the backlight to resting ambient state.
  */
 export function stopAudioReactiveGlow() {
   if (rafId) {

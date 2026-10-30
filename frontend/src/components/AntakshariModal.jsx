@@ -5,7 +5,7 @@ import {
   Copy, LogIn, Plus, Send, Radio
 } from 'lucide-react';
 import { TRACK_CATALOG } from '../data/tracks.js';
-import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow, cycleAmbientPalette } from '../utils/audioReactive.js';
 import {
   validateAntakshariSubmission,
   computeSongSounds,
@@ -108,6 +108,13 @@ export default function AntakshariModal({
       }).catch(() => {});
     }
   };
+
+  // Rotate multi-color ambient palette on every turn & screen change in Antakshari
+  useEffect(() => {
+    if (isOpen) {
+      cycleAmbientPalette();
+    }
+  }, [isOpen, screen, matchState.turnNumber]);
 
   // Stop audio and timers on unmount or screen changes
   useEffect(() => {

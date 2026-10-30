@@ -13,6 +13,7 @@ import AdminDashboardModal from './components/AdminDashboardModal';
 import { TRACK_CATALOG, generateRoundData, getFilteredTracks, startLocalAntakshariSession } from './data/tracks';
 import { ERAS, getEraFromYear, getEraMeta } from './constants/eras.js';
 import { recordGlobalEvent, fetchGlobalTelemetry } from './utils/telemetry';
+import { cycleAmbientPalette } from './utils/audioReactive';
 
 export default function App() {
   // State for selections with localStorage persistence
@@ -187,6 +188,7 @@ export default function App() {
 
   // Start a game round instantly (0ms client latency)
   const handleStartRound = (isDaily = false) => {
+    cycleAmbientPalette();
     bumpLocalPlays();
     recordGlobalEvent({
       type: 'play_start',

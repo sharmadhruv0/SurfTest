@@ -31,10 +31,16 @@
   --border-glass-bright: rgba(255, 255, 255, 0.25);
   --border-accent: #22E06B;
 
-  --audio-kick-scale: 0.94;
-  --audio-kick-opacity: 0.18;
+  --glow-c1: 244, 63, 94;
+  --glow-c2: 168, 85, 247;
+  --glow-c3: 245, 158, 11;
+  --glow-c4: 6, 182, 212;
+
+  --audio-kick-scale: 0.96;
+  --audio-kick-opacity: 0.32;
   --audio-glow-spread: 0px;
   --audio-beat-flash: 0;
+  --audio-hue-shift: 0deg;
 }
 
 /* Base Body with Deep Obsidian Base */
@@ -397,100 +403,121 @@ body {
   transition: transform 0.06s linear;
 }
 
-/* Centered Audio-Reactive Cyan/Green Ambient Backlight */
+/* Multi-Color Moving Ambient Backlight & Beat-Kick Engine */
+@keyframes ambient-aurora-orbit {
+  0% {
+    transform: rotate(0deg) scale3d(1, 1.06, 1) translate3d(2%, -2%, 0);
+  }
+  33% {
+    transform: rotate(120deg) scale3d(1.08, 0.95, 1) translate3d(-3%, 2%, 0);
+  }
+  66% {
+    transform: rotate(240deg) scale3d(0.96, 1.08, 1) translate3d(2%, 3%, 0);
+  }
+  100% {
+    transform: rotate(360deg) scale3d(1, 1.06, 1) translate3d(2%, -2%, 0);
+  }
+}
+
+@keyframes ambient-aurora-counter {
+  0% {
+    transform: rotate(360deg) scale3d(1.04, 0.96, 1) translate3d(-2%, 2%, 0);
+  }
+  50% {
+    transform: rotate(180deg) scale3d(0.94, 1.08, 1) translate3d(3%, -3%, 0);
+  }
+  100% {
+    transform: rotate(0deg) scale3d(1.04, 0.96, 1) translate3d(-2%, 2%, 0);
+  }
+}
+
 .audio-reactive-backlight {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 940px;
-  height: 940px;
-  max-width: 135vw;
-  max-height: 135vw;
+  width: 980px;
+  height: 980px;
+  max-width: 140vw;
+  max-height: 140vw;
   border-radius: 9999px;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(
-    circle,
-    rgba(34, 224, 107, 0.62) 0%,
-    rgba(6, 182, 212, 0.44) 36%,
-    rgba(34, 224, 107, 0.22) 56%,
-    rgba(6, 182, 212, 0.08) 68%,
-    transparent 78%
-  );
-  opacity: var(--audio-kick-opacity, 0.18);
-  transform: translate3d(-50%, -50%, 0) scale3d(var(--audio-kick-scale, 0.94), var(--audio-kick-scale, 0.94), 1);
-  transition: opacity 0.07s ease-out, transform 0.07s ease-out;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(var(--glow-c1), 0.65) 0%, transparent 52%),
+    radial-gradient(circle at 72% 28%, rgba(var(--glow-c2), 0.62) 0%, transparent 52%),
+    radial-gradient(circle at 70% 72%, rgba(var(--glow-c3), 0.60) 0%, transparent 52%),
+    radial-gradient(circle at 28% 70%, rgba(var(--glow-c4), 0.62) 0%, transparent 52%);
+  opacity: var(--audio-kick-opacity, 0.32);
+  filter: hue-rotate(var(--audio-hue-shift, 0deg));
+  transform: translate3d(-50%, -50%, 0) scale3d(var(--audio-kick-scale, 0.96), var(--audio-kick-scale, 0.96), 1);
+  transition: opacity 0.08s ease-out, transform 0.08s ease-out;
   will-change: transform, opacity;
 }
 
-/* Inner Kick/Beat Corona Ring that pulses sharply on drum hits */
+/* Moving Multi-Color Aurora Layer 1 (Continuous Orbit) */
+.audio-reactive-backlight::before {
+  content: '';
+  position: absolute;
+  inset: 4%;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 22% 38%, rgba(var(--glow-c1), 0.72) 0%, transparent 48%),
+    radial-gradient(circle at 78% 32%, rgba(var(--glow-c3), 0.68) 0%, transparent 48%),
+    radial-gradient(circle at 58% 78%, rgba(var(--glow-c2), 0.70) 0%, transparent 50%),
+    radial-gradient(circle at 32% 74%, rgba(var(--glow-c4), 0.68) 0%, transparent 48%);
+  animation: ambient-aurora-orbit 11s linear infinite;
+  will-change: transform;
+}
+
+:root[data-audio-playing="true"] .audio-reactive-backlight::before {
+  animation-duration: 5.5s;
+}
+
+/* Counter-Rotating Multi-Color Beat Corona Ring (Flashes & Expands on Kicks) */
 .audio-reactive-backlight::after {
   content: '';
   position: absolute;
-  inset: 10%;
+  inset: 8%;
   border-radius: 9999px;
-  background: radial-gradient(
-    circle,
-    rgba(59, 244, 135, 0.52) 0%,
-    rgba(34, 211, 238, 0.42) 42%,
-    transparent 72%
-  );
-  opacity: var(--audio-beat-flash, 0);
-  transform: scale3d(calc(0.95 + var(--audio-beat-flash, 0) * 0.28), calc(0.95 + var(--audio-beat-flash, 0) * 0.28), 1);
-  transition: opacity 0.05s linear, transform 0.05s linear;
+  background:
+    radial-gradient(circle at 68% 26%, rgba(var(--glow-c4), 0.75) 0%, transparent 46%),
+    radial-gradient(circle at 26% 68%, rgba(var(--glow-c1), 0.75) 0%, transparent 46%),
+    radial-gradient(circle at 72% 72%, rgba(var(--glow-c2), 0.72) 0%, transparent 46%),
+    radial-gradient(circle at 30% 28%, rgba(var(--glow-c3), 0.72) 0%, transparent 46%);
+  opacity: calc(0.35 + var(--audio-beat-flash, 0) * 0.65);
+  animation: ambient-aurora-counter 8.5s linear infinite;
+  will-change: transform, opacity;
+}
+
+:root[data-audio-playing="true"] .audio-reactive-backlight::after {
+  animation-duration: 4s;
 }
 
 .audio-reactive-backlight-reverse {
-  background: radial-gradient(
-    circle,
-    rgba(168, 85, 247, 0.62) 0%,
-    rgba(6, 182, 212, 0.42) 36%,
-    rgba(99, 102, 241, 0.22) 56%,
-    rgba(6, 182, 212, 0.08) 68%,
-    transparent 78%
-  );
+  filter: hue-rotate(calc(var(--audio-hue-shift, 0deg) + 35deg));
 }
 
-.audio-reactive-backlight-reverse::after {
-  background: radial-gradient(
-    circle,
-    rgba(192, 132, 252, 0.52) 0%,
-    rgba(34, 211, 238, 0.4) 42%,
-    transparent 72%
-  );
-}
-
-.audio-reactive-card-halo {
-  box-shadow:
-    0 0 var(--audio-glow-spread, 0px) rgba(34, 224, 107, 0.48),
-    0 0 calc(var(--audio-glow-spread, 0px) * 1.6) rgba(6, 182, 212, 0.34),
-    inset 0 0 calc(var(--audio-glow-spread, 0px) * 0.45) rgba(34, 224, 107, 0.16);
-}
-
+.audio-reactive-card-halo,
 .audio-reactive-card-halo-reverse {
   box-shadow:
-    0 0 var(--audio-glow-spread, 0px) rgba(168, 85, 247, 0.52),
-    0 0 calc(var(--audio-glow-spread, 0px) * 1.6) rgba(6, 182, 212, 0.34),
-    inset 0 0 calc(var(--audio-glow-spread, 0px) * 0.45) rgba(168, 85, 247, 0.18);
+    -12px -8px var(--audio-glow-spread, 0px) rgba(var(--glow-c1), 0.46),
+    12px -8px var(--audio-glow-spread, 0px) rgba(var(--glow-c2), 0.46),
+    10px 12px calc(var(--audio-glow-spread, 0px) * 1.35) rgba(var(--glow-c3), 0.38),
+    -10px 12px calc(var(--audio-glow-spread, 0px) * 1.35) rgba(var(--glow-c4), 0.38),
+    inset 0 0 calc(var(--audio-glow-spread, 0px) * 0.4) rgba(var(--glow-c1), 0.16);
 }
 
-/* Main Card & Modal Window Ambient Perimeter Glow when audio is playing */
-:root[data-audio-playing="true"] .audio-reactive-surface {
-  border-color: rgba(34, 224, 107, 0.45);
-  box-shadow:
-    0 25px 60px -12px rgba(0, 0, 0, 0.78),
-    0 0 var(--audio-glow-spread, 24px) rgba(34, 224, 107, 0.36),
-    0 0 calc(var(--audio-glow-spread, 24px) * 1.75) rgba(6, 182, 212, 0.26),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.4);
-}
-
+/* Main Card & Modal Window Multi-Color Perimeter Glow when audio is playing */
+:root[data-audio-playing="true"] .audio-reactive-surface,
 :root[data-audio-playing="true"] .audio-reactive-surface-reverse {
-  border-color: rgba(168, 85, 247, 0.5);
+  border-color: rgba(var(--glow-c1), 0.48);
   box-shadow:
     0 25px 60px -12px rgba(0, 0, 0, 0.78),
-    0 0 var(--audio-glow-spread, 24px) rgba(168, 85, 247, 0.4),
-    0 0 calc(var(--audio-glow-spread, 24px) * 1.75) rgba(6, 182, 212, 0.26),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.4);
+    -18px -12px var(--audio-glow-spread, 28px) rgba(var(--glow-c1), 0.38),
+    18px -12px var(--audio-glow-spread, 28px) rgba(var(--glow-c2), 0.38),
+    14px 18px calc(var(--audio-glow-spread, 28px) * 1.45) rgba(var(--glow-c3), 0.32),
+    -14px 18px calc(var(--audio-glow-spread, 28px) * 1.45) rgba(var(--glow-c4), 0.32),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.42);
 }
 
 /* Glass Input Box */

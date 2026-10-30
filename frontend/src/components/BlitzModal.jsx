@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { TRACK_CATALOG, ALL_OPTIONS, getFilteredTracks } from '../data/tracks.js';
 import { getEraMeta, getEraFromYear } from '../constants/eras.js';
-import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow, cycleAmbientPalette } from '../utils/audioReactive.js';
 
 const INITIAL_BLITZ_SECONDS = 60;
 const BONUS_SECONDS_PER_HIT = 3;
@@ -139,9 +139,10 @@ export default function BlitzModal({
     return () => stopAudioReactiveGlow();
   }, [isOpen]);
 
-  // Auto-play whenever currentTrack changes during 'playing' phase
+  // Auto-play whenever currentTrack changes during 'playing' phase & rotate multi-color palette
   useEffect(() => {
     if (!isOpen || phase !== 'playing' || !currentTrack || !audioRef.current) return;
+    cycleAmbientPalette();
     const audio = audioRef.current;
     audio.pause();
     audio.src = currentTrack.previewUrl;
