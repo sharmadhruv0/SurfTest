@@ -373,23 +373,30 @@ export default function App() {
             {/* Hero Section */}
             <Hero />
 
-            {/* Game Setup Card with Language, Era, and Mode Selection */}
-            <GameSetupCard
-              selectedLanguage={selectedLanguage}
-              onSelectLanguage={handleSelectLanguage}
-              selectedEra={selectedEra}
-              onSelectEra={handleSelectEra}
-              eraStats={eraStats}
-              selectedMode={selectedMode}
-              onSelectMode={handleSelectMode}
-              selectedDifficulty={selectedDifficulty}
-              onSelectDifficulty={setSelectedDifficulty}
-              startFromHook={startFromHook}
-              onToggleHook={() => setStartFromHook((prev) => !prev)}
-              tracksCount={tracksCount}
-              onStartRound={() => handleStartRound(false)}
-              onStartDaily={() => handleStartRound(true)}
-            />
+            {/* Game Setup Card with Centered Audio-Reactive Cyan/Green Backlight */}
+            <div className="relative">
+              <div
+                className={`audio-reactive-backlight ${
+                  selectedMode === 'reverse' ? 'audio-reactive-backlight-reverse' : ''
+                }`}
+              />
+              <GameSetupCard
+                selectedLanguage={selectedLanguage}
+                onSelectLanguage={handleSelectLanguage}
+                selectedEra={selectedEra}
+                onSelectEra={handleSelectEra}
+                eraStats={eraStats}
+                selectedMode={selectedMode}
+                onSelectMode={handleSelectMode}
+                selectedDifficulty={selectedDifficulty}
+                onSelectDifficulty={setSelectedDifficulty}
+                startFromHook={startFromHook}
+                onToggleHook={() => setStartFromHook((prev) => !prev)}
+                tracksCount={tracksCount}
+                onStartRound={() => handleStartRound(false)}
+                onStartDaily={() => handleStartRound(true)}
+              />
+            </div>
           </div>
 
           {/* Right Column (~35-40% width) */}

@@ -85,7 +85,11 @@ export default function GameSetupCard({
   };
 
   return (
-    <div className="liquid-panel rounded-3xl p-6 sm:p-9 relative overflow-hidden transition-all duration-300">
+    <div
+      className={`liquid-panel rounded-3xl p-6 sm:p-9 relative z-10 overflow-hidden transition-all duration-300 ${
+        selectedMode === 'reverse' ? 'audio-reactive-surface-reverse' : 'audio-reactive-surface'
+      }`}
+    >
       {/* Top Specular Rim Glare */}
       <div className="liquid-specular-rim" />
 

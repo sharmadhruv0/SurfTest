@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Play, Pause, FastForward, Check, X, Volume2, RotateCcw, Award, Share2, Copy } from 'lucide-react';
 import { getEraMeta, getEraFromYear } from '../constants/eras.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
 
 const STAGE_DURATIONS = [1, 2, 4, 7, 11, 16]; // seconds unlocked at each stage
 const TOTAL_DURATION = 16; // 16s total
@@ -168,6 +169,7 @@ export default function GamePlayModal({
 
     return () => {
       isCancelled = true;
+      stopAudioReactiveGlow();
       if (reversedBlobUrlRef.current) {
         URL.revokeObjectURL(reversedBlobUrlRef.current);
         reversedBlobUrlRef.current = null;
@@ -179,6 +181,7 @@ export default function GamePlayModal({
   useEffect(() => {
     if (!isOpen && audioRef.current) {
       audioRef.current.pause();
+      stopAudioReactiveGlow();
       seekToStartOffset(audioRef.current);
       setIsPlaying(false);
       setCurrentTime(0);
@@ -365,7 +368,18 @@ export default function GamePlayModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
-      <div className="liquid-modal-window rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative flex flex-col max-h-[92vh] overflow-y-auto overflow-x-hidden">
+      {/* Centered Audio-Reactive Cyan/Green Ambient Backlight behind Modal */}
+      <div
+        className={`audio-reactive-backlight ${
+          isReversedMode ? 'audio-reactive-backlight-reverse' : ''
+        }`}
+      />
+
+      <div
+        className={`liquid-modal-window rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative z-10 flex flex-col max-h-[92vh] overflow-y-auto overflow-x-hidden transition-shadow duration-75 ${
+          isReversedMode ? 'audio-reactive-surface-reverse' : 'audio-reactive-surface'
+        }`}
+      >
         {/* Specular Highlight Rim */}
         <div className="liquid-specular-rim" />
 
@@ -374,10 +388,13 @@ export default function GamePlayModal({
           ref={audioRef}
           src={audioPlaybackSrc}
           preload="auto"
+          onPlay={(e) => startAudioReactiveGlow(e.currentTarget)}
+          onPause={() => stopAudioReactiveGlow()}
           onLoadedMetadata={(e) => {
             seekToStartOffset(e.currentTarget);
           }}
           onEnded={() => {
+            stopAudioReactiveGlow();
             setIsPlaying(false);
             setCurrentTime(0);
             seekToStartOffset(audioRef.current);
@@ -495,10 +512,12 @@ export default function GamePlayModal({
           </div>
         </div>
 
-        {/* Audio Player Card & Visualizer with Liquid Glass */}
+        {/* Audio Player Card & Visualizer with Audio-Reactive Halo */}
         <div
           className={`liquid-card rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all ${
-            isReversedMode ? 'border-purple-500/30' : 'border-[#22E06B]/25'
+            isReversedMode
+              ? `border-purple-500/40 ${isPlaying ? 'audio-reactive-card-halo-reverse' : ''}`
+              : `border-[#22E06B]/35 ${isPlaying ? 'audio-reactive-card-halo' : ''}`
           }`}
         >
           <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -546,17 +565,20 @@ export default function GamePlayModal({
             </div>
           </div>
 
-          {/* Dynamic Audio Bars Animation */}
+          {/* Real-Time AnalyserNode Frequency Bars */}
           <div className="flex items-end gap-1.5 h-8 px-3">
             {[40, 70, 30, 90, 60, 100, 45, 80, 50, 65].map((val, i) => (
               <div
                 key={i}
-                className={`w-1.5 h-full rounded-full ${
+                data-audio-bar
+                className={`w-1.5 h-full rounded-full animate-eq-bar ${
                   isPlaying
-                    ? `${isReversedMode ? 'bg-purple-400' : 'bg-[#22E06B]'} animate-eq-bar`
-                    : 'bg-white/15 scale-y-[0.22] origin-bottom'
+                    ? isReversedMode
+                      ? 'bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+                      : 'bg-[#22E06B] shadow-[0_0_8px_rgba(34,224,107,0.5)]'
+                    : 'bg-white/15'
                 }`}
-                style={isPlaying ? { animationDelay: `${i * 75}ms` } : undefined}
+                style={{ transform: 'scaleY(0.22)' }}
               />
             ))}
           </div>

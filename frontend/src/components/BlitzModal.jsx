@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { TRACK_CATALOG, ALL_OPTIONS, getFilteredTracks } from '../data/tracks.js';
 import { getEraMeta, getEraFromYear } from '../constants/eras.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
 
 const INITIAL_BLITZ_SECONDS = 60;
 const BONUS_SECONDS_PER_HIT = 3;
@@ -131,9 +132,11 @@ export default function BlitzModal({
     if (isOpen) {
       startNewBlitzRun();
     } else {
+      stopAudioReactiveGlow();
       if (audioRef.current) audioRef.current.pause();
       if (recapAudioRef.current) recapAudioRef.current.pause();
     }
+    return () => stopAudioReactiveGlow();
   }, [isOpen]);
 
   // Auto-play whenever currentTrack changes during 'playing' phase
@@ -348,10 +351,15 @@ export default function BlitzModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-2xl animate-in fade-in duration-200">
+      {/* Centered Audio-Reactive Cyan/Green Ambient Backlight */}
+      <div className="audio-reactive-backlight" />
+
       {/* Hidden Audio Elements */}
       <audio
         ref={audioRef}
         preload="auto"
+        onPlay={(e) => startAudioReactiveGlow(e.currentTarget)}
+        onPause={() => stopAudioReactiveGlow()}
         onLoadedMetadata={(e) => {
           const offset = Number(currentTrack?.hookStartSeconds) || 10;
           if (e.currentTarget.currentTime < offset - 0.5) {
@@ -362,10 +370,15 @@ export default function BlitzModal({
       <audio
         ref={recapAudioRef}
         preload="none"
-        onEnded={() => setPreviewingRecapId(null)}
+        onPlay={(e) => startAudioReactiveGlow(e.currentTarget)}
+        onPause={() => stopAudioReactiveGlow()}
+        onEnded={() => {
+          stopAudioReactiveGlow();
+          setPreviewingRecapId(null);
+        }}
       />
 
-      <div className="relative w-full max-w-2xl rounded-3xl p-5 sm:p-7 overflow-hidden transition-all liquid-modal-window border-cyan-500/35 shadow-[0_30px_90px_rgba(6,182,212,0.28)] max-h-[92vh] flex flex-col">
+      <div className="relative z-10 w-full max-w-2xl rounded-3xl p-5 sm:p-7 overflow-hidden transition-all liquid-modal-window audio-reactive-surface border-cyan-500/35 shadow-[0_30px_90px_rgba(6,182,212,0.28)] max-h-[92vh] flex flex-col">
         {/* Top Specular Rim */}
         <div className="liquid-specular-rim" />
 
@@ -501,7 +514,7 @@ export default function BlitzModal({
             )}
 
             {/* ACTIVE HOOK PLAYER CARD */}
-            <div className="p-4 sm:p-5 rounded-2xl liquid-panel-subtle border-cyan-500/25 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className={`p-4 sm:p-5 rounded-2xl liquid-panel-subtle border-cyan-500/25 flex flex-col sm:flex-row items-center justify-between gap-4 ${isPlayingAudio ? 'audio-reactive-card-halo' : ''}`}>
               <div className="flex items-center gap-4 w-full sm:w-auto">
                 <button
                   type="button"

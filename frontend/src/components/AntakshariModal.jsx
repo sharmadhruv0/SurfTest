@@ -5,6 +5,7 @@ import {
   Copy, LogIn, Plus, Send, Radio
 } from 'lucide-react';
 import { TRACK_CATALOG } from '../data/tracks.js';
+import { startAudioReactiveGlow, stopAudioReactiveGlow } from '../utils/audioReactive.js';
 import {
   validateAntakshariSubmission,
   computeSongSounds,
@@ -111,6 +112,7 @@ export default function AntakshariModal({
   // Stop audio and timers on unmount or screen changes
   useEffect(() => {
     return () => {
+      stopAudioReactiveGlow();
       if (timerRef.current) clearInterval(timerRef.current);
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
       if (audioRef.current) audioRef.current.pause();
@@ -568,7 +570,10 @@ export default function AntakshariModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
-      <div className="liquid-modal-window rounded-3xl max-w-2xl w-full p-5 sm:p-8 relative flex flex-col max-h-[94vh] overflow-y-auto border-amber-500/40 shadow-[0_30px_90px_rgba(245,158,11,0.25)]">
+      {/* Centered Audio-Reactive Cyan/Green Ambient Backlight */}
+      <div className="audio-reactive-backlight" />
+
+      <div className="liquid-modal-window audio-reactive-surface rounded-3xl max-w-2xl w-full p-5 sm:p-8 relative z-10 flex flex-col max-h-[94vh] overflow-y-auto border-amber-500/40 shadow-[0_30px_90px_rgba(245,158,11,0.25)]">
         {/* Specular Highlight Rim */}
         <div className="liquid-specular-rim" />
         {/* Hidden HTML5 Audio Element for sing-along previews */}
@@ -576,6 +581,12 @@ export default function AntakshariModal({
           ref={audioRef}
           src={currentAudioUrl}
           preload="auto"
+          onPlay={(e) => startAudioReactiveGlow(e.currentTarget)}
+          onPause={() => stopAudioReactiveGlow()}
+          onEnded={() => {
+            stopAudioReactiveGlow();
+            setIsPlayingAudio(false);
+          }}
           onLoadedMetadata={(e) => {
             if (e.currentTarget.currentTime < 2) {
               e.currentTarget.currentTime = 10;
