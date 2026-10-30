@@ -82,10 +82,13 @@ export default function AntakshariModal({
   // --------------------------------------------------------------------------
   // AUDIO CONTROLLER
   // --------------------------------------------------------------------------
-  const playClip = (url) => {
+  const playClip = (url, offset = 10) => {
     if (!url || !audioRef.current) return;
     setCurrentAudioUrl(url);
-    audioRef.current.currentTime = 0;
+    audioRef.current.src = url;
+    try {
+      audioRef.current.currentTime = Number(offset) || 10;
+    } catch {}
     audioRef.current.play().then(() => {
       setIsPlayingAudio(true);
     }).catch(() => {
@@ -565,7 +568,16 @@ export default function AntakshariModal({
         {/* Specular Highlight Rim */}
         <div className="liquid-specular-rim" />
         {/* Hidden HTML5 Audio Element for sing-along previews */}
-        <audio ref={audioRef} src={currentAudioUrl} preload="auto" />
+        <audio
+          ref={audioRef}
+          src={currentAudioUrl}
+          preload="auto"
+          onLoadedMetadata={(e) => {
+            if (e.currentTarget.currentTime < 2) {
+              e.currentTarget.currentTime = 10;
+            }
+          }}
+        />
 
         {/* ------------------------------------------------------------------ */}
         {/* TOP BAR                                                            */}

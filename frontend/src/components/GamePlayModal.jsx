@@ -84,7 +84,23 @@ export default function GamePlayModal({
   const [activeAudioSrc, setActiveAudioSrc] = useState(track.previewUrl);
   const reversedBlobUrlRef = useRef(null);
   const audioRef = useRef(null);
-  const maxAllowedTime = gameState !== 'playing' ? 30 : (STAGE_DURATIONS[currentStage] || 1);
+  const startOffset = Number(track.hookStartSeconds ?? track.startOffset ?? 10) || 10;
+  const maxAllowedTime = gameState !== 'playing' ? Math.max(16, 30 - startOffset) : (STAGE_DURATIONS[currentStage] || 1);
+
+  const seekToStartOffset = (audioEl) => {
+    const audio = audioEl || audioRef.current;
+    if (!audio) return;
+    try {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        const safeOffset = Math.min(startOffset, Math.max(0, audio.duration - 16));
+        audio.currentTime = safeOffset;
+      } else {
+        audio.currentTime = startOffset;
+      }
+    } catch {
+      // Will be applied in onLoadedMetadata once stream metadata is ready
+    }
+  };
 
   // When round changes or opens, set up audio
   useEffect(() => {
@@ -98,7 +114,7 @@ export default function GamePlayModal({
 
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      seekToStartOffset(audioRef.current);
     }
 
     // Clean up previous reversed blob URL
@@ -156,40 +172,53 @@ export default function GamePlayModal({
         reversedBlobUrlRef.current = null;
       }
     };
-  }, [roundData, isReversedMode, track.previewUrl]);
+  }, [roundData, isReversedMode, track.previewUrl, startOffset]);
 
   // Pause audio whenever modal is closed
   useEffect(() => {
     if (!isOpen && audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      seekToStartOffset(audioRef.current);
       setIsPlaying(false);
       setCurrentTime(0);
     }
-  }, [isOpen]);
+  }, [isOpen, startOffset]);
 
-  // Handle audio playback progress timer
+  // Handle audio playback progress synced with actual audio element currentTime from startOffset
   useEffect(() => {
     let timer;
     if (isPlaying) {
       timer = setInterval(() => {
-        setCurrentTime((prev) => {
-          if (prev >= maxAllowedTime) {
-            setIsPlaying(false);
-            if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-            }
-            return 0;
-          }
-          return Math.min(prev + 0.1, maxAllowedTime);
-        });
-      }, 100);
+        const audio = audioRef.current;
+        if (!audio) return;
+        if (audio.paused || audio.seeking || audio.readyState < 2) return;
+
+        const effectiveStart =
+          Number.isFinite(audio.duration) && audio.duration > 0
+            ? Math.min(startOffset, Math.max(0, audio.duration - 16))
+            : startOffset;
+
+        // If browser started at 0 before metadata seek took effect, jump to effectiveStart now
+        if (audio.currentTime < effectiveStart - 0.25) {
+          audio.currentTime = effectiveStart;
+          return;
+        }
+
+        const elapsed = Math.max(0, audio.currentTime - effectiveStart);
+        if (elapsed >= maxAllowedTime) {
+          audio.pause();
+          seekToStartOffset(audio);
+          setIsPlaying(false);
+          setCurrentTime(0);
+        } else {
+          setCurrentTime(elapsed);
+        }
+      }, 50);
     } else {
       clearInterval(timer);
     }
     return () => clearInterval(timer);
-  }, [isPlaying, maxAllowedTime]);
+  }, [isPlaying, maxAllowedTime, startOffset]);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -199,9 +228,10 @@ export default function GamePlayModal({
       setCurrentTime(0);
       setIsPlaying(true);
       if (audioRef.current) {
-        audioRef.current.currentTime = 0;
+        seekToStartOffset(audioRef.current);
         audioRef.current.play().catch((err) => {
           console.warn('Playback error:', err);
+          setIsPlaying(false);
         });
       }
     }
@@ -212,7 +242,7 @@ export default function GamePlayModal({
 
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      seekToStartOffset(audioRef.current);
     }
 
     const newGuesses = [...guesses, { text: 'Skipped', status: 'skipped' }];
@@ -234,7 +264,7 @@ export default function GamePlayModal({
 
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      seekToStartOffset(audioRef.current);
     }
 
     const target = `${track.title} - ${track.artist}`.toLowerCase();
@@ -324,9 +354,13 @@ export default function GamePlayModal({
           ref={audioRef}
           src={audioPlaybackSrc}
           preload="auto"
+          onLoadedMetadata={(e) => {
+            seekToStartOffset(e.currentTarget);
+          }}
           onEnded={() => {
             setIsPlaying(false);
             setCurrentTime(0);
+            seekToStartOffset(audioRef.current);
           }}
         />
 

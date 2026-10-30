@@ -26,7 +26,7 @@ export default function App() {
     return localStorage.getItem('surftest_mode') || 'normal'; // 'normal' | 'reverse' | 'antakshari'
   });
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy'); // 'easy' | 'medium' | 'hard' | 'expert' | 'impossible'
-  const [startFromHook, setStartFromHook] = useState(false);
+  const [startFromHook, setStartFromHook] = useState(true);
 
   // Backend status, era statistics and track pool
   const [isBackendOffline, setIsBackendOffline] = useState(false);

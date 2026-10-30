@@ -128,7 +128,10 @@ export default function BlitzModal({
     const audio = audioRef.current;
     audio.pause();
     audio.src = currentTrack.previewUrl;
-    audio.currentTime = currentTrack.hookStartSeconds || 0;
+    const offset = Number(currentTrack.hookStartSeconds) || 10;
+    try {
+      audio.currentTime = offset;
+    } catch {}
     audio.loop = true;
 
     const playPromise = audio.play();
@@ -313,7 +316,9 @@ export default function BlitzModal({
     } else {
       recapAudioRef.current.pause();
       recapAudioRef.current.src = track.previewUrl;
-      recapAudioRef.current.currentTime = 0;
+      try {
+        recapAudioRef.current.currentTime = Number(track.hookStartSeconds) || 10;
+      } catch {}
       recapAudioRef.current.play().catch(() => {});
       setPreviewingRecapId(track.id);
     }
@@ -337,7 +342,16 @@ export default function BlitzModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-2xl animate-in fade-in duration-200">
       {/* Hidden Audio Elements */}
-      <audio ref={audioRef} preload="auto" />
+      <audio
+        ref={audioRef}
+        preload="auto"
+        onLoadedMetadata={(e) => {
+          const offset = Number(currentTrack?.hookStartSeconds) || 10;
+          if (e.currentTarget.currentTime < offset - 0.5) {
+            e.currentTarget.currentTime = offset;
+          }
+        }}
+      />
       <audio
         ref={recapAudioRef}
         preload="none"

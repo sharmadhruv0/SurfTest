@@ -582,7 +582,7 @@ async function fetchNewSongsForLanguage({
           language: langName,
           difficulty: diff,
           stages: [1, 2, 4, 7, 11, 16],
-          hookStartSeconds: 0,
+          hookStartSeconds: [8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14][(existingForLang.length + newTracks.length) % 13],
           previewUrl: item.previewUrl,
           reversedPreviewUrl: item.previewUrl,
           hints: [
