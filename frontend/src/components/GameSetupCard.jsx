@@ -8,6 +8,16 @@ import { GAME_MODES } from '../constants/modes.js';
 import { TRACK_CATALOG } from '../data/tracks.js';
 import { Calendar, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
 
+const LANGUAGE_COUNTS = TRACK_CATALOG.reduce(
+  (acc, t) => {
+    const lang = t.language.toLowerCase();
+    acc[lang] = (acc[lang] || 0) + 1;
+    acc.all += 1;
+    return acc;
+  },
+  { all: 0, hindi: 0, punjabi: 0, haryanvi: 0 }
+);
+
 const LANGUAGES = [
   {
     id: 'all',
@@ -69,10 +79,9 @@ export default function GameSetupCard({
     return found.total !== undefined ? found.total : 0;
   };
 
-  // Lookup total track count per language
+  // Lookup total track count per language (precomputed at module load)
   const getCountForLanguage = (langId) => {
-    if (langId === 'all') return TRACK_CATALOG.length;
-    return TRACK_CATALOG.filter((t) => t.language.toLowerCase() === langId.toLowerCase()).length;
+    return LANGUAGE_COUNTS[langId] ?? TRACK_CATALOG.length;
   };
 
   return (

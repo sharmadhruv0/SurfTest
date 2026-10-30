@@ -70,6 +70,20 @@ export default function BlitzModal({
     return Array.from(set);
   }, [trackPool]);
 
+  // Memoized filtered autocomplete suggestions (never recomputes on timer ticks)
+  const filteredSuggestions = useMemo(() => {
+    const q = guessInput.trim().toLowerCase();
+    if (!q) return [];
+    const matches = [];
+    for (let i = 0; i < searchPool.length; i++) {
+      if (searchPool[i].toLowerCase().includes(q)) {
+        matches.push(searchPool[i]);
+        if (matches.length >= 6) break;
+      }
+    }
+    return matches;
+  }, [searchPool, guessInput]);
+
   // Pick next random unused track from pool
   const pickNextTrack = () => {
     let available = trackPool.filter(t => !usedIdsRef.current.has(t.id));
@@ -188,13 +202,6 @@ export default function BlitzModal({
   }, [timeLeftMs, phase]);
 
   if (!isOpen || !currentTrack) return null;
-
-  // Filtered autocomplete suggestions
-  const filteredSuggestions = guessInput.trim().length > 0
-    ? searchPool
-        .filter(item => item.toLowerCase().includes(guessInput.toLowerCase().trim()))
-        .slice(0, 6)
-    : [];
 
   const handleTogglePlay = () => {
     if (!audioRef.current) return;

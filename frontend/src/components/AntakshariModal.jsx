@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Play, Pause, Volume2, VolumeX, Check, X, Award, Share2, Link2, Sparkles,
   Trophy, ArrowRight, Music2, RefreshCw, Users, Clock, Flame, AlertCircle,
@@ -537,16 +537,20 @@ export default function AntakshariModal({
     }
   };
 
-  // Autocomplete filtering from 172-song catalog
-  const filteredCatalog = songInput.trim()
-    ? TRACK_CATALOG.filter((t) => {
-        const query = songInput.toLowerCase();
-        return (
-          t.title.toLowerCase().includes(query) ||
-          t.artist.toLowerCase().includes(query)
-        );
-      }).slice(0, 6)
-    : [];
+  // Memoized autocomplete filtering from catalog (never recomputes on timer ticks)
+  const filteredCatalog = useMemo(() => {
+    const query = songInput.trim().toLowerCase();
+    if (!query) return [];
+    const matches = [];
+    for (let i = 0; i < TRACK_CATALOG.length; i++) {
+      const t = TRACK_CATALOG[i];
+      if (t.title.toLowerCase().includes(query) || t.artist.toLowerCase().includes(query)) {
+        matches.push(t);
+        if (matches.length >= 6) break;
+      }
+    }
+    return matches;
+  }, [songInput]);
 
   const isMyTurn =
     gameMode === 'pass_and_play' ||

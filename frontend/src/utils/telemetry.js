@@ -94,38 +94,50 @@ export async function fetchGlobalTelemetry() {
     }
   } catch {}
 
-  // 2. Fetch backend API events
-  try {
-    const res = await fetch('/api/telemetry');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data.recentEvents)) {
-        for (const e of data.recentEvents) {
-          if (e && e.id) eventMap.set(e.id, e);
-        }
-      }
+  // 2. Fetch backend API events & cloud stream in parallel with fast timeout
+  const createSignal = () => {
+    try {
+      return AbortSignal.timeout ? AbortSignal.timeout(2500) : undefined;
+    } catch {
+      return undefined;
     }
-  } catch {}
+  };
 
-  // 3. Fetch persistent cloud stream events (shared across all visitors globally)
-  try {
-    const res = await fetch(`${CLOUD_STREAM_URL}/json?poll=1&since=all`);
-    if (res.ok) {
-      const text = await res.text();
-      const lines = text.split('\n').filter(Boolean);
-      for (const line of lines) {
-        try {
-          const wrapper = JSON.parse(line);
-          if (wrapper && wrapper.event === 'message' && wrapper.message) {
-            const parsed = JSON.parse(wrapper.message);
-            if (parsed && parsed.id && parsed.type) {
-              eventMap.set(parsed.id, parsed);
+  await Promise.allSettled([
+    (async () => {
+      try {
+        const res = await fetch('/api/telemetry', { signal: createSignal() });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.recentEvents)) {
+            for (const e of data.recentEvents) {
+              if (e && e.id) eventMap.set(e.id, e);
             }
           }
-        } catch {}
-      }
-    }
-  } catch {}
+        }
+      } catch {}
+    })(),
+    (async () => {
+      try {
+        const res = await fetch(`${CLOUD_STREAM_URL}/json?poll=1&since=24h`, { signal: createSignal() });
+        if (res.ok) {
+          const text = await res.text();
+          const lines = text.split('\n').filter(Boolean);
+          for (const line of lines) {
+            try {
+              const wrapper = JSON.parse(line);
+              if (wrapper && wrapper.event === 'message' && wrapper.message) {
+                const parsed = JSON.parse(wrapper.message);
+                if (parsed && parsed.id && parsed.type) {
+                  eventMap.set(parsed.id, parsed);
+                }
+              }
+            } catch {}
+          }
+        }
+      } catch {}
+    })()
+  ]);
 
   const allEvents = Array.from(eventMap.values()).sort(
     (a, b) => (b.timestamp || 0) - (a.timestamp || 0)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Play, Pause, FastForward, Check, X, Volume2, RotateCcw, Award, Share2, Copy } from 'lucide-react';
 import { getEraMeta, getEraFromYear } from '../constants/eras.js';
 
@@ -84,6 +84,7 @@ export default function GamePlayModal({
   const [activeAudioSrc, setActiveAudioSrc] = useState(track.previewUrl);
   const reversedBlobUrlRef = useRef(null);
   const audioRef = useRef(null);
+  const progressBarRef = useRef(null);
   const startOffset = Number(track.hookStartSeconds ?? track.startOffset ?? 10) || 10;
   const maxAllowedTime = gameState !== 'playing' ? Math.max(16, 30 - startOffset) : (STAGE_DURATIONS[currentStage] || 1);
 
@@ -208,13 +209,23 @@ export default function GamePlayModal({
         if (elapsed >= maxAllowedTime) {
           audio.pause();
           seekToStartOffset(audio);
+          if (progressBarRef.current) {
+            progressBarRef.current.style.width = '0%';
+          }
           setIsPlaying(false);
           setCurrentTime(0);
         } else {
-          setCurrentTime(elapsed);
+          if (progressBarRef.current) {
+            progressBarRef.current.style.width = `${Math.min((elapsed / maxAllowedTime) * 100, 100)}%`;
+          }
+          const wholeSec = Math.floor(elapsed);
+          setCurrentTime((prev) => (prev === wholeSec ? prev : wholeSec));
         }
-      }, 50);
+      }, 60);
     } else {
+      if (progressBarRef.current) {
+        progressBarRef.current.style.width = '0%';
+      }
       clearInterval(timer);
     }
     return () => clearInterval(timer);
@@ -329,9 +340,18 @@ export default function GamePlayModal({
     }
   };
 
-  const filteredOptions = options.filter((opt) =>
-    opt.toLowerCase().includes(guessInput.toLowerCase())
-  );
+  const filteredOptions = useMemo(() => {
+    const q = guessInput.trim().toLowerCase();
+    if (!q) return [];
+    const matches = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].toLowerCase().includes(q)) {
+        matches.push(options[i]);
+        if (matches.length >= 8) break;
+      }
+    }
+    return matches;
+  }, [options, guessInput]);
 
   const trackEra = track.era || getEraFromYear(track.year);
   const trackEraMeta = getEraMeta(trackEra);
@@ -462,12 +482,11 @@ export default function GamePlayModal({
                 >
                   {isCurrent && (
                     <div
-                      className={`h-full transition-all duration-100 ${
+                      ref={progressBarRef}
+                      className={`h-full transition-[width] duration-75 ${
                         isReversedMode ? 'bg-purple-300' : 'bg-[#3bf487]'
                       }`}
-                      style={{
-                        width: `${Math.min((currentTime / maxAllowedTime) * 100, 100)}%`
-                      }}
+                      style={{ width: '0%' }}
                     />
                   )}
                 </div>
@@ -532,14 +551,12 @@ export default function GamePlayModal({
             {[40, 70, 30, 90, 60, 100, 45, 80, 50, 65].map((val, i) => (
               <div
                 key={i}
-                className={`w-1.5 rounded-full transition-all duration-150 ${
+                className={`w-1.5 h-full rounded-full ${
                   isPlaying
-                    ? isReversedMode ? 'bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'bg-[#22E06B] shadow-[0_0_8px_rgba(34,224,107,0.5)]'
-                    : 'bg-white/15'
+                    ? `${isReversedMode ? 'bg-purple-400' : 'bg-[#22E06B]'} animate-eq-bar`
+                    : 'bg-white/15 scale-y-[0.22] origin-bottom'
                 }`}
-                style={{
-                  height: isPlaying ? `${Math.max(20, (val * Math.random()).toFixed(0))}%` : '20%'
-                }}
+                style={isPlaying ? { animationDelay: `${i * 75}ms` } : undefined}
               />
             ))}
           </div>

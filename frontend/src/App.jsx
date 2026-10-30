@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import TopBar from './components/TopBar';
 import Hero from './components/Hero';
 import GameSetupCard from './components/GameSetupCard';
@@ -28,12 +28,40 @@ export default function App() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy'); // 'easy' | 'medium' | 'hard' | 'expert' | 'impossible'
   const [startFromHook, setStartFromHook] = useState(true);
 
-  // Backend status, era statistics and track pool
+  // Backend status & instant memoized catalog counts (0ms filter changes)
   const [isBackendOffline, setIsBackendOffline] = useState(false);
-  const [tracksCount, setTracksCount] = useState(() => getFilteredTracks('hindi', 'all', 'all').length);
-  const [eraStats, setEraStats] = useState([]);
   const [isWaking, setIsWaking] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  const eraStats = useMemo(() => {
+    const langLower = selectedLanguage.toLowerCase();
+    return ERAS.map((era) => {
+      let count = 0;
+      for (let i = 0; i < TRACK_CATALOG.length; i++) {
+        const t = TRACK_CATALOG[i];
+        const isLangMatch = selectedLanguage === 'all' || t.language.toLowerCase() === langLower;
+        if (!isLangMatch) continue;
+        const tEra = t.era || getEraFromYear(t.year);
+        if (era.id === 'all' || tEra === era.id) {
+          count++;
+        }
+      }
+      return {
+        id: era.id,
+        label: era.label,
+        shortLabel: era.shortLabel,
+        range: era.range,
+        period: era.period,
+        tagline: era.tagline,
+        total: count,
+        theme: era.theme
+      };
+    });
+  }, [selectedLanguage]);
+
+  const tracksCount = useMemo(() => {
+    return getFilteredTracks(selectedLanguage, selectedEra, 'all').length;
+  }, [selectedLanguage, selectedEra]);
 
   // Stats state
   const [stats, setStats] = useState(() => {
@@ -118,6 +146,12 @@ export default function App() {
     localStorage.setItem('surftest_mode', mode);
   };
 
+  const bumpLocalPlays = useCallback(() => {
+    setTelemetry((prev) =>
+      prev ? { ...prev, publicTotalPlays: (prev.publicTotalPlays || 148) + 1 } : prev
+    );
+  }, []);
+
   // Check backend health & sync stats
   const checkHealth = useCallback(async () => {
     try {
@@ -131,88 +165,10 @@ export default function App() {
     }
   }, []);
 
-  // Fetch era breakdown for the current language
-  const fetchEraStats = useCallback(async () => {
-    const localEras = ERAS.map((era) => {
-      let count = 0;
-      for (const t of TRACK_CATALOG) {
-        const tEra = t.era || getEraFromYear(t.year);
-        const isEraMatch = era.id === 'all' || tEra === era.id;
-        const isLangMatch = selectedLanguage === 'all' || t.language.toLowerCase() === selectedLanguage.toLowerCase();
-        if (isEraMatch && isLangMatch) {
-          count++;
-        }
-      }
-      return {
-        id: era.id,
-        label: era.label,
-        shortLabel: era.shortLabel,
-        range: era.range,
-        period: era.period,
-        tagline: era.tagline,
-        total: count,
-        theme: era.theme
-      };
-    });
-
-    try {
-      const res = await fetch(`/api/eras?language=${selectedLanguage}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.eras && (data.total || 0) >= TRACK_CATALOG.length) {
-          setEraStats(data.eras);
-          return;
-        }
-      }
-    } catch {
-      // Compute fallback era stats locally from TRACK_CATALOG
-    }
-
-    setEraStats(localEras);
-  }, [selectedLanguage]);
-
-  // Fetch track count for selected language + era
-  const fetchTrackCount = useCallback(async () => {
-    const localTracks = getFilteredTracks(selectedLanguage, selectedEra, 'all');
-    try {
-      const res = await fetch(
-        `/api/tracks?language=${selectedLanguage}&era=${selectedEra}`
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setTracksCount(Math.max(data.total || 0, localTracks.length));
-        setIsBackendOffline(false);
-        return;
-      }
-    } catch {
-      // Use local catalog count
-    }
-    setTracksCount(localTracks.length);
-  }, [selectedLanguage, selectedEra]);
-
-  // Fetch listening log stats
-  const fetchStats = useCallback(async () => {
-    try {
-      const res = await fetch('/api/stats');
-      if (res.ok) {
-        const data = await res.json();
-        setStats(data);
-      }
-    } catch {
-      // Use local default stats
-    }
-  }, []);
-
-  // Sync on mount and filter changes
+  // Sync on mount
   useEffect(() => {
     checkHealth();
-    fetchStats();
-  }, [checkHealth, fetchStats]);
-
-  useEffect(() => {
-    fetchEraStats();
-    fetchTrackCount();
-  }, [fetchEraStats, fetchTrackCount]);
+  }, [checkHealth]);
 
   // Wake up servers button action
   const handleWakeServers = async () => {
@@ -222,30 +178,21 @@ export default function App() {
       if (res.ok) {
         setIsBackendOffline(false);
         setShowToast(false);
-        fetchEraStats();
-        fetchTrackCount();
-        fetchStats();
-      } else {
-        throw new Error('Server wake failed');
       }
     } catch {
-      setTimeout(() => {
-        checkHealth();
-        setIsWaking(false);
-      }, 1200);
-      return;
+      // Ignore error
     }
     setIsWaking(false);
   };
 
-  // Start a game round
-  const handleStartRound = async (isDaily = false) => {
-    // Log global play_start event across all visitors
+  // Start a game round instantly (0ms client latency)
+  const handleStartRound = (isDaily = false) => {
+    bumpLocalPlays();
     recordGlobalEvent({
       type: 'play_start',
       mode: selectedMode,
       language: selectedLanguage
-    }).then(() => refreshTelemetry());
+    });
 
     // 60s BLITZ MODE BRANCH
     if (selectedMode === 'blitz') {
@@ -255,18 +202,6 @@ export default function App() {
 
     // STANDALONE ANTAKSHARI MODE BRANCH
     if (selectedMode === 'antakshari') {
-      try {
-        const res = await fetch(`/api/antakshari/start?language=${selectedLanguage}`);
-        if (res.ok) {
-          const data = await res.json();
-          setActiveAntakshariData(data);
-          setIsAntakshariModalOpen(true);
-          return;
-        }
-      } catch {
-        // Fallback to local Antakshari session generator
-      }
-
       const localData = startLocalAntakshariSession(selectedLanguage);
       setActiveAntakshariData(localData);
       setIsAntakshariModalOpen(true);
@@ -274,24 +209,6 @@ export default function App() {
     }
 
     const dailyLabel = `DAILY · ${selectedLanguage === 'all' ? 'MIXED' : selectedLanguage.toUpperCase()} · ${selectedEra === 'all' ? 'ALL ERAS' : selectedEra.toUpperCase()}${selectedMode === 'reverse' ? ' · REVERSED 🔄' : ''}`;
-
-    try {
-      const res = await fetch(
-        `/api/round?language=${selectedLanguage}&era=${selectedEra}&difficulty=${selectedDifficulty}&hook=${startFromHook}&mode=${selectedMode}`
-      );
-      if (res.ok) {
-        const data = await res.json();
-        if (isDaily) {
-          data.roundId = dailyLabel;
-        }
-        setActiveRoundData(data);
-        setIsGameModalOpen(true);
-        return;
-      }
-    } catch {
-      // Backend request failed or timed out; fall through to instant local generator
-    }
-
     launchLocalRound(isDaily, dailyLabel);
   };
 
@@ -311,7 +228,8 @@ export default function App() {
   };
 
   // Record game result
-  const handleRecordResult = async (won, stage) => {
+  const handleRecordResult = (won, stage) => {
+    bumpLocalPlays();
     recordGlobalEvent({
       type: 'round_end',
       mode: selectedMode,
@@ -319,22 +237,13 @@ export default function App() {
       won: Boolean(won),
       stage,
       songTitle: activeRoundData?.track?.title || null
-    }).then(() => refreshTelemetry());
+    });
 
-    try {
-      const res = await fetch('/api/stats/record', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ won, stage, mode: selectedMode })
-      });
-      if (res.ok) {
-        const updated = await res.json();
-        setStats(updated);
-        return;
-      }
-    } catch {
-      // Fallback local state update
-    }
+    fetch('/api/stats/record', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ won, stage, mode: selectedMode })
+    }).catch(() => {});
 
     setStats((prev) => {
       const played = prev.played + 1;
@@ -350,7 +259,7 @@ export default function App() {
       const mBestStreak = Math.max(modeStats.bestStreak, mStreak);
       const mWinRate = Math.round((mWins / mPlayed) * 100);
 
-      return {
+      const nextStats = {
         ...prev,
         played,
         wins,
@@ -365,11 +274,14 @@ export default function App() {
           bestStreak: mBestStreak
         }
       };
+      localStorage.setItem('surftest_stats', JSON.stringify(nextStats));
+      return nextStats;
     });
   };
 
   // Record Antakshari chain result
   const handleRecordAntakshariChain = (chainLength, beatChain) => {
+    bumpLocalPlays();
     recordGlobalEvent({
       type: 'round_end',
       mode: 'antakshari',
@@ -377,7 +289,7 @@ export default function App() {
       won: Boolean(beatChain || chainLength >= 2),
       score: chainLength,
       songTitle: `Chain of ${chainLength} songs`
-    }).then(() => refreshTelemetry());
+    });
 
     setStats((prev) => {
       const ant = prev.antakshari || { played: 0, bestChain: 0, totalChained: 0 };
@@ -400,6 +312,7 @@ export default function App() {
 
   // Record 60s Blitz run result
   const handleRecordBlitzRun = (score, runBestCombo) => {
+    bumpLocalPlays();
     recordGlobalEvent({
       type: 'round_end',
       mode: 'blitz',
@@ -407,7 +320,7 @@ export default function App() {
       won: score > 0,
       score,
       songTitle: `Blitz Score: ${score} pts`
-    }).then(() => refreshTelemetry());
+    });
 
     setStats((prev) => {
       const blz = prev.blitz || { played: 0, bestScore: 0, bestStreak: 0 };
@@ -430,49 +343,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#06070B] text-[#F8FAFC] relative selection:bg-[#22E06B] selection:text-[#06070B] overflow-x-hidden">
-      {/* Dynamic Liquid Glass Background Atmosphere & Glowing Orbs */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {/* Top-left Emerald / Cyan Liquid Orb */}
-        <div
-          className="absolute -top-[12%] -left-[10%] w-[550px] sm:w-[750px] h-[550px] sm:h-[750px] rounded-full opacity-40 blur-[90px] animate-fluid-1"
-          style={{
-            background: 'radial-gradient(circle, rgba(34,224,107,0.35) 0%, rgba(6,182,212,0.2) 45%, transparent 70%)'
-          }}
-        />
-
-        {/* Top-right Purple / Indigo Liquid Orb */}
-        <div
-          className="absolute -top-[15%] -right-[10%] w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] rounded-full opacity-35 blur-[95px] animate-fluid-2"
-          style={{
-            background: 'radial-gradient(circle, rgba(168,85,247,0.32) 0%, rgba(99,102,241,0.18) 45%, transparent 70%)'
-          }}
-        />
-
-        {/* Mid-center Warm Amber / Orange Liquid Orb */}
-        <div
-          className="absolute top-[40%] left-[25%] w-[450px] sm:w-[600px] h-[450px] sm:h-[600px] rounded-full opacity-25 blur-[100px] animate-fluid-3"
-          style={{
-            background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, rgba(239,68,68,0.12) 50%, transparent 70%)'
-          }}
-        />
-
-        {/* Bottom-right Pink / Magenta Liquid Orb */}
-        <div
-          className="absolute -bottom-[10%] -right-[5%] w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full opacity-30 blur-[90px] animate-fluid-1"
-          style={{
-            background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, rgba(139,92,246,0.15) 50%, transparent 70%)'
-          }}
-        />
-
-        {/* Subtle Liquid Glass Caustic / Vignette Overlay */}
-        <div
-          className="absolute inset-0 opacity-60"
-          style={{
-            backgroundImage:
-              'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%)'
-          }}
-        />
-      </div>
+      {/* Lightweight Static Ambient Glow Background (Zero GPU Filter/Blur Repaints) */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          backgroundImage: [
+            'radial-gradient(circle at 12% 10%, rgba(34,224,107,0.14) 0%, rgba(6,182,212,0.06) 28%, transparent 52%)',
+            'radial-gradient(circle at 88% 8%, rgba(168,85,247,0.12) 0%, rgba(99,102,241,0.05) 28%, transparent 50%)',
+            'radial-gradient(circle at 42% 58%, rgba(245,158,11,0.07) 0%, transparent 45%)',
+            'radial-gradient(circle at 85% 90%, rgba(236,72,153,0.08) 0%, transparent 45%)'
+          ].join(', ')
+        }}
+      />
 
       {/* Top Bar Navigation */}
       <TopBar
